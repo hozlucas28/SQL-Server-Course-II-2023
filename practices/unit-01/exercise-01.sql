@@ -1,3 +1,6 @@
+DROP DATABASE sql_server_course_ii;
+
+go
 -- Creación de la base de datos "sql_server_course_ii"
 CREATE DATABASE sql_server_course_ii;
 

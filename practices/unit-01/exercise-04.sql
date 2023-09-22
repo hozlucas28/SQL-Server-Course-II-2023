@@ -1,3 +1,14 @@
+DROP PROCEDURE ddbba.insertarLog;
+
+DROP TRIGGER ddbba.crearRegistroMaterias;
+
+DROP TRIGGER ddbba.crearRegistroCursos;
+
+DROP TRIGGER ddbba.crearRegistroPersonas;
+
+DROP TRIGGER ddbba.crearRegistroCursa;
+
+go
 -- Creación del procedimiento de inserción de registros
 CREATE PROCEDURE
     ddbba.insertarLog @modulo char(10) = 'N/A',
@@ -7,7 +18,7 @@ BEGIN
     INSERT INTO ddbba.registros (texto, modulo)
         VALUES (@texto, @modulo)
 END;
-
+go
 
 -- Crear registro de la tabla "materias"
 CREATE TRIGGER ddbba.crearRegistroMaterias ON ddbba.materias
@@ -37,7 +48,7 @@ CREATE TRIGGER ddbba.crearRegistroMaterias ON ddbba.materias
 
             EXECUTE ddbba.insertarLog @modulo, @texto
         END;
-
+go
 
 -- Crear registro de la tabla "cursos"
 CREATE TRIGGER ddbba.crearRegistroCursos ON ddbba.cursos
@@ -67,7 +78,7 @@ CREATE TRIGGER ddbba.crearRegistroCursos ON ddbba.cursos
 
             EXECUTE ddbba.insertarLog @modulo, @texto
         END;
-
+go
 
 -- Crear registro de la tabla "personas"
 CREATE TRIGGER ddbba.crearRegistroPersonas ON ddbba.personas
@@ -97,7 +108,7 @@ CREATE TRIGGER ddbba.crearRegistroPersonas ON ddbba.personas
 
             EXECUTE ddbba.insertarLog @modulo, @texto
         END;
-
+go
 
 -- Crear registro de la tabla "cursa"
 CREATE TRIGGER ddbba.crearRegistroCursa ON ddbba.cursa
