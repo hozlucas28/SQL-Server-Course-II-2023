@@ -75,14 +75,11 @@
 -- Creación de la base de datos de CURE S.A
 CREATE database cure_sa;
 
-
 use cure_sa;
-
 
 /* ------------------------------- Referencias ------------------------------ */
 -- Creación del esquema de referencias
 CREATE schema referencias;
-
 
 -- Creación de la tabla "Géneros"
 CREATE TABLE
@@ -100,7 +97,6 @@ CREATE TABLE
 		CONSTRAINT pk_id_pais PRIMARY key (id_pais)
 	);
 
-
 -- Creación de la tabla "Nombres de provincias"
 CREATE TABLE
 	referencias.nombres_provincias (
@@ -111,7 +107,6 @@ CREATE TABLE
 		CONSTRAINT fk_id_pais_nombres_provincias FOREIGN key (id_pais) REFERENCES referencias.paises (id_pais)
 	);
 
-
 -- Creación de la tabla "Nombres de localidades" :sask
 CREATE TABLE
 	referencias.nombres_localidades (
@@ -119,7 +114,6 @@ CREATE TABLE
 		nombre VARCHAR(50) NOT NULL,
 		CONSTRAINT pk_id_localidad PRIMARY key (id_localidad)
 	);
-
 
 -- Creación de la tabla de direcciones
 -- apuntar a solo localidad? :sask
@@ -147,11 +141,9 @@ CREATE TABLE
 		CONSTRAINT pk_id_tipo_documento PRIMARY key (id_tipo_documento)
 	);
 
-
 /* ---------------------------------- Datos --------------------------------- */
 -- Creación del esquema de datos (logica de negocio)
 CREATE schema datos;
-
 
 -- Creación de la tabla "Pacientes"
 CREATE TABLE
@@ -184,7 +176,6 @@ CREATE TABLE
 		CONSTRAINT fk_id_nacionalidad FOREIGN key (nacionalidad) REFERENCES referencias.paises (id_pais)
 	);
 
-
 -- Creación de la tabla "Estudios"
 CREATE TABLE
 	datos.estudios (
@@ -199,7 +190,6 @@ CREATE TABLE
 		CONSTRAINT fk_id_paciente_estudio FOREIGN key (id_paciente) REFERENCES datos.pacientes (id_paciente)
 	);
 
-
 -- Creación de la tabla "Usuarios"
 CREATE TABLE
 	datos.usuarios (
@@ -211,7 +201,6 @@ CREATE TABLE
 		CONSTRAINT fk_id_paciente_usuario FOREIGN key (id_paciente) REFERENCES datos.pacientes (id_paciente)
 	);
 
-
 -- Creación de la tabla "Coberturas"
 CREATE TABLE
 	datos.coberturas (
@@ -221,7 +210,6 @@ CREATE TABLE
 		fecha_registro DATE DEFAULT CAST(GETDATE () AS DATE), --objecion :sask 
 		CONSTRAINT pk_id_cobertura PRIMARY key (id_cobertura),
 	);
-
 
 -- Creación de la tabla "Prestadoras"
 CREATE TABLE
@@ -233,7 +221,6 @@ CREATE TABLE
 		CONSTRAINT pk_id_prestador PRIMARY key (id_prestador),
 		CONSTRAINT fk_id_cobertura FOREIGN key (id_cobertura) REFERENCES datos.coberturas (id_cobertura)
 	);
-
 
 -- Creación de la tabla "Turnos médicos"
 CREATE TABLE
@@ -255,7 +242,6 @@ CREATE TABLE
 		CONSTRAINT fk_id_dias_x_sede FOREIGN key (id_dias_x_sede) REFERENCES datos.dias_x_sede (id_sede)
 	);
 
-
 -- Creación de la tabla "Estado del turno"
 CREATE TABLE
 	datos.estados_turnos (
@@ -268,7 +254,6 @@ CREATE TABLE
 		CONSTRAINT pk_id_estado_turno PRIMARY key (id_estado)
 	);
 
-
 -- Creación de la tabla "Tipo de turno"
 CREATE TABLE
 	datos.tipos_turnos (
@@ -279,7 +264,6 @@ CREATE TABLE
 		),
 		CONSTRAINT pk_tipo_turno PRIMARY key (tipo_turno)
 	);
-
 
 -- Creación de la tabla "Días x Sede"
 CREATE TABLE
@@ -294,7 +278,6 @@ CREATE TABLE
 		CONSTRAINT pk_id_sede PRIMARY key (id_sede)
 	);
 
-
 -- Creación de la tabla "Sede de atención"
 CREATE TABLE
 	datos.sede_de_atencion (
@@ -304,7 +287,6 @@ CREATE TABLE
 		CONSTRAINT pk_id_medico_sede_de_atención PRIMARY key (id_sede),
 		CONSTRAINT fk_id_direccion FOREIGN key (direccion) REFERENCES referencias.direcciones (id_direccion)
 	);
-
 
 -- Creación de la tabla "Médicos"
 CREATE TABLE
@@ -317,7 +299,6 @@ CREATE TABLE
 		CONSTRAINT pk_id_medico PRIMARY key (id_medico),
 		CONSTRAINT fk_id_especialidad FOREIGN key (id_especialidad) REFERENCES datos.especialidad (id_especialidad)
 	);
-
 
 -- Creación de la tabla "Especialidad"
 CREATE TABLE
