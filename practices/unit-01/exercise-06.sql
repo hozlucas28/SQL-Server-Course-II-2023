@@ -8,8 +8,7 @@ DELETE FROM ddbba.cursos;
 
 DELETE FROM ddbba.materias;
 
-go;
-
+go
 -- Error: materias duplicadas
 INSERT INTO
 	ddbba.materias (id, nombre)
@@ -80,6 +79,7 @@ VALUES
 		'Hoz'
 	);
 
+go
 -- Error: alumno y docente simultaneamente
 INSERT INTO
 	ddbba.cursa (id_persona, id_materia, id_comision, rol)
@@ -87,6 +87,7 @@ VALUES
 	(43820123, 3641, 2900, 'alUmNO'),
 	(43820123, 3641, 2900, 'DocEnTe');
 
+go
 -- Error: rol inexistente
 INSERT INTO
 	ddbba.cursa
