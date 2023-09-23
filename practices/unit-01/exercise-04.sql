@@ -18,8 +18,8 @@ BEGIN
     INSERT INTO ddbba.registros (texto, modulo)
         VALUES (@texto, @modulo)
 END;
-go
 
+go
 -- Crear registro de la tabla "materias"
 CREATE TRIGGER ddbba.crearRegistroMaterias ON ddbba.materias
     AFTER INSERT, UPDATE, DELETE
@@ -48,8 +48,8 @@ CREATE TRIGGER ddbba.crearRegistroMaterias ON ddbba.materias
 
             EXECUTE ddbba.insertarLog @modulo, @texto
         END;
-go
 
+go
 -- Crear registro de la tabla "cursos"
 CREATE TRIGGER ddbba.crearRegistroCursos ON ddbba.cursos
     AFTER INSERT, UPDATE, DELETE
@@ -78,8 +78,8 @@ CREATE TRIGGER ddbba.crearRegistroCursos ON ddbba.cursos
 
             EXECUTE ddbba.insertarLog @modulo, @texto
         END;
-go
 
+go
 -- Crear registro de la tabla "personas"
 CREATE TRIGGER ddbba.crearRegistroPersonas ON ddbba.personas
     AFTER INSERT, UPDATE, DELETE
@@ -108,8 +108,8 @@ CREATE TRIGGER ddbba.crearRegistroPersonas ON ddbba.personas
 
             EXECUTE ddbba.insertarLog @modulo, @texto
         END;
-go
 
+go
 -- Crear registro de la tabla "cursa"
 CREATE TRIGGER ddbba.crearRegistroCursa ON ddbba.cursa
     AFTER INSERT, UPDATE, DELETE
