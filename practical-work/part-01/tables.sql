@@ -61,30 +61,35 @@ IF OBJECT_ID('[referencias.generos]', 'U') IS NOT NULL
 /* ------------------------------ Crear Tablas ------------------------------ */
 
 GO
-CREATE TABLE [referencias.generos] (
+CREATE TABLE [referencias.generos]
+(
     id_genero INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE [referencias.paises] (
+CREATE TABLE [referencias.paises]
+(
     gentilicio VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL,
     id_pais INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE [referencias.nombres_provincias] (
+CREATE TABLE [referencias.nombres_provincias]
+(
     id_pais INT NOT NULL,
     id_provincia INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE [referencias.nombres_localidades] (
+CREATE TABLE [referencias.nombres_localidades]
+(
     id_localidad INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
 -- apuntar a solo localidad? :sask
-CREATE TABLE [referencias.direcciones] (
+CREATE TABLE [referencias.direcciones]
+(
     calle VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL,
     cod_postal SMALLINT NOT NULL,
     departamento SMALLINT,
@@ -96,66 +101,73 @@ CREATE TABLE [referencias.direcciones] (
     piso SMALLINT
 );
 
-CREATE TABLE [referencias.tipos_documentos] (
+CREATE TABLE [referencias.tipos_documentos]
+(
     id_tipo_documento INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE [datos.pacientes] (
-    apellido NVARCHAR (50) NOT NULL,
-    apellido_materno NVARCHAR (50),
-    email NVARCHAR (70) NOT NULL,
+CREATE TABLE [datos.pacientes]
+(
+    apellido VARCHAR (50) COLLATE Latin1_General_CS_AS NOT NULL,
+    apellido_materno VARCHAR (50) COLLATE Latin1_General_CS_AS,
+    email VARCHAR (70) COLLATE Latin1_General_CS_AS NOT NULL,
     fecha_actualizacion DATE,
     fecha_nacimiento DATE NOT NULL,
     fecha_registro DATE DEFAULT CAST(GETDATE () AS DATE),
-    foto_perfil IMAGE,
+    foto_perfil VARCHAR(128),
     id_cobertura INT,
     id_direccion INT,
     id_genero INT NOT NULL,
     id_paciente INT IDENTITY (1, 1),
     id_tipo_documento INT NOT NULL,
     nacionalidad INT,
-    nombre NVARCHAR (50) NOT NULL,
+    nombre VARCHAR (50) COLLATE Latin1_General_CS_AS NOT NULL,
     nro_documento VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL,
     sexo_biologico CHAR(1),
-    tel_alternativo VARCHAR(20) COLLATE Latin1_General_CS_AS,
-    tel_fijo VARCHAR(20) COLLATE Latin1_General_CS_AS NOT NULL,
-    tel_laboral VARCHAR(20) COLLATE Latin1_General_CS_AS,
+    tel_alternativo VARCHAR(20),
+    tel_fijo VARCHAR(20) NOT NULL,
+    tel_laboral VARCHAR(20),
     usuario_actualizacion INT
 );
 
-CREATE TABLE [datos.estudios] (
+CREATE TABLE [datos.estudios]
+(
     autorizado BIT DEFAULT 1,
-    documento_resultado IMAGE,
+    documento_resultado VARCHAR (128),
     fecha DATE NOT NULL,
     id_estudio INT IDENTITY (1, 1),
     id_paciente INT,
-    imagen_resultado IMAGE,
+    imagen_resultado VARCHAR (128),
     nombre_estudio VARCHAR(60) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE [datos.usuarios] (
+CREATE TABLE [datos.usuarios]
+(
     contraseña VARCHAR(256) COLLATE Latin1_General_CS_AS,
     fecha_creacion DATE DEFAULT CAST(GETDATE () AS DATE),
     id_paciente INT,
     id_usuario INT IDENTITY (1, 1),
 );
 
-CREATE TABLE [datos.coberturas] (
+CREATE TABLE [datos.coberturas]
+(
     fecha_registro DATE DEFAULT CAST(GETDATE () AS DATE),
     id_cobertura INT IDENTITY (1, 1),
-    imagen_credencial IMAGE,
+    imagen_credencial VARCHAR (128),
     nro_socio VARCHAR(30) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE [datos.prestadores] (
+CREATE TABLE [datos.prestadores]
+(
     id_cobertura INT,
     id_prestador INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL,
     plan_prestador VARCHAR(30) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE [datos.reservas_turnos_medicos] (
+CREATE TABLE [datos.reservas_turnos_medicos]
+(
     fecha DATE DEFAULT CAST (GETDATE () AS DATE),
     hora TIME DEFAULT CAST(GETDATE () AS TIME),
     id_dias_x_sede INT NOT NULL,
@@ -168,17 +180,20 @@ CREATE TABLE [datos.reservas_turnos_medicos] (
     id_turno INT IDENTITY (1, 1)
 );
 
-CREATE TABLE [datos.estados_turnos] (
+CREATE TABLE [datos.estados_turnos]
+(
     id_estado INT IDENTITY (1, 1),
-    nombre VARCHAR(30) COLLATE Latin1_General_CS_AS
+    nombre CHAR (15) COLLATE Latin1_General_CS_AS
 );
 
-CREATE TABLE [datos.tipos_turnos] (
+CREATE TABLE [datos.tipos_turnos]
+(
     id_tipo_turno INT IDENTITY (1, 1),
-    nombre_tipo VARCHAR(30) COLLATE Latin1_General_CS_AS
+    nombre_tipo CHAR (15) COLLATE Latin1_General_CS_AS
 );
 
-CREATE TABLE [datos.dias_x_sede] (
+CREATE TABLE [datos.dias_x_sede]
+(
     dia DATE NOT NULL,
     hora_inicio TIME NOT NULL,
     id_medico INT NOT NULL,
@@ -186,21 +201,24 @@ CREATE TABLE [datos.dias_x_sede] (
     id_sede_de_atencion INT NOT NULL
 );
 
-CREATE TABLE [datos.sede_de_atencion] (
+CREATE TABLE [datos.sede_de_atencion]
+(
     direccion INT,
     id_sede INT IDENTITY (1, 1),
     nombre VARCHAR(100) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE [datos.medicos] (
-    apellido NVARCHAR (50) NOT NULL,
+CREATE TABLE [datos.medicos]
+(
+    apellido VARCHAR (50) COLLATE Latin1_General_CS_AS NOT NULL,
     id_especialidad INT,
     id_medico INT IDENTITY (1, 1),
-    nombre NVARCHAR (50) NOT NULL,
+    nombre VARCHAR (50) COLLATE Latin1_General_CS_AS NOT NULL,
     nro_matricula INT NOT NULL
 );
 
-CREATE TABLE [datos.especialidad] (
+CREATE TABLE [datos.especialidad]
+(
     id_especialidad INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
