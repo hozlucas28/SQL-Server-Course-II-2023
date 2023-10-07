@@ -50,6 +50,9 @@
         <li>
             <a href="https://github.com/hozlucas28/SQL-Server-Course-I-2023" target="_blank">Repository of SQL Server - I course</a>
         </li>
+        <li>
+            <a href="https://github.com/hozlucas28/MongoDB-Course-2023" target="_blank">Repository of MongoDB - NoSQL course</a>
+        </li>
     </ul>
 </p>
 
