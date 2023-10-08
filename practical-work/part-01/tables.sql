@@ -4,114 +4,113 @@ USE [cure_sa];
 /* ----------------------------- Eliminar Tablas ---------------------------- */
 
 GO
-IF OBJECT_ID('datos.[reservas_turnos_medicos]', 'U') IS NOT NULL
-    DROP TABLE datos.[reservas_turnos_medicos];
+IF OBJECT_ID('[datos].[reservas_turnos_medicos]', 'U') IS NOT NULL
+    DROP TABLE [datos].[reservas_turnos_medicos];
 
-IF OBJECT_ID('datos.[tipos_turnos]', 'U') IS NOT NULL
-    DROP TABLE datos.[tipos_turnos];
+IF OBJECT_ID('[datos].[tipos_turnos]', 'U') IS NOT NULL
+    DROP TABLE [datos].[tipos_turnos];
 
-IF OBJECT_ID('datos.[estados_turnos]', 'U') IS NOT NULL
-    DROP TABLE datos.[estados_turnos];
+IF OBJECT_ID('[datos].[estados_turnos]', 'U') IS NOT NULL
+    DROP TABLE [datos].[estados_turnos];
 
-IF OBJECT_ID('datos.[dias_x_sede]', 'U') IS NOT NULL
-    DROP TABLE datos.[dias_x_sede];
+IF OBJECT_ID('[datos].[dias_x_sede]', 'U') IS NOT NULL
+    DROP TABLE [datos].[dias_x_sede];
 
-IF OBJECT_ID('datos.[medicos]', 'U') IS NOT NULL
-    DROP TABLE datos.[medicos];
+IF OBJECT_ID('[datos].[medicos]', 'U') IS NOT NULL
+    DROP TABLE [datos].[medicos];
 
-IF OBJECT_ID('datos.[sede_de_atencion]', 'U') IS NOT NULL
-    DROP TABLE datos.[sede_de_atencion];
+IF OBJECT_ID('[datos].[sede_de_atencion]', 'U') IS NOT NULL
+    DROP TABLE [datos].[sede_de_atencion];
 
-IF OBJECT_ID('datos.[prestadores]', 'U') IS NOT NULL
-    DROP TABLE datos.[prestadores];
+IF OBJECT_ID('[datos].[prestadores]', 'U') IS NOT NULL
+    DROP TABLE [datos].[prestadores];
 
-IF OBJECT_ID('datos.[usuarios]', 'U') IS NOT NULL
-    DROP TABLE datos.[usuarios];
+IF OBJECT_ID('[datos].[usuarios]', 'U') IS NOT NULL
+    DROP TABLE [datos].[usuarios];
 
-IF OBJECT_ID('datos.[estudios]', 'U') IS NOT NULL
-    DROP TABLE datos.[estudios];
+IF OBJECT_ID('[datos].[estudios]', 'U') IS NOT NULL
+    DROP TABLE [datos].[estudios];
 
-IF OBJECT_ID('datos.[pacientes]', 'U') IS NOT NULL
-    DROP TABLE datos.[pacientes];
+IF OBJECT_ID('[datos].[pacientes]', 'U') IS NOT NULL
+    DROP TABLE [datos].[pacientes];
 
-IF OBJECT_ID('referencias.[direcciones]', 'U') IS NOT NULL
-    DROP TABLE referencias.[direcciones];
+IF OBJECT_ID('[referencias].[direcciones]', 'U') IS NOT NULL
+    DROP TABLE [referencias].[direcciones];
 
-IF OBJECT_ID('referencias.[nombres_provincias]', 'U') IS NOT NULL
-    DROP TABLE referencias.[nombres_provincias];
+IF OBJECT_ID('[referencias].[nombres_provincias]', 'U') IS NOT NULL
+    DROP TABLE [referencias].[nombres_provincias];
 
-IF OBJECT_ID('datos.[especialidad]', 'U') IS NOT NULL
-    DROP TABLE datos.[especialidad];
+IF OBJECT_ID('[datos].[especialidad]', 'U') IS NOT NULL
+    DROP TABLE [datos].[especialidad];
 
-IF OBJECT_ID('datos.[coberturas]', 'U') IS NOT NULL
-    DROP TABLE datos.[coberturas];
+IF OBJECT_ID('[datos].[coberturas]', 'U') IS NOT NULL
+    DROP TABLE [datos].[coberturas];
 
-IF OBJECT_ID('referencias.[nombres_localidades]', 'U') IS NOT NULL
-    DROP TABLE referencias.[nombres_localidades];
+IF OBJECT_ID('[referencias].[nombres_localidades]', 'U') IS NOT NULL
+    DROP TABLE [referencias].[nombres_localidades];
 
-IF OBJECT_ID('referencias.[tipos_documentos]', 'U') IS NOT NULL
-    DROP TABLE referencias.[tipos_documentos];
+IF OBJECT_ID('[referencias].[tipos_documentos]', 'U') IS NOT NULL
+    DROP TABLE [referencias].[tipos_documentos];
 
-IF OBJECT_ID('referencias.[paises]', 'U') IS NOT NULL
-    DROP TABLE referencias.[paises];
+IF OBJECT_ID('[referencias].[paises]', 'U') IS NOT NULL
+    DROP TABLE [referencias].[paises];
 
-IF OBJECT_ID('referencias.[generos]', 'U') IS NOT NULL
-    DROP TABLE referencias.[generos];
+IF OBJECT_ID('[referencias].[generos]', 'U') IS NOT NULL
+    DROP TABLE [referencias].[generos];
 
 /* ------------------------------ Crear Tablas ------------------------------ */
 
 GO
-CREATE TABLE referencias.[generos]
+CREATE TABLE [referencias].[generos]
 (
     id_genero INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE referencias.[paises]
+CREATE TABLE [referencias].[paises]
 (
-    gentilicio VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL,
+    gentilicio VARCHAR(50) COLLATE Latin1_General_CS_AS UNIQUE NOT NULL,
     id_pais INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE referencias.[nombres_provincias]
+CREATE TABLE [referencias].[nombres_provincias]
 (
     id_pais INT NOT NULL,
     id_provincia INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE referencias.[nombres_localidades]
+CREATE TABLE [referencias].[nombres_localidades]
 (
     id_localidad INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
--- apuntar a solo localidad? :sask
-CREATE TABLE referencias.[direcciones]
+CREATE TABLE [referencias].[direcciones]
 (
     calle VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL,
-    cod_postal SMALLINT NOT NULL,
+    cod_postal SMALLINT,
     departamento SMALLINT,
     id_direccion INT IDENTITY (1, 1),
     id_localidad INT NOT NULL,
-    id_pais INT NOT NULL,
+    id_pais INT,
     id_provincia INT NOT NULL,
     numero INT NOT NULL,
     piso SMALLINT
 );
 
-CREATE TABLE referencias.[tipos_documentos]
+CREATE TABLE [referencias].[tipos_documentos]
 (
     id_tipo_documento INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE datos.[pacientes]
+CREATE TABLE [datos].[pacientes]
 (
     apellido VARCHAR (50) COLLATE Latin1_General_CS_AS NOT NULL,
     apellido_materno VARCHAR (50) COLLATE Latin1_General_CS_AS,
-    email VARCHAR (70) COLLATE Latin1_General_CS_AS NOT NULL,
+    email VARCHAR (70) COLLATE Latin1_General_CS_AS UNIQUE NOT NULL,
     fecha_actualizacion DATE,
     fecha_nacimiento DATE NOT NULL,
     fecha_registro DATE DEFAULT CAST(GETDATE () AS DATE),
@@ -131,7 +130,7 @@ CREATE TABLE datos.[pacientes]
     usuario_actualizacion INT
 );
 
-CREATE TABLE datos.[estudios]
+CREATE TABLE [datos].[estudios]
 (
     autorizado BIT DEFAULT 1,
     documento_resultado VARCHAR (128),
@@ -142,7 +141,7 @@ CREATE TABLE datos.[estudios]
     nombre_estudio VARCHAR(60) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE datos.[usuarios]
+CREATE TABLE [datos].[usuarios]
 (
     contraseña VARCHAR(256) COLLATE Latin1_General_CS_AS,
     fecha_creacion DATE DEFAULT CAST(GETDATE () AS DATE),
@@ -150,7 +149,7 @@ CREATE TABLE datos.[usuarios]
     id_usuario INT IDENTITY (1, 1),
 );
 
-CREATE TABLE datos.[coberturas]
+CREATE TABLE [datos].[coberturas]
 (
     fecha_registro DATE DEFAULT CAST(GETDATE () AS DATE),
     id_cobertura INT IDENTITY (1, 1),
@@ -158,7 +157,7 @@ CREATE TABLE datos.[coberturas]
     nro_socio VARCHAR(30) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE datos.[prestadores]
+CREATE TABLE [datos].[prestadores]
 (
     id_cobertura INT,
     id_prestador INT IDENTITY (1, 1),
@@ -166,7 +165,7 @@ CREATE TABLE datos.[prestadores]
     plan_prestador VARCHAR(30) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE datos.[reservas_turnos_medicos]
+CREATE TABLE [datos].[reservas_turnos_medicos]
 (
     fecha DATE DEFAULT CAST (GETDATE () AS DATE),
     hora TIME DEFAULT CAST(GETDATE () AS TIME),
@@ -180,19 +179,19 @@ CREATE TABLE datos.[reservas_turnos_medicos]
     id_turno INT IDENTITY (1, 1)
 );
 
-CREATE TABLE datos.[estados_turnos]
+CREATE TABLE [datos].[estados_turnos]
 (
     id_estado INT IDENTITY (1, 1),
     nombre CHAR (15) COLLATE Latin1_General_CS_AS
 );
 
-CREATE TABLE datos.[tipos_turnos]
+CREATE TABLE [datos].[tipos_turnos]
 (
     id_tipo_turno INT IDENTITY (1, 1),
     nombre_tipo CHAR (15) COLLATE Latin1_General_CS_AS
 );
 
-CREATE TABLE datos.[dias_x_sede]
+CREATE TABLE [datos].[dias_x_sede]
 (
     dia DATE NOT NULL,
     hora_inicio TIME NOT NULL,
@@ -201,14 +200,14 @@ CREATE TABLE datos.[dias_x_sede]
     id_sede_de_atencion INT NOT NULL
 );
 
-CREATE TABLE datos.[sede_de_atencion]
+CREATE TABLE [datos].[sede_de_atencion]
 (
     direccion INT,
     id_sede INT IDENTITY (1, 1),
     nombre VARCHAR(100) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
-CREATE TABLE datos.[medicos]
+CREATE TABLE [datos].[medicos]
 (
     apellido VARCHAR (50) COLLATE Latin1_General_CS_AS NOT NULL,
     id_especialidad INT,
@@ -217,7 +216,7 @@ CREATE TABLE datos.[medicos]
     nro_matricula INT NOT NULL
 );
 
-CREATE TABLE datos.[especialidad]
+CREATE TABLE [datos].[especialidad]
 (
     id_especialidad INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
