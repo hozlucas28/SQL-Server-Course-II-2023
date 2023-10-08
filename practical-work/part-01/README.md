@@ -72,9 +72,9 @@ autorizado o no y el importe a facturarle al paciente.
 Los roles establecidos al inicio del proyecto son:
 
 - Paciente
-- Medico
+- Médico
 - Personal Administrativo
-- Personal Técnico clínico
+- Personal Técnico Clínico
 - Administrador General
 
 > El usuario web se define utilizando el DNI
