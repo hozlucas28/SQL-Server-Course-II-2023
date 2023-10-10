@@ -2,9 +2,10 @@ GO
 USE [cure_sa];
 
 -- Actualizar contraseña
+GO
 CREATE OR ALTER PROCEDURE [datos].[actualizarContraseña]
     @idUsuario INT,
-    @contraseña VARCHAR(256) COLLATE Latin1_General_CS_AS
+    @contraseña VARCHAR(256)
 AS
 BEGIN
     UPDATE [datos].[usuarios] SET contraseña = @contraseña WHERE id_usuario = @idUsuario;
