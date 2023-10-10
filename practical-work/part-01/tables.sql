@@ -215,7 +215,8 @@ CREATE TABLE [datos].[medicos]
     id_especialidad INT,
     id_medico INT IDENTITY (1, 1),
     nombre VARCHAR (50) COLLATE Latin1_General_CS_AS NOT NULL,
-    nro_matricula INT NOT NULL
+    nro_matricula INT NOT NULL,
+    alta BIT DEFAULT 1,
 );
 
 CREATE TABLE [datos].[especialidad]
