@@ -36,7 +36,7 @@ BEGIN
 		[t].[hora] as [horaTurno],
 		[t].[id_tipo_turno] AS [idTipoTurno],
 		[t].[id_estado_turno] as [idEstadoTurno]
-    INTO #Disponibilidad
+    INTO [#disponibilidad]
         FROM [datos].[dias_x_sede] AS [dxs]
             JOIN [datos].[medicos] AS [m] ON [m].[id_medico] = [dxs].[id_medico]
                 JOIN [datos].[sede_de_atencion] AS [s] ON [s].[id_sede] = [dxs].[id_sede_de_atencion]
@@ -51,8 +51,8 @@ BEGIN
 	
 	IF @@ROWCOUNT > 0
 	BEGIN
-		IF EXISTS (SELECT 1 FROM #Disponibilidad WHERE horaTurno IS NOT NULL AND idTipoTurno = @idTipoTurno AND idEstadoTurno = 1)
-			SELECT @horaTurnoAnterior = max(horaTurno) FROM #Disponibilidad WHERE horaTurno < @hora AND idTipoTurno = @idTipoTurno AND idEstadoTurno = 1
+		IF EXISTS (SELECT 1 FROM [#disponibilidad] WHERE horaTurno IS NOT NULL AND idTipoTurno = @idTipoTurno AND idEstadoTurno = 1)
+			SELECT @horaTurnoAnterior = max(horaTurno) FROM [#disponibilidad] WHERE horaTurno < @hora AND idTipoTurno = @idTipoTurno AND idEstadoTurno = 1
 
 		IF @horaTurnoAnterior IS NULL OR DATEADD(MINUTE, 15, @horaTurnoAnterior) <= @hora
 		BEGIN
@@ -61,7 +61,7 @@ BEGIN
 				@idEspecialidad = id_especialidad, 
 				@idDireccionAtencion = direccion,
 				@idDiasXSede = id_dias_x_sede
-			FROM #Disponibilidad;
+			FROM [#disponibilidad];
 
 			INSERT INTO [datos].[reservas_turnos_medicos] (
                 fecha,
@@ -87,7 +87,7 @@ BEGIN
 		END		
 	END
 
-	DROP TABLE #Disponibilidad;
+	DROP TABLE [#disponibilidad];
 END;
 
 -- Actualizar turno médico
