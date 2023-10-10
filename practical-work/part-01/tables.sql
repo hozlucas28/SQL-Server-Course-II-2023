@@ -127,7 +127,8 @@ CREATE TABLE [datos].[pacientes]
     tel_alternativo VARCHAR(20),
     tel_fijo VARCHAR(20) NOT NULL,
     tel_laboral VARCHAR(20),
-    usuario_actualizacion INT
+    usuario_actualizacion INT,
+    valido BIT DEFAULT 1
 );
 
 CREATE TABLE [datos].[estudios]
@@ -195,6 +196,7 @@ CREATE TABLE [datos].[dias_x_sede]
 (
     dia DATE NOT NULL,
     hora_inicio TIME NOT NULL,
+    hora_fin TIME NOT NULL,
     id_medico INT NOT NULL,
     id_sede INT IDENTITY (1, 1),
     id_sede_de_atencion INT NOT NULL
