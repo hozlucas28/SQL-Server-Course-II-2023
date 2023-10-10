@@ -25,4 +25,4 @@ GO
 CREATE OR ALTER PROCEDURE [datos].[eliminarMedico]
     @id INT
 AS
-    UPDATE [datos].[medicos] SET valido = 0 WHERE id_medico = @id
+    UPDATE [datos].[medicos] SET valido = 0 WHERE id_medico = @id;
