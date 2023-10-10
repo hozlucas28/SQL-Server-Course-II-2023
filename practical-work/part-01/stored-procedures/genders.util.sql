@@ -13,14 +13,10 @@ BEGIN
     SET @nombre = UPPER(TRIM(@nombre))
 
     IF NULLIF(@nombre, '') IS NULL
-        BEGIN
-            RETURN @id
-        END
+        RETURN @id
 
     IF NOT EXISTS (SELECT 1 FROM [referencias].[generos] WHERE UPPER(TRIM(nombre)) = @nombre COLLATE Latin1_General_CS_AS) 
-        BEGIN
-            RETURN @id
-        END
+        RETURN @id
 
     SELECT @id = id_genero FROM [referencias].[generos] WHERE UPPER(TRIM(nombre)) = @nombre
     RETURN @id
@@ -38,15 +34,13 @@ CREATE OR ALTER FUNCTION [referencias].[actualizarGenero]
 AS
 BEGIN
     IF NULLIF(@nombre, '') IS NULL
-        BEGIN
-            RETURN
-        END
-        
-        IF NOT EXISTS (SELECT 1 FROM [referencias].[generos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS) 
-            INSERT INTO [referencias].[generos] (nombre) VALUES (@nombre)
-        ELSE
-            UPDATE [referencias].[generos] SET nombre = @nombre WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
-
-        INSERT INTO @registro SELECT id_genero, nombre FROM [referencias].[generos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
         RETURN
+        
+    IF NOT EXISTS (SELECT 1 FROM [referencias].[generos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS) 
+        INSERT INTO [referencias].[generos] (nombre) VALUES (@nombre)
+    ELSE
+        UPDATE [referencias].[generos] SET nombre = @nombre WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
+
+    INSERT INTO @registro SELECT id_genero, nombre FROM [referencias].[generos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
+    RETURN
 END;
