@@ -86,8 +86,8 @@ CREATE OR ALTER PROCEDURE [datos].[actualizarPaciente]
     @telefonoLaboral VARCHAR(20) = NULL
 AS
 BEGIN
-    DECLARE @idGenero INT = NULL;
-    DECLARE @idNacionalidad INT = NULL;
+    DECLARE @idGenero INT = NULL
+    DECLARE @idNacionalidad INT = NULL
 
     IF @genero IS NOT NULL 
 		SET @idGenero = [referencias].[obtenerIdGenero](@genero)
@@ -113,7 +113,7 @@ BEGIN
         tel_alternativo = ISNULL(@telefonoAlternativo, tel_alternativo),
         tel_laboral = ISNULL(@telefonoLaboral, tel_laboral)
     WHERE
-        id_paciente = @idPaciente;
+        id_paciente = @idPaciente
 END;
 
 -- Borrar paciente

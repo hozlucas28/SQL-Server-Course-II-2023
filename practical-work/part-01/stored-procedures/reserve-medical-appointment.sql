@@ -15,13 +15,13 @@ CREATE OR ALTER PROCEDURE [datos].[registrarTurnoMedico]
     @idTurno INT = NULL OUTPUT
 AS
 BEGIN
-	DECLARE @horaTurnoAnterior TIME = NULL;
-	DECLARE @idDiasXSede INT;
-	DECLARE @idDireccionAtencion INT;
-	DECLARE @idEspecialidad INT;
-	DECLARE @idMedico INT;
-	DECLARE @idSede INT;
-	DECLARE @idTipoTurno INT;
+	DECLARE @horaTurnoAnterior TIME = NULL
+	DECLARE @idDiasXSede INT
+	DECLARE @idDireccionAtencion INT
+	DECLARE @idEspecialidad INT
+	DECLARE @idMedico INT
+	DECLARE @idSede INT
+	DECLARE @idTipoTurno INT
 
 	IF UPPER(@tipoTurno) = 'PRESENCIAL' SET @idTipoTurno = 1
 	    ELSE IF UPPER(@tipoTurno) = 'VIRTUAL' SET @idTipoTurno = 2
@@ -61,7 +61,7 @@ BEGIN
 				@idEspecialidad = id_especialidad, 
 				@idDireccionAtencion = direccion,
 				@idDiasXSede = id_dias_x_sede
-			FROM [#disponibilidad];
+			FROM [#disponibilidad]
 
 			INSERT INTO [datos].[reservas_turnos_medicos] (
                 fecha,
@@ -87,7 +87,7 @@ BEGIN
 		END		
 	END
 
-	DROP TABLE [#disponibilidad];
+	DROP TABLE [#disponibilidad]
 END;
 
 -- Actualizar turno médico
@@ -97,7 +97,7 @@ CREATE OR ALTER PROCEDURE [datos].[actualizarTurnoMedico]
     @estado VARCHAR(255)
 AS
 BEGIN
-    DECLARE @idEstado INT = NULL;
+    DECLARE @idEstado INT = NULL
 
     IF @estado = 'CANCELADO'
 		RETURN
@@ -114,7 +114,7 @@ CREATE OR ALTER PROCEDURE [datos].[eliminarTurnoMedico]
     @id INT
 AS
 BEGIN
-    DECLARE @idEstado INT;
+    DECLARE @idEstado INT
 
     SELECT @idEstado = id_estado FROM [datos].[estados_turnos] WHERE nombre = 'CANCELADO'
     UPDATE [datos].[reservas_turnos_medicos] SET id_estado_turno = @idEstado WHERE id_turno = @id

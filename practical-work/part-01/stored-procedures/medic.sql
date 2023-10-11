@@ -10,7 +10,7 @@ CREATE OR ALTER PROCEDURE [datos].[insertarMedico]
     @matricula INT NOT NULL
 AS
 BEGIN
-    DECLARE @idEspecialidad INT;
+    DECLARE @idEspecialidad INT
 
     SET @idEspecialidad = [datos].[obtenerIdEspecialidad](@especialidad)
 

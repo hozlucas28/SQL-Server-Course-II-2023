@@ -193,31 +193,31 @@ BEGIN
             provincia
         HAVING COUNT(*) > 1
 
-    DECLARE @registrosFallidos INT;
+    DECLARE @registrosFallidos INT
 
-    SET @registrosFallidos = (SELECT COUNT(*) FROM [#registros_invalidos]);
+    SET @registrosFallidos = (SELECT COUNT(*) FROM [#registros_invalidos])
 
-    DECLARE @archivoRegistrosInvalidos NVARCHAR(MAX);
-    SET @archivoRegistrosInvalidos = @rutaArchivoError + '\registros-invalidos.csv';
+    DECLARE @archivoRegistrosInvalidos NVARCHAR(MAX)
+    SET @archivoRegistrosInvalidos = @rutaArchivoError + '\registros-invalidos.csv'
 
-	DECLARE @nombre VARCHAR(255);
-	DECLARE @apellido VARCHAR(255);
-	DECLARE @fechaNacimiento DATE;
-	DECLARE @tipoDocumento VARCHAR(255); 
-	DECLARE @idTipoDoc INT;
-	DECLARE @nroDocumento VARCHAR(255);
-	DECLARE @sexo VARCHAR(20);
-	DECLARE @sexoChar Char;
-	DECLARE @genero VARCHAR(20); 
-	DECLARE @idGenero INT;
-	DECLARE @telefono VARCHAR(40);
-	DECLARE @nacionalidad VARCHAR(255);
-	DECLARE @idNacionalidad INT;
-	DECLARE @mail VARCHAR(100);
-	DECLARE @calleYNro VARCHAR(255);
-	DECLARE @localidad VARCHAR(255);
-	DECLARE @provincia VARCHAR(255);
-	DECLARE @idDireccion INT;
+	DECLARE @nombre VARCHAR(255)
+	DECLARE @apellido VARCHAR(255)
+	DECLARE @fechaNacimiento DATE
+	DECLARE @tipoDocumento VARCHAR(50)
+	DECLARE @idTipoDoc INT
+	DECLARE @nroDocumento VARCHAR(255)
+	DECLARE @sexo VARCHAR(20)
+	DECLARE @sexoChar Char
+	DECLARE @genero VARCHAR(50)
+	DECLARE @idGenero INT
+	DECLARE @telefono VARCHAR(40)
+	DECLARE @nacionalidad VARCHAR(50)
+	DECLARE @idNacionalidad INT
+	DECLARE @mail VARCHAR(100)
+	DECLARE @calleYNro VARCHAR(50)
+	DECLARE @localidad VARCHAR(255)
+	DECLARE @provincia VARCHAR(50)
+	DECLARE @idDireccion INT
 	
 	WHILE @count > 0
 	BEGIN
@@ -238,8 +238,8 @@ BEGIN
 		FROM [#pacientes_importados_formateados]
 	
 		SET @idNacionalidad = [referencias].[obtenerIdNacionalidad](@nacionalidad)
-		SET @idTipoDoc = [utils].[obtenerIdTipoDocumento](@tipoDocumento)
-		SET @idGenero = [utils].[obtenerIdGenero](@genero)
+		SET @idTipoDoc = [referencias].[obtenerIdTipoDocumento](@tipoDocumento)
+		SET @idGenero = [referencias].[obtenerIdGenero](@genero)
 		SET @sexoChar = [utils].[obtenerCharSexo](@sexo)
 		SET @idDireccion = [utils].[obtenerIdDireccion](@calleYNro, @localidad, @provincia)
 
@@ -271,13 +271,13 @@ BEGIN
             GETDATE()
 		)
 
-		DELETE TOP (1) FROM [#pacientes_importados_formateados];
-		SET @count = @count - 1;
+		DELETE TOP (1) FROM [#pacientes_importados_formateados]
+		SET @count = @count - 1
 	END
 
-	DROP TABLE [#pacientes_importados];
-    DROP TABLE [#pacientes_importados_formateados];
-    DROP TABLE [#registros_invalidos];
+	DROP TABLE [#pacientes_importados]
+    DROP TABLE [#pacientes_importados_formateados]
+    DROP TABLE [#registros_invalidos]
 END;
 
 -- Importar sedes desde un archivo CSV
