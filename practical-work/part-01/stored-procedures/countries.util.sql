@@ -35,6 +35,8 @@ CREATE OR ALTER FUNCTION [referencias].[actualizarNacionalidad]
     )
 AS
 BEGIN
+    DECLARE @SQL VARCHAR(MAX)
+
     IF NULLIF(@nacionalidad, '') IS NULL
         RETURN
 
@@ -42,9 +44,11 @@ BEGIN
         IF NULLIF(@pais, '') IS NULL
             RETURN
         ELSE
-            INSERT INTO [referencias].[paises] (nombre, gentilicio) VALUES (@pais, @nacionalidad)
+            SELECT @SQL = 'INSERT INTO [referencias].[paises] (nombre, gentilicio) VALUES (' + @pais + ',' + @nacionalidad + ')'
     ELSE
-        UPDATE [referencias].[paises] SET gentilicio = @nacionalidad WHERE gentilicio = @nacionalidad COLLATE Latin1_General_CS_AS
+        SELECT @SQL = 'UPDATE [referencias].[paises] SET gentilicio =' + @nacionalidad + 'WHERE gentilicio =' + @nacionalidad + 'COLLATE Latin1_General_CS_AS'
+
+    EXEC sp_executesql @SQL
 
     INSERT INTO @registro SELECT gentilicio, id_pais, nombre FROM [referencias].[paises] WHERE gentilicio = @nacionalidad COLLATE Latin1_General_CS_AS
     RETURN
