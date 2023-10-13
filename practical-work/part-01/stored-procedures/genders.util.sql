@@ -24,13 +24,10 @@ END;
 
 -- Actualizar/Insertar un género
 GO
-CREATE OR ALTER FUNCTION [referencias].[actualizarGenero]
-    (
-        @nombre VARCHAR(50) = 'null'
-    ) RETURNS @registro TABLE (
-        id_genero INT,
-        nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
-    )
+CREATE OR ALTER PROCEDURE [referencias].[actualizarGenero]
+    @nombre VARCHAR(50) = 'null',
+    @outIdGenero INT OUTPUT,
+    @outNombre VARCHAR(50) OUTPUT
 AS
 BEGIN
     IF NULLIF(@nombre, '') IS NULL
@@ -41,6 +38,6 @@ BEGIN
     ELSE
         UPDATE [referencias].[generos] SET nombre = @nombre WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
 
-    INSERT INTO @registro SELECT id_genero, nombre FROM [referencias].[generos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
+    SELECT @outIdGenero = id_genero, @outNombre = nombre FROM [referencias].[generos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
     RETURN
 END;

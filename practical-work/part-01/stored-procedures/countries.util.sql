@@ -24,19 +24,14 @@ END;
 
 -- Actualizar/Insertar una nacionalidad
 GO
-CREATE OR ALTER FUNCTION [referencias].[actualizarNacionalidad]
-    (
-        @pais VARCHAR(50) = NULL,
-        @nacionalidad VARCHAR(50) = NULL
-    ) RETURNS @registro TABLE (
-        gentilicio VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL,
-        id_pais INT,
-        nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
-    )
+CREATE OR ALTER PROCEDURE [referencias].[actualizarNacionalidad]
+    @pais VARCHAR(50) = NULL,
+    @nacionalidad VARCHAR(50) = NULL,
+    @outGentilicio VARCHAR(50) OUTPUT,
+    @outIdpais INT OUTPUT,
+    @outNombre VARCHAR(50) OUTPUT
 AS
 BEGIN
-    DECLARE @SQL VARCHAR(MAX)
-
     IF NULLIF(@nacionalidad, '') IS NULL
         RETURN
 
@@ -44,12 +39,10 @@ BEGIN
         IF NULLIF(@pais, '') IS NULL
             RETURN
         ELSE
-            SELECT @SQL = 'INSERT INTO [referencias].[paises] (nombre, gentilicio) VALUES (' + @pais + ',' + @nacionalidad + ')'
+            INSERT INTO [referencias].[paises] (nombre, gentilicio) VALUES (@pais, @nacionalidad)
     ELSE
-        SELECT @SQL = 'UPDATE [referencias].[paises] SET gentilicio =' + @nacionalidad + 'WHERE gentilicio =' + @nacionalidad + 'COLLATE Latin1_General_CS_AS'
+        UPDATE [referencias].[paises] SET gentilicio = @nacionalidad WHERE gentilicio = @nacionalidad COLLATE Latin1_General_CS_AS
 
-    EXEC sp_executesql @SQL
-
-    INSERT INTO @registro SELECT gentilicio, id_pais, nombre FROM [referencias].[paises] WHERE gentilicio = @nacionalidad COLLATE Latin1_General_CS_AS
+    SELECT @outGentilicio = gentilicio, @outIdpais = id_pais, @outNombre = nombre FROM [referencias].[paises] WHERE gentilicio = @nacionalidad COLLATE Latin1_General_CS_AS
     RETURN
 END;

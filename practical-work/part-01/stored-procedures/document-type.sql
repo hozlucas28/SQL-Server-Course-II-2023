@@ -19,13 +19,10 @@ END;
 
 -- Actualizar/Insertar un tipo de documento
 GO
-CREATE OR ALTER FUNCTION [referencias].[insertarTipoDocumento]
-    (
-        @nombre VARCHAR(50) = 'null'
-    ) RETURNS @registro TABLE (
-        id_tipo_documento INT,
-        nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
-    )
+CREATE OR ALTER PROCEDURE [referencias].[insertarTipoDocumento]
+    @nombre VARCHAR(50) = 'null',
+    @outIdTipoDocumento INT OUTPUT,
+    @outNombre VARCHAR(50) OUTPUT
 AS
 BEGIN
     IF NULLIF(@nombre, '') IS NULL
@@ -36,6 +33,6 @@ BEGIN
     ELSE
         UPDATE [referencias].[tipos_documentos] SET nombre = @nombre WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
 
-    INSERT INTO @registro SELECT id_tipo_documento, nombre FROM [referencias].[tipos_documentos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
+    SELECT @outIdTipoDocumento = id_tipo_documento, @outNombre = nombre FROM [referencias].[tipos_documentos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
     RETURN
 END;

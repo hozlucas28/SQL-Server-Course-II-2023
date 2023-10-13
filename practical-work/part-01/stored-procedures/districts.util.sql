@@ -18,13 +18,10 @@ END;
 
 -- Actualizar/Insertar una localidad
 GO
-CREATE OR ALTER FUNCTION [referencias].[insertarLocalidad]
-    (
-        @localidad VARCHAR(50) = 'null'
-    ) RETURNS @registro TABLE (
-        id_localidad INT,
-        nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
-    )
+CREATE OR ALTER PROCEDURE [referencias].[insertarLocalidad]
+    @localidad VARCHAR(50) = 'null',
+    @outIdLocalidad INT OUTPUT,
+    @outNombre VARCHAR(50) OUTPUT
 AS
 BEGIN
     IF NULLIF(@localidad, 'null') IS NULL
@@ -35,6 +32,6 @@ BEGIN
     ELSE
         UPDATE [referencias].[nombres_localidades] SET nombre = @localidad WHERE nombre = @localidad COLLATE Latin1_General_CS_AS
 
-    INSERT INTO @registro SELECT id_localidad, nombre FROM [referencias].[nombres_localidades] WHERE nombre = @localidad COLLATE Latin1_General_CS_AS
+    SELECT @outIdLocalidad = id_localidad, @outNombre = nombre FROM [referencias].[nombres_localidades] WHERE nombre = @localidad COLLATE Latin1_General_CS_AS
     RETURN
 END;
