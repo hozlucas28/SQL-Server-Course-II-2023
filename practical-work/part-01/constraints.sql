@@ -56,7 +56,6 @@ ALTER TABLE [datos].[sede_de_atencion] ADD CONSTRAINT pk_id_medico_sede_de_atenc
 
 -- Médicos
 ALTER TABLE [datos].[medicos] ADD CONSTRAINT pk_id_medico PRIMARY KEY (id_medico),
-    CONSTRAINT pk_id_medico PRIMARY KEY (id_medico),
     CONSTRAINT fk_id_especialidad FOREIGN KEY (id_especialidad) REFERENCES [datos].[especialidad] (id_especialidad);
 
 -- Días x Sede
