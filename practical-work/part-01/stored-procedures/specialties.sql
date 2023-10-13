@@ -5,7 +5,7 @@ USE [cure_sa];
 GO
 CREATE OR ALTER FUNCTION [datos].[obtenerIdEspecialidad]
     (
-        @nombre VARCHAR(50) = 'null'
+        @nombre VARCHAR(50)
     ) RETURNS INT
 AS
 BEGIN
@@ -32,11 +32,9 @@ AS
 BEGIN
     IF NULLIF(@nombre, '') IS NULL
             RETURN
-        
+        SET @nombre = UPPER(@nombre);
         IF NOT EXISTS (SELECT 1 FROM [datos].[especialidad] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS) 
             INSERT INTO [datos].[especialidad] (nombre) VALUES (@nombre)
-        ELSE
-            UPDATE [datos].[especialidad] SET nombre = @nombre WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
 
         SELECT @outIdEspecialidad = id_especialidad, @outNombre = nombre FROM [datos].[especialidad] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
         RETURN
