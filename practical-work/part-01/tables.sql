@@ -76,7 +76,7 @@ CREATE TABLE [referencias].[paises]
 
 CREATE TABLE [referencias].[nombres_provincias]
 (
-    id_pais INT NOT NULL,
+    id_pais INT,
     id_provincia INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
