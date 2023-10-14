@@ -5,17 +5,19 @@ USE [cure_sa];
 GO
 CREATE OR ALTER FUNCTION [utils].[obtenerCharSexo]
     (
-        @sexo VARCHAR(20)
+        @sexo VARCHAR(25)
     ) RETURNS CHAR
 AS
 BEGIN
-    DECLARE @char CHAR
-    SET @char = 'N'
+    DECLARE @char CHAR;
+    SET @char = 'N';
 
-    IF UPPER(@sexo) = 'MASCULINO'
-        SET @char = 'M'
-        ELSE IF UPPER(@sexo) = 'FEMENINO'
-            SET @char = 'F'
+    IF UPPER(TRIM(@sexo)) = 'MASCULINO'
+        SET @char = 'M';
+    ELSE IF UPPER(TRIM(@sexo)) = 'FEMENINO'
+        SET @char = 'F';
     
     RETURN @char
 END;
+go
+use master;
