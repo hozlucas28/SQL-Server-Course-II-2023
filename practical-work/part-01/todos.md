@@ -1,0 +1,2 @@
+- [ ] Documentar instalación del DBMS.
+- [ ] Generar casos de prueba para cada funcionalidad (opcional).
