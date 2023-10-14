@@ -122,3 +122,17 @@ CREATE PROCEDURE [datos].[borrarPaciente]
     @id INT
 AS
     UPDATE [datos].[pacientes] SET valido = 0 WHERE id_paciente = @id;
+
+-- existe paciente por mail
+GO
+CREATE OR ALTER FUNCTION [datos].[existePacientePorEmail]
+    ( 
+        @email VARCHAR(255)
+    )
+    RETURNS INT
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM [datos].[pacientes] WHERE email = @email)
+        RETURN 1;
+    RETURN 0;
+END
