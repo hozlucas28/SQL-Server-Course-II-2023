@@ -27,3 +27,6 @@ END;
 
 GO
 CREATE SCHEMA [referencias];
+
+GO
+CREATE SCHEMA [utils];
