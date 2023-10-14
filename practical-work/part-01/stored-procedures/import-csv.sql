@@ -4,9 +4,8 @@ USE [cure_sa];
 -- Importar médicos desde un archivo CSV
 GO
 CREATE OR ALTER PROCEDURE [archivos].[importarMedicosCSV]
-	@rutaArchivo NVARCHAR(255),
-	@separador NCHAR(4) = ';',
-	@rutaArchivoError NVARCHAR(255)
+	@rutaArchivo VARCHAR(255),
+	@separador VARCHAR(4) = ';'
 AS
 BEGIN
 	CREATE TABLE [#medicos_importados] (
@@ -16,7 +15,7 @@ BEGIN
 		nroMatricula INT
 	)
 
-	EXEC [archivos].[importarDatosCSV] @tablaDestino = '[#medicos_importados]', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
+	EXEC [archivos].[importarDatosCSV] @tablaDestino = '#medicos_importados', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
 
 	DECLARE @count INT = @@ROWCOUNT
  
@@ -35,7 +34,7 @@ BEGIN
 			@nroMatricula = NroMatricula
 		FROM [#medicos_importados]
 
-		SET @idEspecialidad = [utils].[obtenerIdEspecialidad](@especialidad)
+		EXEC [datos].[guardarEspecialidad] @especialidad, @idEspecialidad OUTPUT;
 
 		INSERT INTO [datos].[medicos] (
             nombre,
@@ -59,18 +58,17 @@ END;
 -- Importar prestadores desde un archivo CSV
 GO
 CREATE OR ALTER PROCEDURE [archivos].[importarPrestadoresCSV]
-	@rutaArchivo NVARCHAR(255),
-	@separador NCHAR(4) = ';',
-	@rutaArchivoError NVARCHAR(255)
+	@rutaArchivo VARCHAR(255),
+	@separador VARCHAR(4) = ';'
 AS
 BEGIN
 	CREATE TABLE [#prestadores_importados] (
 		nombre VARCHAR(255),
 		planPrestador VARCHAR(255),
-		relleno CHAR
+		campoVacio CHAR,
 	)
 
-	EXEC [archivos].[importarDatosCSV] @tablaDestino = '[#prestadores_importados]', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
+	EXEC [archivos].[importarDatosCSV] @tablaDestino = '#prestadores_importados', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
 
 	INSERT INTO [datos].[prestadores] (nombre, plan_prestador) SELECT nombre, planPrestador FROM [#prestadores_importados]
 	DROP TABLE [#prestadores_importados]
@@ -79,9 +77,8 @@ END;
 -- Importar pacientes desde un archivo CSV
 GO
 CREATE OR ALTER PROCEDURE [archivos].[importarPacientesCSV]
-	@rutaArchivo NVARCHAR(255),
-	@separador NCHAR(4) = ';',
-	@rutaArchivoError NVARCHAR(255)
+	@rutaArchivo VARCHAR(255),
+	@separador VARCHAR(4) = ';'
 AS
 BEGIN
     CREATE TABLE [#pacientes_importados] (
@@ -116,7 +113,7 @@ BEGIN
 		provincia VARCHAR(255)
 	)
 
-	EXEC [archivos].[importarDatosCSV] @tablaDestino = '[#pacientes_importados]', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
+	EXEC [archivos].[importarDatosCSV] @tablaDestino = '#pacientes_importados', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
 	
 	INSERT INTO [#pacientes_importados_formateados]
 	    SELECT
@@ -136,70 +133,6 @@ BEGIN
 	    FROM [#pacientes_importados]
 	
 	DECLARE @count INT = @@ROWCOUNT
-
-	---- Validaciones ----
-
-    INSERT INTO [#registros_invalidos] SELECT * FROM [#pacientes_importados_formateados]
-        WHERE ISNUMERIC(NroDocumento) = 0
-
-    INSERT INTO [#registros_invalidos] SELECT * FROM [#pacientes_importados_formateados]
-        WHERE DATEDIFF(YEAR, fechaNacimiento, GETDATE()) NOT BETWEEN 0 AND 120
-
-    INSERT INTO [#registros_invalidos] SELECT * FROM [#pacientes_importados_formateados]
-	    WHERE email NOT LIKE '%_@_%._'
-
-    INSERT INTO [#registros_invalidos]
-        (
-            nombre,
-            apellido,
-            fechaNacimiento,
-            tipoDocumento,
-            nroDocumento,
-            sexo,
-            genero,
-            telefono,
-            nacionalidad,
-            email,
-            calleYNro,
-            localidad,
-            provincia
-        ) SELECT
-            nombre,
-            apellido,
-            fechaNacimiento,
-            tipoDocumento,
-            nroDocumento,
-            sexo,
-            genero,
-            telefono,
-            nacionalidad,
-            email,
-            calleYNro,
-            localidad,
-            provincia
-        FROM [#pacientes_importados_formateados] GROUP BY
-            nombre,
-            apellido,
-            fechaNacimiento,
-            tipoDocumento,
-            nroDocumento,
-            sexo,
-            genero,
-            telefono,
-            nacionalidad,
-            email,
-            calleYNro,
-            localidad,
-            provincia
-        HAVING COUNT(*) > 1
-
-    DECLARE @registrosFallidos INT
-
-    SET @registrosFallidos = (SELECT COUNT(*) FROM [#registros_invalidos])
-
-    DECLARE @archivoRegistrosInvalidos NVARCHAR(MAX)
-    SET @archivoRegistrosInvalidos = @rutaArchivoError + '\registros-invalidos.csv'
-
 	DECLARE @nombre VARCHAR(255)
 	DECLARE @apellido VARCHAR(255)
 	DECLARE @fechaNacimiento DATE
@@ -207,7 +140,7 @@ BEGIN
 	DECLARE @idTipoDoc INT
 	DECLARE @nroDocumento VARCHAR(255)
 	DECLARE @sexo VARCHAR(20)
-	DECLARE @sexoChar Char
+	DECLARE @sexoChar CHAR;
 	DECLARE @genero VARCHAR(50)
 	DECLARE @idGenero INT
 	DECLARE @telefono VARCHAR(40)
@@ -235,57 +168,60 @@ BEGIN
 			@calleYNro = calleYNro,
 			@localidad = localidad,
 			@provincia = provincia
-		FROM [#pacientes_importados_formateados]
-	
-		SET @idNacionalidad = [referencias].[obtenerIdNacionalidad](@nacionalidad)
-		SET @idTipoDoc = [referencias].[obtenerIdTipoDocumento](@tipoDocumento)
-		SET @idGenero = [referencias].[obtenerIdGenero](@genero)
-		SET @sexoChar = [utils].[obtenerCharSexo](@sexo)
-		SET @idDireccion = [utils].[obtenerIdDireccion](@calleYNro, @localidad, @provincia)
+		FROM [#pacientes_importados_formateados];
 
-		INSERT INTO [datos].[pacientes] (
-			nombre,
-            apellido,
-            email,
-            fecha_nacimiento,
-            id_direccion,
-			id_tipo_documento,
-            nro_documento,
-            nacionalidad,
-			sexo_biologico,
-            id_genero,
-            tel_fijo,
-            fecha_actualizacion
-		) VALUES (
-			@nombre,
-            @apellido,
-            @mail,
-            @fechaNacimiento,
-            @idDireccion,
-			@idTipoDoc,
-            @nroDocumento,
-            @idNacionalidad,
-            @sexoChar,
-			@idGenero,
-            @telefono,
-            GETDATE()
-		)
+		-- validaciones, se pueden poner mas
+		IF(DATEDIFF(YEAR, @fechaNacimiento, GETDATE()) BETWEEN 0 AND 120 
+			AND @mail LIKE '%@%.%' AND @mail NOT LIKE '%@%.%@%'
+			AND [datos].[existePacientePorEmail](@mail) = 0)
+		BEGIN
+			EXEC [referencias].[obtenerOInsertarIdNacionalidad] @Nacionalidad, @IdNacionalidad OUTPUT;
+			EXEC [referencias].[obtenerOIsertarIdTipoDocumento] @TipoDocumento, @IdTipoDoc OUTPUT; 
+			EXEC [referencias].[obtenerOInsertarIdGenero] @Genero, @IdGenero OUTPUT;
+			SET @SexoChar = [utils].[obtenerCharSexo](@Sexo); 
+			EXEC [referencias].[obtenerOInsertarIdDireccion] @CalleYNro, @Localidad, @Provincia, @IdDireccion OUTPUT;
 
+			INSERT INTO [datos].[pacientes] (
+				nombre,
+				apellido,
+				email,
+				fecha_nacimiento,
+				id_direccion,
+				id_tipo_documento,
+				nro_documento,
+				nacionalidad,
+				sexo_biologico,
+				id_genero,
+				tel_fijo,
+				fecha_actualizacion
+			) VALUES (
+				@nombre,
+				@apellido,
+				@mail,
+				@fechaNacimiento,
+				@idDireccion,
+				@idTipoDoc,
+				@nroDocumento,
+				@idNacionalidad,
+				@sexoChar,
+				@idGenero,
+				@telefono,
+				GETDATE()
+			)
+		END
 		DELETE TOP (1) FROM [#pacientes_importados_formateados]
 		SET @count = @count - 1
 	END
 
 	DROP TABLE [#pacientes_importados]
     DROP TABLE [#pacientes_importados_formateados]
-    DROP TABLE [#registros_invalidos]
 END;
 
 -- Importar sedes desde un archivo CSV
 GO
 CREATE OR ALTER PROCEDURE [archivos].[importarSedesCSV]
-	@rutaArchivo NVARCHAR(255),
-	@separador NCHAR(4) = ';',
-	@rutaArchivoError NVARCHAR(255)
+	@rutaArchivo VARCHAR(255),
+	@separador VARCHAR(4) = ';'
 AS
 BEGIN
 	CREATE TABLE [#sedes_importadas] (
@@ -295,7 +231,7 @@ BEGIN
 		provincia VARCHAR (255)
 	)
 
-	EXEC [archivos].[importarDatosCSV] @tablaDestino = '[#sedes_importadas]', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
+	EXEC [archivos].[importarDatosCSV] @tablaDestino = '#sedes_importadas', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
 
 	DECLARE @count INT = @@ROWCOUNT
 
@@ -314,7 +250,7 @@ BEGIN
 			@provincia = provincia
 		FROM [#sedes_importadas]
 
-		SET @idDireccion = [utils].[obtenerIdDireccion] (@calleYNro, @localidad, @provincia)
+		EXEC [referencias].[obtenerOInsertarIdDireccion] @CalleYNro, @Localidad, @Provincia, @idDireccion OUTPUT;
 
 		INSERT INTO [datos].[sede_de_atencion] (nombre, direccion) VALUES (@nombreSede, @idDireccion)
 	
