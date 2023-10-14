@@ -84,25 +84,31 @@ CREATE TABLE [referencias].[nombres_provincias]
 CREATE TABLE [referencias].[nombres_localidades]
 (
     id_localidad INT IDENTITY (1, 1),
+    id_provincia INT,
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
 CREATE TABLE [referencias].[direcciones]
 (
-    calle VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL,
+    calle_y_nro VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL,
     cod_postal SMALLINT,
     departamento SMALLINT,
     id_direccion INT IDENTITY (1, 1),
     id_localidad INT NOT NULL,
     id_pais INT,
     id_provincia INT NOT NULL,
-    numero INT NOT NULL,
     piso SMALLINT
 );
 
 CREATE TABLE [referencias].[tipos_documentos]
 (
     id_tipo_documento INT IDENTITY (1, 1),
+    nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
+);
+
+CREATE TABLE [referencias].[nacionalidades]
+(
+    id_nacionalidad INT IDENTITY (1,1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
@@ -154,13 +160,13 @@ CREATE TABLE [datos].[coberturas]
 (
     fecha_registro DATE DEFAULT CAST(GETDATE () AS DATE),
     id_cobertura INT IDENTITY (1, 1),
+    id_prestador INT,
     imagen_credencial VARCHAR (128),
     nro_socio VARCHAR(30) COLLATE Latin1_General_CS_AS NOT NULL
 );
 
 CREATE TABLE [datos].[prestadores]
 (
-    id_cobertura INT,
     id_prestador INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL,
     plan_prestador VARCHAR(30) COLLATE Latin1_General_CS_AS NOT NULL
