@@ -1,0 +1,3 @@
+- [ ] Documentar instalación del DBMS.
+- [ ] Generar casos de prueba para cada funcionalidad (opcional).
+- [ ] Otorgar el acceso a los Stored Procedures a los roles correspondientes.
