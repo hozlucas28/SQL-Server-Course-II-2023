@@ -60,8 +60,8 @@ ALTER TABLE [datos].[medicos] ADD CONSTRAINT pk_id_medico PRIMARY KEY (id_medico
 
 -- Días x Sede
 ALTER TABLE [datos].[dias_x_sede] ADD CONSTRAINT fk_id_medico FOREIGN KEY (id_medico) REFERENCES [datos].[medicos] (id_medico),
-    CONSTRAINT fk_id_sede_de_atencion FOREIGN KEY (id_sede_de_atencion) REFERENCES [datos].[sede_de_atencion] (id_sede),
-    CONSTRAINT pk_id_sede PRIMARY KEY (id_sede);
+    CONSTRAINT fk_id_sede FOREIGN KEY (id_sede) REFERENCES [datos].[sede_de_atencion] (id_sede),
+    CONSTRAINT pk_id_dias_x_sede PRIMARY KEY (id_dias_x_sede);
 
 -- Estados de los turnos
 ALTER TABLE [datos].[estados_turnos] ADD CONSTRAINT pk_id_estado_turno PRIMARY KEY (id_estado),
@@ -76,4 +76,6 @@ ALTER TABLE [datos].[reservas_turnos_medicos] ADD CONSTRAINT pk_id_turno PRIMARY
     CONSTRAINT fk_id_tipo_turno FOREIGN KEY (id_tipo_turno) REFERENCES [datos].[tipos_turnos] (id_tipo_turno),
     CONSTRAINT fk_id_estado FOREIGN KEY (id_tipo_turno) REFERENCES [datos].[estados_turnos] (id_estado),
     CONSTRAINT fk_id_paciente_turno FOREIGN KEY (id_paciente) REFERENCES [datos].[pacientes] (id_paciente),
-    CONSTRAINT fk_id_dias_x_sede FOREIGN KEY (id_dias_x_sede) REFERENCES [datos].[dias_x_sede] (id_sede);
+    CONSTRAINT fk_id_dias_x_sede FOREIGN KEY (id_dias_x_sede) REFERENCES [datos].[dias_x_sede] (id_dias_x_sede);
+
+use master;

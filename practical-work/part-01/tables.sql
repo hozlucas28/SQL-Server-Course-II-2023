@@ -198,8 +198,8 @@ CREATE TABLE [datos].[dias_x_sede]
     hora_inicio TIME NOT NULL,
     hora_fin TIME NOT NULL,
     id_medico INT NOT NULL,
-    id_sede INT IDENTITY (1, 1),
-    id_sede_de_atencion INT NOT NULL
+	id_dias_x_sede INT IDENTITY(1,1),
+    id_sede INT NOT NULL,
 );
 
 CREATE TABLE [datos].[sede_de_atencion]
@@ -224,3 +224,4 @@ CREATE TABLE [datos].[especialidad]
     id_especialidad INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
+use master;
