@@ -3,16 +3,16 @@ USE [cure_sa];
 
 -- Obtener el ID de una provincia -- TODO: se usa?
 GO
-CREATE OR ALTER FUNCTION [referencias].[obtenerIdProvincia]
-    (
-        @provincia VARCHAR(50)
-    ) RETURNS INT
+CREATE OR ALTER PROCEDURE [referencias].[obtenerOInsertarIdProvincia]
+    @Provincia VARCHAR(255),
+	@IdProvincia INT OUTPUT
 AS
 BEGIN
-    DECLARE @idProvincia INT
+    SET @provincia  = UPPER (@Provincia)
+    IF NOT EXISTS (SELECT 1 FROM referencias.nombres_provincias WHERE nombre = @Provincia)
+        INSERT INTO referencias.nombres_provincias (nombre) VALUES (@Provincia);
 
-    SELECT @idProvincia = id_provincia FROM [referencias].[nombres_provincias] WHERE nombre = @provincia
-    RETURN @idProvincia
+	SELECT @IdProvincia = id_provincia FROM referencias.nombres_provincias WHERE nombre = @Provincia;
 END;
 
 -- Actualizar/Insertar una provincia
@@ -33,3 +33,4 @@ BEGIN
     SELECT @outIdPais = id_pais, @outIdProvincia = id_provincia, @outNombre = nombre FROM [referencias].[nombres_provincias] WHERE nombre = UPPER(@provincia) COLLATE Latin1_General_CS_AS
     RETURN
 END;
+
