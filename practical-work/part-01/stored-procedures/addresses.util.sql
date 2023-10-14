@@ -3,41 +3,41 @@ USE [cure_sa];
 
 -- Obtener el ID de una dirección
 GO
-CREATE OR ALTER FUNCTION [referencias].[obtenerIdDireccion]
-    (
-        @calle VARCHAR(50),
-        @localidad VARCHAR(255),
-        @provincia VARCHAR(255)
-    ) RETURNS INT
+CREATE OR ALTER PROCEDURE [referencias].[obtenerOInsertarIdDireccion]
+    @calleYNro VARCHAR(50),
+    @localidad VARCHAR(255),
+    @provincia VARCHAR(255),
+    @idDireccion INT OUTPUT
 AS
 BEGIN
-    DECLARE @idProvincia INT
-    DECLARE @idLocalidad INT
-    DECLARE @idDireccion INT
+    DECLARE @idProvincia INT;
+    DECLARE @idLocalidad INT;
 
-    SET @idProvincia = [referencias].[obtenerIdProvincia] (@provincia)
-    SET @idLocalidad = [referencias].[obtenerIdLocalidad] (@localidad)
+	EXEC referencias.obtenerOInsertarIdProvincia @Provincia, @IdProvincia OUTPUT;
+	EXEC referencias.obtenerOInsertarIdLocalidad @Localidad,@IdProvincia, @IdLocalidad OUTPUT;
 
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[direcciones] WHERE calle = @calle AND id_localidad = @idLocalidad AND id_provincia = @idProvincia)
-        INSERT INTO [referencias].[direcciones] (calle, id_localidad, id_provincia) VALUES (@calle, @idLocalidad, @idProvincia)
+	IF NOT EXISTS (SELECT 1 FROM referencias.direcciones 
+					WHERE calle_y_nro = @calleYNro
+                    AND id_localidad = @IdLocalidad 
+                    AND id_provincia = @IdProvincia)
 
-    SELECT @idDireccion = id_direccion FROM [referencias].[direcciones]
-        WHERE calle = @calle AND id_localidad = @idLocalidad AND id_provincia = @idProvincia
+        INSERT INTO referencias.direcciones (calle_y_nro,id_localidad,id_provincia) 
+		VALUES (@calleYNro,@IdLocalidad,@IdProvincia);
 
-    RETURN @idDireccion
+	SELECT @idDireccion = id_direccion FROM referencias.direcciones 
+	WHERE calle_y_nro = @calleYNro AND id_localidad = @IdLocalidad AND id_provincia = @IdProvincia;
 END;
 
 -- Actualizar/Insertar una dirección
 GO
 CREATE OR ALTER PROCEDURE [referencias].[actualizarDireccion]
-    @calle VARCHAR(50),
+    @calleYNro VARCHAR(50),
     @codPostal SMALLINT = NULL,
     @departamento SMALLINT = NULL,
     @idDireccion INT = NULL,
     @idLocalidad INT,
     @idPais INT = NULL,
     @idProvincia INT,
-    @numero INT,
     @piso SMALLINT = NULL,
     @outCalle VARCHAR(50),
     @outCodPostal SMALLINT OUTPUT,
@@ -50,60 +50,55 @@ CREATE OR ALTER PROCEDURE [referencias].[actualizarDireccion]
     @outPiso SMALLINT OUTPUT
 AS
 BEGIN
-    IF NULLIF(@calle, '') IS NULL OR @idLocalidad IS NULL OR @idProvincia IS NULL OR @numero IS NULL
+    IF NULLIF(@calleYNro, '') IS NULL OR @idLocalidad IS NULL OR @idProvincia IS NULL
         RETURN
 
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[direcciones] WHERE calle = @calle AND id_localidad = @idLocalidad AND id_provincia = @idProvincia)
+    IF NOT EXISTS (SELECT 1 FROM [referencias].[direcciones] WHERE calle_y_nro = @calleYNro AND id_localidad = @idLocalidad AND id_provincia = @idProvincia)
         INSERT INTO [referencias].[direcciones] (
-            calle,
+            calle_y_nro,
             cod_postal,
             departamento,
             id_direccion,
             id_localidad,
             id_pais,
             id_provincia,
-            numero,
             piso
         ) VALUES (
-            @calle,
+            @calleYNro,
             @codPostal,
             @departamento,
             @idDireccion,
             @idLocalidad,
             @idPais,
             @idProvincia,
-            @numero,
             @piso
         )
     ELSE
         UPDATE [referencias].[direcciones] SET
-            calle = @calle,
+            calle_y_nro = @calleYNro,
             cod_postal = @codPostal,
             departamento = @departamento,
-            id_direccion = @idDireccion,
             id_localidad = @idLocalidad,
             id_pais = @idPais,
             id_provincia = @idProvincia,
-            numero = @numero,
             piso = @piso
         WHERE
-            calle = @calle COLLATE Latin1_General_CS_AS AND
+            calle_y_nro = @calleYNro COLLATE Latin1_General_CS_AS AND
             id_localidad = @idLocalidad AND
             id_provincia = @idProvincia
 
     SELECT
-        @calle = calle,
+        @calleYNro = calle_y_nro,
         @codPostal = cod_postal,
         @departamento = departamento,
         @idDireccion = id_direccion,
         @idLocalidad = id_localidad,
         @idPais = id_pais,
         @idProvincia = id_provincia,
-        @numero = numero,
-        @pis = piso
+        @piso = piso
     FROM [referencias].[direcciones]
     WHERE
-        calle = @calle COLLATE Latin1_General_CS_AS AND
+        calle_y_nro = @calleYNro COLLATE Latin1_General_CS_AS AND
         id_localidad = @idLocalidad AND
         id_provincia = @idProvincia
     RETURN

@@ -3,23 +3,22 @@ USE [cure_sa];
 
 -- Obtener el ID de una nacionalidad
 GO
-CREATE OR ALTER FUNCTION [referencias].[obtenerIdNacionalidad]
-    (
-        @nacionalidad VARCHAR(50) = NULL
-    ) RETURNS INT
+CREATE OR ALTER PROCEDURE [referencias].[obtenerOInsertarIdNacionalidad]
+    @nacionalidad VARCHAR(50) = NULL,
+    @id INT OUTPUT
 AS
 BEGIN
-    DECLARE @id INT = -1
-    SET @nacionalidad = UPPER(TRIM(@nacionalidad))
+    SET @nacionalidad = UPPER(TRIM(@nacionalidad));
 
     IF NULLIF(@nacionalidad, '') IS NULL
-        RETURN @id
+        SET @id = -1;
+    ELSE
+    BEGIN
+        IF NOT EXISTS (SELECT 1 FROM [referencias].[nacionalidades] WHERE UPPER(TRIM(nombre)) = @nacionalidad COLLATE Latin1_General_CS_AS) 
+            INSERT INTO [referencias].[nacionalidades] (nombre) VALUES (@nacionalidad);
 
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[paises] WHERE UPPER(TRIM(nombre)) = @nacionalidad COLLATE Latin1_General_CS_AS) 
-        RETURN @id
-
-    SELECT @id = id_pais FROM [referencias].[paises] WHERE UPPER(TRIM(nombre)) = @nacionalidad
-    RETURN @id
+        SELECT @id = id_nacionalidad FROM [referencias].[nacionalidades] WHERE UPPER(TRIM(nombre)) = @nacionalidad;
+    END
 END;
 
 -- Actualizar/Insertar una nacionalidad
