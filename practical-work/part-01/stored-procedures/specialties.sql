@@ -24,10 +24,9 @@ END;
 
 -- Actualizar/Insertar una especialidad
 GO
-CREATE OR ALTER PROCEDURE [datos].[actualizarEspecialidad]
+CREATE OR ALTER PROCEDURE [datos].[guardarEspecialidad]
     @nombre VARCHAR(50) = 'null',
-    @outIdEspecialidad INT OUTPUT,
-    @outNombre VARCHAR(50) OUTPUT
+    @outIdEspecialidad INT OUTPUT
 AS
 BEGIN
     IF NULLIF(@nombre, '') IS NULL
@@ -36,6 +35,6 @@ BEGIN
         IF NOT EXISTS (SELECT 1 FROM [datos].[especialidad] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS) 
             INSERT INTO [datos].[especialidad] (nombre) VALUES (@nombre)
 
-        SELECT @outIdEspecialidad = id_especialidad, @outNombre = nombre FROM [datos].[especialidad] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
+        SELECT @outIdEspecialidad = id_especialidad FROM [datos].[especialidad] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
         RETURN
 END;
