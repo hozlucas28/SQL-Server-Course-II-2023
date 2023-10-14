@@ -3,18 +3,24 @@ USE [cure_sa];
 
 -- Obtener el ID de un tipo de documento
 GO
-CREATE OR ALTER FUNCTION [referencias].[obtenerIdTipoDocumento]
-	(
-        @tipo VARCHAR(50)
-    ) RETURNS INT
+CREATE OR ALTER PROCEDURE [referencias].[obtenerOIsertarIdTipoDocumento]
+    @nombre VARCHAR(50),
+    @idTipo INT OUTPUT
 AS
 BEGIN
-    DECLARE @idTipo INT
-    SET @tipo = UPPER(TRIM(@tipo))
-	
-    SELECT @idTipo = id_tipo_documento FROM [referencias].[tipos_documentos] WHERE UPPER(TRIM(nombre)) = UPPER(TRIM(@tipo))
+    SET @nombre = UPPER(TRIM(@nombre));
 
-    RETURN @idTipo
+    IF NULLIF(@nombre, '') IS NULL
+        SET @idTipo = -1;
+    ELSE 
+    BEGIN
+
+        IF NOT EXISTS (SELECT 1 FROM [referencias].[tipos_documentos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS) 
+            INSERT INTO [referencias].[tipos_documentos] (nombre) VALUES (@nombre);
+       
+        SELECT @idTipo = id_tipo_documento FROM [referencias].[tipos_documentos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS;
+ 
+    END
 END;
 
 -- Actualizar/Insertar un tipo de documento
