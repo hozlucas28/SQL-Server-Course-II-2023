@@ -78,59 +78,6 @@ END;
 GO
 
 
---Tablas temporales para importar CSV en pacientes
-
-CREATE TABLE [#pacientes_importados] (
-	nombre VARCHAR(255),
-	apellido VARCHAR(255),
-	fechaNacimiento VARCHAR(20),
-	tipoDocumento VARCHAR(255),
-	nroDocumento INT,
-	sexo VARCHAR(20),
-	genero VARCHAR(20),
-	telefono VARCHAR(40),
-	nacionalidad VARCHAR(255),
-	mail VARCHAR(100),
-	calleYNro VARCHAR(255),
-	localidad VARCHAR(255),
-	provincia VARCHAR(255)
-);
-GO
-
-CREATE TABLE [#pacientes_importados_formateados] (
-	nombre VARCHAR(255),
-	apellido VARCHAR(255),
-	fechaNacimiento DATE,
-	tipoDocumento VARCHAR(255),
-	nroDocumento INT,
-	sexo VARCHAR(20),
-	genero VARCHAR(20),
-	telefono VARCHAR(40),
-	nacionalidad VARCHAR(255),
-	mail VARCHAR(100),
-	calleYNro VARCHAR(255),
-	localidad VARCHAR(255),
-	provincia VARCHAR(255)
-);
-GO
-
-CREATE TABLE [#registros_invalidos] (
-	nombre VARCHAR(255),
-	apellido VARCHAR(255),
-	fechaNacimiento DATE,
-	tipoDocumento VARCHAR(255),
-	nroDocumento INT,
-	sexo VARCHAR(20),
-	genero VARCHAR(20),
-	telefono VARCHAR(40),
-	nacionalidad VARCHAR(255),
-	mail VARCHAR(100),
-	calleYNro VARCHAR(255),
-	localidad VARCHAR(255),
-	provincia VARCHAR(255)
-);
-GO
-
 -- Importar pacientes desde un archivo CSV
 CREATE OR ALTER PROCEDURE [archivos].[importarPacientesCSV]
 	@rutaArchivo NVARCHAR(255),
@@ -138,7 +85,10 @@ CREATE OR ALTER PROCEDURE [archivos].[importarPacientesCSV]
 	@rutaArchivoError NVARCHAR(255)
 AS
 BEGIN
-	EXEC [archivos].[importarDatosCSV] @tablaDestino = '#pacientes_importados',@delimitadorCampos = @separador,@rutaArchivo = @rutaArchivo;
+	EXEC [archivos].[importarDatosCSV] 
+		@tablaDestino = '#pacientes_importados',
+		@delimitadorCampos = @separador,
+		@rutaArchivo = @rutaArchivo;
 
 	INSERT INTO [#pacientes_importados_formateados]
 	SELECT
@@ -161,8 +111,8 @@ BEGIN
 
 	---- Validaciones ----
 
-    INSERT INTO [#registros_invalidos] 
-	SELECT *
+    INSERT INTO [#registros_invalidos]
+	SELECT *, 'Registros duplicados'
 	FROM [#pacientes_importados_formateados] GROUP BY
 		nombre,
 		apellido,
@@ -179,14 +129,28 @@ BEGIN
 		provincia	
 	HAVING COUNT(*) > 1
 
-	INSERT INTO [#registros_invalidos] SELECT * FROM [#pacientes_importados_formateados]
+	INSERT INTO [#registros_invalidos] SELECT *, 'Documento no numérico' FROM [#pacientes_importados_formateados]
         WHERE ISNUMERIC(NroDocumento) = 0
 
-    INSERT INTO [#registros_invalidos] SELECT * FROM [#pacientes_importados_formateados]
+    INSERT INTO [#registros_invalidos] SELECT *, 'Mayor a 120 años' FROM [#pacientes_importados_formateados]
         WHERE DATEDIFF(YEAR, fechaNacimiento, GETDATE()) NOT BETWEEN 0 AND 120
 
-    INSERT INTO [#registros_invalidos] SELECT * FROM [#pacientes_importados_formateados]
-	    WHERE mail NOT LIKE '%_@_%._'
+    INSERT INTO [#registros_invalidos] SELECT *, 'Mail inválido' FROM [#pacientes_importados_formateados]
+	    WHERE mail NOT LIKE '%_@_%.%'
+
+	INSERT INTO #registros_invalidos 
+	SELECT *, 'Mail repetido' FROM #pacientes_importados_formateados AS pif
+	WHERE EXISTS (
+		SELECT 1 FROM #pacientes_importados_formateados
+		WHERE mail = pif.mail
+		HAVING COUNT(nroDocumento) > 1
+	)
+	AND nroDocumento NOT IN (
+		SELECT MAX(nroDocumento) FROM #pacientes_importados_formateados
+		WHERE mail = pif.mail
+		GROUP BY mail
+		HAVING COUNT(nroDocumento) > 1
+	);
 
 	-- Borrar registros invalidos de pacientes importados formateados
 
@@ -211,82 +175,34 @@ BEGIN
 	);
 
 	-- Agregar información a los registros de pacientes
-
-	DECLARE @nombre VARCHAR(255)
-	DECLARE @apellido VARCHAR(255)
-	DECLARE @fechaNacimiento DATE
-	DECLARE @tipoDocumento VARCHAR(50)
-	DECLARE @idTipoDoc INT
-	DECLARE @nroDocumento VARCHAR(255)
-	DECLARE @sexo VARCHAR(20)
-	DECLARE @sexoChar Char
-	DECLARE @genero VARCHAR(50)
-	DECLARE @idGenero INT
-	DECLARE @telefono VARCHAR(40)
-	DECLARE @nacionalidad VARCHAR(50)
-	DECLARE @idNacionalidad INT
-	DECLARE @mail VARCHAR(100)
-	DECLARE @calleYNro VARCHAR(50)
-	DECLARE @localidad VARCHAR(255)
-	DECLARE @provincia VARCHAR(50)
-	DECLARE @idDireccion INT
 	
-	WHILE @count > 0
-	BEGIN
-		SELECT TOP(1)
-			@nombre = nombre,
-			@apellido = apellido,
-			@fechaNacimiento = fechaNacimiento,
-			@tipoDocumento = tipoDocumento,
-			@nroDocumento = nroDocumento,
-			@sexo = sexo,
-			@genero = genero,
-			@telefono = telefono,
-			@nacionalidad = nacionalidad,
-			@mail = mail,
-			@calleYNro = calleYNro,
-			@localidad = localidad,
-			@provincia = provincia
-		FROM [#pacientes_importados_formateados]
-	
-		SET @idNacionalidad = [referencias].[obtenerIdNacionalidad](@nacionalidad)
-		SET @idTipoDoc = [referencias].[obtenerIdTipoDocumento](@tipoDocumento)
-		SET @idGenero = [referencias].[obtenerIdGenero](@genero)
-		SET @sexoChar = [utils].[obtenerCharSexo](@sexo)
-		--SET @idDireccion = "123";
-		--SET @idDireccion = [utils].[obtenerIdDireccion](@calleYNro, @localidad, @provincia)
-
-		INSERT INTO [datos].[pacientes] (
+	BEGIN TRY
+		INSERT INTO [datos].[pacientes]
+			(nombre, apellido, email,
+			fecha_nacimiento/*, id_direccion*/, id_tipo_documento,
+			nro_documento, nacionalidad, sexo_biologico,
+			id_genero, tel_fijo, fecha_actualizacion)
+		SELECT 
 			nombre,
-            apellido,
-            email,
-            fecha_nacimiento,
-            id_direccion,
-			id_tipo_documento,
-            nro_documento,
-            nacionalidad,
-			sexo_biologico,
-            id_genero,
-            tel_fijo,
-            fecha_actualizacion
-		) VALUES (
-			@nombre,
-            @apellido,
-            @mail,
-            @fechaNacimiento,
-            @idDireccion,
-			@idTipoDoc,
-            @nroDocumento,
-            @idNacionalidad,
-            @sexoChar,
-			@idGenero,
-            @telefono,
-            GETDATE()
-		)
-
-		DELETE TOP (1) FROM [#pacientes_importados_formateados]
-		SET @count = @count - 1
-	END
+			apellido,
+			mail,
+			fechaNacimiento,
+			/*1,*/
+			[referencias].[obtenerIdTipoDocumento](tipoDocumento),
+			nroDocumento,
+			[referencias].[obtenerIdNacionalidad](nacionalidad),
+			[utils].[obtenerCharSexo](sexo),
+			[referencias].[obtenerIdGenero](genero),
+			telefono,
+			GETDATE()
+		FROM [#pacientes_importados_formateados]; 
+	END TRY
+	BEGIN CATCH
+		DECLARE @errorMessage NVARCHAR(1000)
+		SET @errorMessage = ERROR_MESSAGE()
+		PRINT 'Error durante la inserción: ' + @errorMessage;
+		THROW;
+	END CATCH
 
 	-- Exportar archivo con registros invalidos
 
@@ -297,6 +213,7 @@ BEGIN
     DECLARE @archivoRegistrosInvalidos NVARCHAR(MAX)
     SET @archivoRegistrosInvalidos = @rutaArchivoError + '\registros-invalidos.csv'
 
+	/*Crear archivo de registros inválidos*/
 
 
 	DROP TABLE [#pacientes_importados];

@@ -42,13 +42,12 @@ BEGIN
     SET @SQL = N'
         BEGIN TRY
             BULK INSERT ' + QUOTENAME(@tablaDestino) + '
-            FROM ' + @rutaArchivo + '
+            FROM ''' + @rutaArchivo + '''
             WITH (
                 FIRSTROW = 2,
-                FIELDTERMINATOR = @delC,
-                ROWTERMINATOR =  @delF, 
-                CODEPAGE = 65001,
-                FORMAT = ''CSV''
+                FIELDTERMINATOR = ''' + @delimitadorCampos + ''',
+                ROWTERMINATOR = ''' + @delimitadorFilas + ''', 
+                CODEPAGE = 65001
             );
         END TRY
         BEGIN CATCH
@@ -58,15 +57,8 @@ BEGIN
         END CATCH
     '
 
-    SET @ParamDef = N'
-        @delC CHAR(4),
-        @delF CHAR(4);
-
-    EXEC sp_executesql 
-        @SQL, 
-        @ParamDef, 
-        @delC = @delimitadorCampos, 
-        @delF = @delimitadorFilas';
-
+    EXEC sp_executesql
+        @SQL
+   
     PRINT 'Se ha finalizado correctamente.'
 END;
