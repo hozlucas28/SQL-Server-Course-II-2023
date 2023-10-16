@@ -2,7 +2,7 @@ USE [cure_sa]
 GO
 
 CREATE OR ALTER TRIGGER [datos].[quitarTurnos] 
-ON [prestadores]
+ON [datos].[prestadores]
 AFTER DELETE
 AS
 BEGIN
