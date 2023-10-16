@@ -50,6 +50,10 @@ ALTER TABLE [datos].[pacientes] ADD CONSTRAINT pk_id_paciente PRIMARY KEY (id_pa
 ALTER TABLE [datos].[estudios] ADD CONSTRAINT pk_id_estudio PRIMARY KEY (id_estudio),
     CONSTRAINT fk_id_paciente_estudio FOREIGN KEY (id_paciente) REFERENCES [datos].[pacientes] (id_paciente);
 
+-- Estudios Validos
+ALTER TABLE [datos].[estudiosValidos] ADD CONSTRAINT pk_id_estudioValido PRIMARY KEY (id_estudioValido),
+    CONSTRAINT fk_id_prestador_estudioValido FOREIGN KEY (id_prestador) REFERENCES [datos].[prestadores] (id_prestador);
+
 -- Usuarios
 ALTER TABLE [datos].[usuarios] ADD CONSTRAINT pk_id_usuario PRIMARY KEY (id_usuario),
     CONSTRAINT fk_id_paciente_usuario FOREIGN KEY (id_paciente) REFERENCES [datos].[pacientes] (id_paciente);

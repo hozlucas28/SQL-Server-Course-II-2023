@@ -31,6 +31,9 @@ IF OBJECT_ID('[datos].[usuarios]', 'U') IS NOT NULL
 IF OBJECT_ID('[datos].[estudios]', 'U') IS NOT NULL
     DROP TABLE [datos].[estudios];
 
+IF OBJECT_ID('[datos].[estudiosValidos]', 'U') IS NOT NULL
+    DROP TABLE [datos].[estudiosValidos];
+
 IF OBJECT_ID('[datos].[pacientes]', 'U') IS NOT NULL
     DROP TABLE [datos].[pacientes];
 
@@ -57,6 +60,9 @@ IF OBJECT_ID('[referencias].[paises]', 'U') IS NOT NULL
 
 IF OBJECT_ID('[referencias].[generos]', 'U') IS NOT NULL
     DROP TABLE [referencias].[generos];
+
+IF OBJECT_ID('[referencias].[nacionalidades]', 'U') IS NOT NULL
+    DROP TABLE [referencias].[nacionalidades];
 
 /* ------------------------------ Crear Tablas ------------------------------ */
 
@@ -146,6 +152,18 @@ CREATE TABLE [datos].[estudios]
     id_paciente INT,
     imagen_resultado VARCHAR (128),
     nombre_estudio VARCHAR(60) COLLATE Latin1_General_CS_AS NOT NULL
+);
+
+CREATE TABLE [datos].[estudiosValidos]
+(
+    id_estudioValido VARCHAR(255) NOT NULL,
+    area NVARCHAR(255) COLLATE Latin1_General_CS_AS NOT NULL,
+    estudio NVARCHAR(255) COLLATE Latin1_General_CS_AS NOT NULL ,
+    id_prestador INT NOT NULL,
+    [plan] NVARCHAR(255) COLLATE Latin1_General_CS_AS NOT NULL,
+    porcentajeCobertura INT NOT NULL,
+    costo DECIMAL(18, 2) NOT NULL,
+    requiereAutorizacion BIT DEFAULT 0
 );
 
 CREATE TABLE [datos].[usuarios]

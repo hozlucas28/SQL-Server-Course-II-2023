@@ -301,9 +301,9 @@ BEGIN
 	-- Crear archivo csv con los registros invalidos
 	
 	-- Habilitar xp_cmdshell
-	sp_configure 'show advanced options', 1;
+	EXEC sp_configure 'show advanced options', 1;
 	RECONFIGURE;
-	sp_configure 'xp_cmdshell', 1;
+	EXEC sp_configure 'xp_cmdshell', 1;
 	RECONFIGURE;
 
 	BEGIN TRY
@@ -318,7 +318,7 @@ BEGIN
 	END CATCH
 
 	-- Deshabilitar xp_cmdshell
-	sp_configure 'xp_cmdshell', 0;
+	EXEC sp_configure 'xp_cmdshell', 0;
 	RECONFIGURE;
 
 
