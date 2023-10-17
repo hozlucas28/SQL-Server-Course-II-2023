@@ -17,8 +17,8 @@ CREATE OR ALTER PROCEDURE [datos].[insertarPaciente]
     @nombre VARCHAR (50),
     @nroDocumento VARCHAR(50),
     @sexoBiologico CHAR(1),
-    @telAlternativo VARCHAR(20) = NULL,
     @telFijo VARCHAR(20),
+    @telAlternativo VARCHAR(20) = NULL,
     @telLaboral VARCHAR(20) = NULL
 AS
 BEGIN

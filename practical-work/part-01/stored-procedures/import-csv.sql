@@ -15,7 +15,10 @@ BEGIN
 		nroMatricula INT
 	)
 
-	EXEC [archivos].[importarDatosCSV] @tablaDestino = '#medicos_importados', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
+	EXEC [archivos].[importarDatosCSV] 
+		@tablaDestino = '#medicos_importados', 
+		@rutaArchivo = @rutaArchivo, 
+		@delimitadorCampos = @separador
 
 
 	DECLARE	@nombre VARCHAR(255)
@@ -39,25 +42,21 @@ BEGIN
 			@nroMatricula = NroMatricula
 		FROM [#medicos_importados]
 
-		EXEC [datos].[guardarEspecialidad] @especialidad, @idEspecialidad OUTPUT;
+		EXEC [datos].[guardarEspecialidad] 
+			@especialidad, 
+			@idEspecialidad OUTPUT;
 
-		INSERT INTO [datos].[medicos] (
-            nombre,
-            apellido,
-            id_especialidad,
-            nro_matricula
-        ) VALUES (
-            @nombre,
-            @apellido,
-            @idEspecialidad,
-            @nroMatricula
-        )
+		EXEC [datos].[insertarMedico] 
+			@nombre, 
+			@apellido, 
+			@idEspecialidad, 
+			@nroMatricula;
 
 		DELETE TOP(1) FROM [#medicos_importados]
 		SET @count = @count - 1
 	END
 
-	DROP TABLE [#medicos_importados]
+	DROP TABLE [#medicos_importados];
 END;
 
 -- Importar prestadores desde un archivo CSV
@@ -90,9 +89,8 @@ END;
 -- Importar pacientes desde un archivo CSV
 GO
 CREATE OR ALTER PROCEDURE [archivos].[importarPacientesCSV]
-	@rutaArchivo NVARCHAR(255),
-	@separador VARCHAR(4) = ';',
-	@rutaArchivoError NVARCHAR(255) = ''
+	@rutaArchivo VARCHAR(255),
+	@separador VARCHAR(4) = ';'
 AS
 BEGIN
     CREATE TABLE [#pacientes_importados] (
@@ -245,9 +243,6 @@ BEGIN
 		DECLARE 
 			@count INT = (SELECT count(1) from [#pacientes_importados_formateados]);
 
-		--SELECT * FROM [#pacientes_importados_formateados];
-		--SELECT * FROM [#registros_invalidos];
-
 		WHILE @count > 0
 		BEGIN 
 			SELECT TOP(1)
@@ -271,34 +266,24 @@ BEGIN
 			EXEC [referencias].[obtenerOInsertarIdNacionalidad] @nacionalidad, @idNacionalidad OUT;
 			SET @sexoChar = [utils].[obtenerCharSexo](@sexo); 
 			EXEC [referencias].[obtenerOInsertarIdGenero] @genero, @idGenero OUT;
-		
-			INSERT INTO [datos].[pacientes] (
-				nombre,
-				apellido,
-				email,
-				fecha_nacimiento,
-				id_direccion,
-				id_tipo_documento,
-				nro_documento,
-				nacionalidad,
-				sexo_biologico,
-				id_genero,
-				tel_fijo,
-				fecha_actualizacion
-			) VALUES (
-				@nombre,
+
+			EXEC [datos].[insertarPaciente]	
 				@apellido,
+				NULL,
 				@mail,
 				@fechaNacimiento,
+				NULL,
+				NULL,
 				@idDireccion,
-				@idTipoDocumento,
-				@nroDocumento,
-				@idNacionalidad,
-				@sexoChar,
 				@idGenero,
+				@idTipoDocumento,
+				@idNacionalidad,
+				@nombre,
+				@nroDocumento,
+				@sexoChar,
 				@telefono,
-				GETDATE()
-			)
+				NULL,
+				NULL;
 			
 			DELETE TOP (1) FROM [#pacientes_importados_formateados]
 			SET @count = @count - 1 
@@ -310,30 +295,8 @@ BEGIN
 		PRINT 'Error durante la inserción: ' + @errorMessage;
 		THROW;
 	END CATCH
-		
-	-- Crear archivo csv con los registros invalidos
 	
-	-- Habilitar xp_cmdshell
-	EXEC sp_configure 'show advanced options', 1;
-	RECONFIGURE;
-	EXEC sp_configure 'xp_cmdshell', 1;
-	RECONFIGURE;
-
-	BEGIN TRY
-		DECLARE @cmd NVARCHAR(1000);
-		SET @cmd = N'bcp "SELECT * FROM #registros_invalidos" queryout "' + @rutaArchivoError + '" -c -t ' + @separador + ' -S ' + @@SERVERNAME + ' -T';
-		EXEC xp_cmdshell @cmd;
-	END TRY
-	BEGIN CATCH
-		DECLARE @errorCMD VARCHAR(1000);
-		SET @errorCMD = ERROR_MESSAGE();
-		PRINT 'Error durante la exportación: ' + @errorCMD;
-	END CATCH
-
-	-- Deshabilitar xp_cmdshell
-	EXEC sp_configure 'xp_cmdshell', 0;
-	RECONFIGURE;
-
+	SELECT count(1) AS CantRegistrosInvalidos FROM [#registros_invalidos];
 
 	DROP TABLE [#pacientes_importados];
     DROP TABLE [#pacientes_importados_formateados];
