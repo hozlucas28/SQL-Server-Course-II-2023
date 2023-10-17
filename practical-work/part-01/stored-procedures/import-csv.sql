@@ -103,7 +103,7 @@ BEGIN
 		genero VARCHAR(20),
 		telefono VARCHAR(40),
 		nacionalidad VARCHAR(50),
-		mail VARCHAR(100),
+		email VARCHAR(100),
 		calleYNro VARCHAR(255),
 		localidad VARCHAR(255),
 		provincia VARCHAR(255)
@@ -119,7 +119,7 @@ BEGIN
 		genero VARCHAR(20),
 		telefono VARCHAR(40),
 		nacionalidad VARCHAR(50),
-		mail VARCHAR(100),
+		email VARCHAR(100),
 		calleYNro VARCHAR(255),
 		localidad VARCHAR(255),
 		provincia VARCHAR(255)
@@ -135,7 +135,7 @@ BEGIN
 		genero VARCHAR(20),
 		telefono VARCHAR(40),
 		nacionalidad VARCHAR(50),
-		mail VARCHAR(100),
+		email VARCHAR(100),
 		calleYNro VARCHAR(255),
 		localidad VARCHAR(255),
 		provincia VARCHAR(255),
@@ -158,7 +158,7 @@ BEGIN
 		genero,
 		telefono,
 		nacionalidad,
-		mail,
+		email,
 		calleYNro,
 		localidad,
 		provincia
@@ -178,7 +178,7 @@ BEGIN
 		genero,
 		telefono,
 		nacionalidad,
-		mail,
+		email,
 		calleYNro,
 		localidad,
 		provincia	
@@ -191,19 +191,19 @@ BEGIN
         WHERE DATEDIFF(YEAR, fechaNacimiento, GETDATE()) NOT BETWEEN 0 AND 120
 
     INSERT INTO [#registros_invalidos] SELECT *, 'Mail inválido' FROM [#pacientes_importados_formateados]
-	    WHERE mail NOT LIKE '%_@_%.%'
+	    WHERE email NOT LIKE '%_@_%.%'
 
 	INSERT INTO #registros_invalidos 
 	SELECT *, 'Mail repetido' FROM #pacientes_importados_formateados AS pif
 	WHERE EXISTS (
 		SELECT 1 FROM #pacientes_importados_formateados
-		WHERE mail = pif.mail
+		WHERE email = pif.email
 		HAVING COUNT(nroDocumento) > 1
 	)
 	AND nroDocumento NOT IN (
 		SELECT MAX(nroDocumento) FROM #pacientes_importados_formateados
-		WHERE mail = pif.mail
-		GROUP BY mail
+		WHERE email = pif.email
+		GROUP BY email
 		HAVING COUNT(nroDocumento) > 1
 	);
 
@@ -214,19 +214,8 @@ BEGIN
     SELECT 1
     FROM #registros_invalidos ri
     WHERE 
-        ri.nombre = #pacientes_importados_formateados.nombre AND
-        ri.apellido = #pacientes_importados_formateados.apellido AND
-        ri.fechaNacimiento = #pacientes_importados_formateados.fechaNacimiento AND
         ri.tipoDocumento = #pacientes_importados_formateados.tipoDocumento AND
-        ri.nroDocumento = #pacientes_importados_formateados.nroDocumento AND
-        ri.sexo = #pacientes_importados_formateados.sexo AND
-        ri.genero = #pacientes_importados_formateados.genero AND
-        ri.telefono = #pacientes_importados_formateados.telefono AND
-        ri.nacionalidad = #pacientes_importados_formateados.nacionalidad AND
-        ri.mail = #pacientes_importados_formateados.mail AND
-        ri.calleYNro = #pacientes_importados_formateados.calleYNro AND
-        ri.localidad = #pacientes_importados_formateados.localidad AND
-        ri.provincia = #pacientes_importados_formateados.provincia
+        ri.nroDocumento = #pacientes_importados_formateados.nroDocumento 
 	);
 	
 	-- Agregar información a los registros de pacientes
@@ -236,7 +225,7 @@ BEGIN
 			@nombre VARCHAR(255), @apellido VARCHAR(255), @fechaNacimiento DATE,
 			@tipoDocumento VARCHAR(20), @nroDocumento INT, 
 			@sexo VARCHAR(20), @genero VARCHAR(20),
-			@telefono VARCHAR(40), @nacionalidad VARCHAR(50), @mail VARCHAR(40), 
+			@telefono VARCHAR(40), @nacionalidad VARCHAR(50), @email VARCHAR(40), 
 			@calleYNro VARCHAR(255), @localidad VARCHAR(255), @provincia VARCHAR(255); 
 		DECLARE 
 			@idDireccion INT, @idTipoDocumento INT, @idNacionalidad INT, @sexoChar CHAR(1), @idGenero INT;
@@ -255,35 +244,27 @@ BEGIN
 				@genero = genero,
 				@telefono = telefono,
 				@nacionalidad = nacionalidad,
-				@mail = mail,
+				@email = email,
 				@calleYNro = calleYNro,
 				@localidad = localidad,
 				@provincia = provincia
 			FROM [#pacientes_importados_formateados];
 
-			EXEC [referencias].[obtenerOInsertarIdDireccion] @calleYNro, @localidad, @provincia, @idDireccion OUT;
-			EXEC [referencias].[obtenerOIsertarIdTipoDocumento] @tipoDocumento, @idTipoDocumento OUT;
-			EXEC [referencias].[obtenerOInsertarIdNacionalidad] @nacionalidad, @idNacionalidad OUT;
-			SET @sexoChar = [utils].[obtenerCharSexo](@sexo); 
-			EXEC [referencias].[obtenerOInsertarIdGenero] @genero, @idGenero OUT;
-
-			EXEC [datos].[insertarPaciente]	
-				@apellido,
-				NULL,
-				@mail,
-				@fechaNacimiento,
-				NULL,
-				NULL,
-				@idDireccion,
-				@idGenero,
-				@idTipoDocumento,
-				@idNacionalidad,
-				@nombre,
+			EXEC [datos].[insertarPaciente] 
+				@nombre, 
+				@apellido, 
+				@fechaNacimiento, 
+				@tipoDocumento, 
 				@nroDocumento,
-				@sexoChar,
-				@telefono,
-				NULL,
-				NULL;
+				@sexo, 
+				@genero, 
+				@telefono, 
+				@nacionalidad, 
+				@email, 
+				@calleYNro, 
+				@localidad, 
+				@provincia;
+
 			
 			DELETE TOP (1) FROM [#pacientes_importados_formateados]
 			SET @count = @count - 1 

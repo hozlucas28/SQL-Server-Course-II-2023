@@ -3,26 +3,35 @@ USE [cure_sa];
 
 -- Insertar paciente
 GO
-CREATE OR ALTER PROCEDURE [datos].[insertarPaciente]
-    @apellido VARCHAR (50),
-    @apellidoMaterno VARCHAR (50) = NULL,
-    @email VARCHAR (70),
+CREATE OR ALTER PROCEDURE [datos].[insertarPaciente]  
+	@nombre VARCHAR(255), 
+    @apellido VARCHAR(255), 
     @fechaNacimiento DATE,
+	@tipoDocumento VARCHAR(20), 
+    @nroDocumento INT,
+    @sexo VARCHAR(20), 
+    @genero VARCHAR(20),
+	@telefono VARCHAR(40), 
+    @nacionalidad VARCHAR(50), 
+    @email VARCHAR(40), 
+	@calleYNro VARCHAR(255), 
+    @localidad VARCHAR(255), 
+    @provincia VARCHAR(255),
+    @apellidoMaterno VARCHAR (50) = NULL,
     @fotoPerfil VARCHAR(128) = NULL,
-    @idCobertura INT,
-    @idDireccion INT,
-    @idGenero INT,
-    @idTipoDocumento INT,
-    @nacionalidad INT,
-    @nombre VARCHAR (50),
-    @nroDocumento VARCHAR(50),
-    @sexoBiologico CHAR(1),
-    @telFijo VARCHAR(20),
     @telAlternativo VARCHAR(20) = NULL,
-    @telLaboral VARCHAR(20) = NULL
+    @telLaboral VARCHAR(20) = NULL,
+    @idCobertura INT = NULL
 AS
 BEGIN
     DECLARE @fechaActual DATE = GETDATE();
+    DECLARE @idDireccion INT, @idTipoDocumento INT, @idNacionalidad INT, @sexoChar CHAR(1), @idGenero INT;
+
+    EXEC [referencias].[obtenerOInsertarIdDireccion] @calleYNro, @localidad, @provincia, @idDireccion OUT;
+	EXEC [referencias].[obtenerOIsertarIdTipoDocumento] @tipoDocumento, @idTipoDocumento OUT;
+	EXEC [referencias].[obtenerOInsertarIdNacionalidad] @nacionalidad, @idNacionalidad OUT;
+	SET @sexoChar = [utils].[obtenerCharSexo](@sexo); 
+	EXEC [referencias].[obtenerOInsertarIdGenero] @genero, @idGenero OUT;
 
     INSERT INTO [datos].[pacientes]
         (
@@ -42,7 +51,8 @@ BEGIN
             sexo_biologico,
             tel_alternativo,
             tel_fijo,
-            tel_laboral
+            tel_laboral,
+            valido
         ) VALUES (
             @apellido,
             @apellidoMaterno,
@@ -54,13 +64,14 @@ BEGIN
             @idDireccion,
             @idGenero,
             @idTipoDocumento,
-            @nacionalidad,
+            @idNacionalidad,
             @nombre,
             @nroDocumento,
-            @sexoBiologico,
+            @sexoChar,
             @telAlternativo,
-            @telFijo,
-            @telLaboral
+            @telefono,
+            @telLaboral,
+            1
 	)
 END;
 
@@ -118,7 +129,7 @@ END;
 
 -- Borrar paciente
 GO
-CREATE PROCEDURE [datos].[borrarPaciente]
+CREATE OR ALTER PROCEDURE [datos].[borrarPaciente]
     @id INT
 AS
     UPDATE [datos].[pacientes] SET valido = 0 WHERE id_paciente = @id;
