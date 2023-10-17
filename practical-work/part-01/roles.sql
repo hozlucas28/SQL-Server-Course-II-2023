@@ -87,5 +87,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON [referencias].[direcciones] TO [Personal
 
 -- Personal Técnico Clínico
 GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estudios] TO [Personal Técnico clínico];
+GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estudiosValidos] TO [Personal Técnico clínico];
 
 -- GRANT EXECUTE ON [Nombre del SP] TO [Nombre del rol];
