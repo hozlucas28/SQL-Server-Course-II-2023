@@ -19,5 +19,3 @@ BEGIN
     
     RETURN @char
 END;
-go
-use master;
