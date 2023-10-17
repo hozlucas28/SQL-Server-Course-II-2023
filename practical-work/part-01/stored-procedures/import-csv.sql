@@ -17,13 +17,18 @@ BEGIN
 
 	EXEC [archivos].[importarDatosCSV] @tablaDestino = '#medicos_importados', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
 
-	DECLARE @count INT = @@ROWCOUNT
- 
+
 	DECLARE	@nombre VARCHAR(255)
 	DECLARE @apellido VARCHAR(255)
 	DECLARE	@especialidad VARCHAR(255)
 	DECLARE @idEspecialidad INT
 	DECLARE @nroMatricula INT
+	DECLARE @count INT;
+
+	DELETE FROM #medicos_importados 
+	WHERE #medicos_importados.nroMatricula IN (SELECT nro_matricula FROM datos.medicos);
+
+	SELECT @count = count(*) FROM #medicos_importados;
 
 	WHILE @count > 0
 	BEGIN
@@ -63,12 +68,20 @@ CREATE OR ALTER PROCEDURE [archivos].[importarPrestadoresCSV]
 AS
 BEGIN
 	CREATE TABLE [#prestadores_importados] (
-		nombre VARCHAR(255),
-		planPrestador VARCHAR(255),
+		nombre VARCHAR(255) COLLATE Latin1_General_CS_AS, 
+		planPrestador VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		campoVacio CHAR,
 	)
 
 	EXEC [archivos].[importarDatosCSV] @tablaDestino = '#prestadores_importados', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
+
+	DELETE FROM [#prestadores_importados]
+	WHERE EXISTS (
+    	SELECT 1
+  		FROM [datos].[prestadores] AS p
+  	  	WHERE [#prestadores_importados].nombre = p.nombre AND  [#prestadores_importados].planPrestador = p.plan_prestador
+	);
+
 
 	INSERT INTO [datos].[prestadores] (nombre, plan_prestador) SELECT nombre, planPrestador FROM [#prestadores_importados]
 	DROP TABLE [#prestadores_importados]
