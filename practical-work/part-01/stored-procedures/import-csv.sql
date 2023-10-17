@@ -320,7 +320,8 @@ BEGIN
 
 	EXEC [archivos].[importarDatosCSV] @tablaDestino = '#sedes_importadas', @rutaArchivo = @rutaArchivo, @delimitadorCampos = @separador
 
-	DECLARE @count INT = @@ROWCOUNT
+	DECLARE @count INT;
+	SELECT @count = count(*) FROM [#sedes_importadas];
 
 	DECLARE @nombreSede VARCHAR(255)
 	DECLARE @calleYNro VARCHAR(255)

@@ -17,7 +17,7 @@ END;
 
 -- Actualizar/Insertar una provincia
 GO
-CREATE OR ALTER PROCEDURE [referencias].[actualizarProvincias]
+CREATE OR ALTER PROCEDURE [referencias].[actualizarProvincia]
     @provincia VARCHAR(50),
     @outIdPais INT OUTPUT,
     @outIdProvincia INT OUTPUT,

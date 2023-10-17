@@ -73,7 +73,7 @@ ALTER TABLE [datos].[dias_x_sede] ADD CONSTRAINT fk_id_medico FOREIGN KEY (id_me
 
 -- Estados de los turnos
 ALTER TABLE [datos].[estados_turnos] ADD CONSTRAINT pk_id_estado_turno PRIMARY KEY (id_estado),
-    CONSTRAINT check_nombre_estado_turno CHECK (UPPER (nombre) IN ('ATENDIDO', 'AUSENTE', 'CANCELADO'));
+    CONSTRAINT check_nombre_estado_turno CHECK (UPPER (nombre) IN ('PENDIENTE','ATENDIDO', 'AUSENTE', 'CANCELADO'));
 
 -- Tipos de turnos
 ALTER TABLE [datos].[tipos_turnos] ADD CONSTRAINT pk_tipo_turno PRIMARY KEY (id_tipo_turno),

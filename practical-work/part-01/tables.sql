@@ -248,4 +248,6 @@ CREATE TABLE [datos].[especialidad]
     id_especialidad INT IDENTITY (1, 1),
     nombre VARCHAR(50) COLLATE Latin1_General_CS_AS NOT NULL
 );
-use master;
+
+INSERT INTO datos.tipos_turnos (nombre_tipo) VALUES ('PRESENCIAL'),('VIRTUAL');
+INSERT INTO datos.estados_turnos (nombre) VALUES ('PENDIENTE'),('ATENDIDO'),('AUSENTE'),('CANCELADO');
