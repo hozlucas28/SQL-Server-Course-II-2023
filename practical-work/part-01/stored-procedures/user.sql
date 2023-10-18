@@ -8,5 +8,7 @@ CREATE OR ALTER PROCEDURE [datos].[actualizarContraseña]
     @contraseña VARCHAR(256)
 AS
 BEGIN
-    UPDATE [datos].[usuarios] SET contraseña = @contraseña WHERE id_usuario = @idUsuario;
+    UPDATE [datos].[usuarios] 
+    SET contraseña = @contraseña 
+    WHERE id_usuario = @idUsuario;
 END;

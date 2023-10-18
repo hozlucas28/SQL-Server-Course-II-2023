@@ -1,7 +1,7 @@
 GO
 USE [cure_sa];
 
--- Importar datos desde un archivo CSV
+-- TODO: validar parámetros con INSTR
 GO
 CREATE OR ALTER PROCEDURE [archivos].[importarDatosCSV]
     @tablaDestino VARCHAR(255),
@@ -12,27 +12,27 @@ AS
 BEGIN
     PRINT 'Iniciando la importación del archivo CSV...';
     
-    DECLARE @Error NVARCHAR(MAX);
+    DECLARE @error NVARCHAR(MAX);
     
     IF LEN(@tablaDestino) = 0
     BEGIN
-        SET @Error = 'El nombre de la tabla de destino no puede estar vacío.';
-        THROW 51000, @Error, 1;
+        SET @error = 'El nombre de la tabla de destino no puede estar vacío.';
+        THROW 51000, @error, 1;
         RETURN;
     END
     
     IF LEN(@rutaArchivo) = 0
     BEGIN
-        SET @Error = 'La ruta del archivo CSV no puede estar vacía.';
-        THROW 51001, @Error, 1;
+        SET @error = 'La ruta del archivo CSV no puede estar vacía.';
+        THROW 51001, @error, 1;
         RETURN;
     END
     
     /*Validación de existencia del archivo
     IF NOT EXISTS (SELECT 1 FROM sys.dm_os_file_exists(@rutaArchivo))
     BEGIN
-        SET @Error = 'El archivo ' + @rutaArchivo + ' no existe.'
-        THROW 51002, @Error, 1;
+        SET @error = 'El archivo ' + @rutaArchivo + ' no existe.'
+        THROW 51002, @error, 1;
         RETURN;
     END*/
     

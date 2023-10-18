@@ -4,15 +4,15 @@ USE [cure_sa];
 -- Obtener el ID de una provincia -- TODO: se usa?
 GO
 CREATE OR ALTER PROCEDURE [referencias].[obtenerOInsertarIdProvincia]
-    @Provincia VARCHAR(255),
-	@IdProvincia INT OUTPUT
+    @provincia VARCHAR(255),
+	@idProvincia INT OUTPUT
 AS
 BEGIN
-    SET @provincia  = UPPER (@Provincia)
-    IF NOT EXISTS (SELECT 1 FROM referencias.nombres_provincias WHERE nombre = @Provincia)
-        INSERT INTO referencias.nombres_provincias (nombre) VALUES (@Provincia);
+    SET @provincia  = UPPER (@provincia)
+    IF NOT EXISTS (SELECT 1 FROM referencias.nombres_provincias WHERE nombre = @provincia)
+        INSERT INTO referencias.nombres_provincias (nombre) VALUES (@provincia);
 
-	SELECT @IdProvincia = id_provincia FROM referencias.nombres_provincias WHERE nombre = @Provincia;
+	SELECT @idProvincia = id_provincia FROM referencias.nombres_provincias WHERE nombre = @provincia;
 END;
 
 -- Actualizar/Insertar una provincia

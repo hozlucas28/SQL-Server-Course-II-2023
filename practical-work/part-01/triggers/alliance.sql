@@ -6,7 +6,10 @@ ON [datos].[prestadores]
 AFTER DELETE
 AS
 BEGIN
-    CREATE TABLE #TurnosACancelar (id_turno INT);
+    IF OBJECT_ID('tempdb..#TurnosACancelar') IS NOT NULL 
+        DROP TABLE #TurnosACancelar
+
+    CREATE TABLE #TurnosACancelar (id_turno INT PRIMARY KEY);
 
     INSERT INTO #TurnosACancelar (id_turno)
     SELECT rtm.id_turno

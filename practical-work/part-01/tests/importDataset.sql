@@ -21,7 +21,10 @@ select * from datos.medicos;
 
 select * from datos.sedes;
 
-delete from datos.pacientes;
-delete from datos.prestadores;
-delete from datos.medicos;
-delete from datos.sedes;
+delete from datos.[pacientes];
+
+delete from datos.[prestadores];
+
+delete from datos.[medicos];
+
+delete from datos.[sede_de_atencion];
