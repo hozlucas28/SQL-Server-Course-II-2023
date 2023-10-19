@@ -1,14 +1,24 @@
 USE [cure_sa]
 GO
 
-CREATE OR ALTER PROCEDURE [datos].[registrarEstudiosValidosDesdeJSON]
-    @rutaArchivo NVARCHAR(MAX)
+-- TODO: buscar la forma de que [estudio] guarde los registros con acentos
+
+CREATE OR ALTER PROCEDURE [archivos].[importarEstudiosJSON]
+    @rutaArchivo VARCHAR(255)
 AS
 BEGIN
+    DECLARE @error NVARCHAR(255);
     DECLARE @sql NVARCHAR(MAX);
     DECLARE @json NVARCHAR(MAX);
     DECLARE @paramDef NVARCHAR(100);
     
+    IF LEN(@rutaArchivo) = 0
+    BEGIN
+        SET @error = 'La ruta del archivo JSON no puede estar vacía.';
+        THROW 51001, @error, 1;
+        RETURN;
+    END
+
     SET @sql = N'
         SET @json_string = (SELECT * FROM OPENROWSET (BULK ''' + @rutaArchivo + ''', SINGLE_CLOB) as JsonFile)
     '
@@ -17,8 +27,32 @@ BEGIN
     
     EXEC sp_executesql @sql, @paramDef, @json_string = @json OUTPUT;
 
-    SELECT * INTO #EstudiosMedicos FROM
-    OPENJSON(@json) 
+    IF OBJECT_ID('tempdb..#EstudiosMedicos') IS NOT NULL 
+        DROP TABLE [#EstudiosMedicos]
+
+    CREATE TABLE [#EstudiosMedicos]
+    (
+        [id] NVARCHAR(255) PRIMARY KEY,
+        [area] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
+        [estudio] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
+        [prestador] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
+        [plan] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
+        [porcentajeCobertura] INT,
+        [costo] DECIMAL(18, 2),
+        [requiereAutorizacion] BIT
+    )
+
+    INSERT INTO #EstudiosMedicos(
+        [id],
+        [area],
+        [estudio],
+        [prestador],
+        [plan],
+        [porcentajeCobertura],
+        [costo],
+        [requiereAutorizacion]
+    ) 
+    SELECT * FROM OPENJSON(@json) 
     WITH (
         [id] NVARCHAR(255) '$._id."$oid"',
         [area] NVARCHAR(255) '$.Area',
@@ -32,24 +66,28 @@ BEGIN
 
     BEGIN TRY
         INSERT INTO [datos].[estudiosValidos]
+        (
+            id_estudioValido,
+            area,
+            estudio,
+            id_prestador,
+            [plan],
+            porcentajeCobertura,
+            costo,
+            requiereAutorizacion
+        )
         SELECT  
-            em.id,
-            em.area,
-            em.estudio,
-            p.id_prestador,
-            em.[plan],
-            em.porcentajeCobertura,
-            em.costo,
-            em.requiereAutorizacion
-        FROM #EstudiosMedicos em
-        INNER JOIN [datos].[prestadores] p ON em.prestador = p.nombre COLLATE Latin1_General_CS_AS
-        WHERE 
-            em.area IS NOT NULL AND
-            em.estudio IS NOT NULL AND
-            em.prestador IS NOT NULL AND
-            em.[plan] IS NOT NULL AND p.plan_prestador = em.[plan] COLLATE Latin1_General_CS_AS AND
-            em.porcentajeCobertura IS NOT NULL AND
-            em.costo IS NOT NULL 
+            [em].[id],
+            [em].[area],
+            [em].[estudio],
+            [p].[id_prestador],
+            [em].[plan],
+            [em].[porcentajeCobertura],
+            [em].[costo],
+            [em].[requiereAutorizacion]
+        FROM #EstudiosMedicos [em]
+        INNER JOIN [datos].[prestadores] p ON [em].[prestador] = [p].[nombre] COLLATE Latin1_General_CS_AS
+        WHERE [p].[plan_prestador] = [em].[plan] COLLATE Latin1_General_CS_AS
 
         DROP TABLE #EstudiosMedicos;
     END TRY

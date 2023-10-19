@@ -86,7 +86,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[tipos_turnos] TO [Personal Admi
 GRANT SELECT, INSERT, UPDATE, DELETE ON [referencias].[direcciones] TO [Personal Administrativo];
 
 -- Personal Técnico Clínico
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estudios] TO [Personal Técnico clínico];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estudiosValidos] TO [Personal Técnico clínico];
+GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estudios] TO [Personal Técnico Clínico];
+GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estudiosValidos] TO [Personal Técnico Clínico];
 
 -- GRANT EXECUTE ON [Nombre del SP] TO [Nombre del rol];

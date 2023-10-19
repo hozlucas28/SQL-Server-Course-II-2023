@@ -1,8 +1,7 @@
-GO
 USE [cure_sa];
+GO
 
 -- Importar médicos desde un archivo CSV
-GO
 CREATE OR ALTER PROCEDURE [archivos].[importarMedicosCSV]
 	@rutaArchivo VARCHAR(255),
 	@separador VARCHAR(4) = ';'
@@ -23,7 +22,6 @@ BEGIN
 		@rutaArchivo = @rutaArchivo, 
 		@delimitadorCampos = @separador
 
-
 	DECLARE	@nombre VARCHAR(255)
 	DECLARE @apellido VARCHAR(255)
 	DECLARE	@especialidad VARCHAR(255)
@@ -36,6 +34,7 @@ BEGIN
 
 	SELECT @count = count(*) FROM #MedicosImportados;
 
+	SET NOCOUNT ON;
 	WHILE @count > 0
 	BEGIN
 		SELECT TOP(1) 
@@ -58,6 +57,7 @@ BEGIN
 		DELETE TOP(1) FROM [#MedicosImportados]
 		SET @count = @count - 1
 	END
+	SET NOCOUNT 0;
 
 	DROP TABLE [#MedicosImportados];
 END;
@@ -87,11 +87,14 @@ BEGIN
 	WHERE EXISTS (
     	SELECT 1
   		FROM [datos].[prestadores] AS p
-  	  	WHERE [#PrestadoresImportados].nombre = p.nombre AND  [#PrestadoresImportados].planPrestador = p.plan_prestador
+  	  	WHERE 
+			[#PrestadoresImportados].nombre = p.nombre AND 
+			[#PrestadoresImportados].planPrestador = p.plan_prestador
 	);
 
-
-	INSERT INTO [datos].[prestadores] (nombre, plan_prestador) SELECT nombre, planPrestador FROM [#PrestadoresImportados]
+	INSERT INTO [datos].[prestadores] (nombre, plan_prestador) 
+	SELECT nombre, planPrestador FROM [#PrestadoresImportados]
+	
 	DROP TABLE [#PrestadoresImportados]
 END;
 
@@ -122,7 +125,7 @@ BEGIN
 	)
 	
 	IF OBJECT_ID('tempdb..#PacientesImportadosFormateados') IS NOT NULL
-		DROP TABLE [#PacientesImportados]
+		DROP TABLE [#PacientesImportadosFormateados]
 	
 	CREATE TABLE [#PacientesImportadosFormateados] (
 		nombre VARCHAR(255) COLLATE Latin1_General_CS_AS,
@@ -140,7 +143,7 @@ BEGIN
 		provincia VARCHAR(255) COLLATE Latin1_General_CS_AS
 	)
 	
-	IF OBJECT_ID('tempdb..#PacientesImportados') IS NOT NULL
+	IF OBJECT_ID('tempdb..#RegistrosInvalidos') IS NOT NULL
 		DROP TABLE [#RegistrosInvalidos]
 	
 	CREATE TABLE [#RegistrosInvalidos] (
@@ -165,6 +168,8 @@ BEGIN
 		@rutaArchivo = @rutaArchivo, 
 		@delimitadorCampos = @separador;
 	
+	SET NOCOUNT ON
+
 	INSERT INTO [#PacientesImportadosFormateados]
 	SELECT
 		nombre,
@@ -266,6 +271,8 @@ BEGIN
 		DECLARE 
 			@count INT = (SELECT count(1) from [#PacientesImportadosFormateados]);
 
+		
+
 		WHILE @count > 0
 		BEGIN 
 			SELECT TOP(1)
@@ -311,13 +318,15 @@ BEGIN
 	
 	DECLARE @cantTotalRI INT = (SELECT count(1) FROM [#RegistrosInvalidos]);
 	
-	IF cantTotalRI > 0
+	IF @cantTotalRI > 0
 	BEGIN
-		PRINT 'Cantidad total de registros inválidos: ' + @cantTotRI;
+		PRINT 'Cantidad total de registros inválidos: ' + CAST(@cantTotalRI AS VARCHAR);
 		SELECT error_desc, count(1) AS Cant FROM [#RegistrosInvalidos]
 		GROUP BY error_desc
 	END
 	ELSE PRINT 'Registros sin errores.'
+	
+	SET NOCOUNT OFF
 
     DROP TABLE [#PacientesImportadosFormateados];
 	DROP TABLE [#RegistrosInvalidos];
@@ -345,13 +354,15 @@ BEGIN
 		@rutaArchivo = @rutaArchivo, 
 		@delimitadorCampos = @separador
 
-	DECLARE @count INT = @@ROWCOUNT
+	DECLARE @count INT = (SELECT count(1) FROM [#SedesImportadas])
 
 	DECLARE @nombreSede VARCHAR(255)
 	DECLARE @calleYNro VARCHAR(255)
 	DECLARE @localidad VARCHAR(255)
 	DECLARE @provincia VARCHAR(255)
 	DECLARE @idDireccion VARCHAR(255)
+
+	SET NOCOUNT ON;
 
 	WHILE @count > 0
 	BEGIN
@@ -374,6 +385,8 @@ BEGIN
 		DELETE TOP(1) FROM [#SedesImportadas]
 		SET @count = @count - 1
 	END
+
+	SET NOCOUNT OFF;
 
 	DROP TABLE [#SedesImportadas]
 END;

@@ -15,7 +15,6 @@ BEGIN
         VALUES (@nombre_estudio, @id_paciente, @autorizado, @documento_resultado, @fecha, @imagen_resultado);
     END TRY
     BEGIN CATCH
-        -- Manejo de errores
         DECLARE @errorMessage NVARCHAR(1000);
         SET @errorMessage = ERROR_MESSAGE();
         PRINT 'Error durante la inserción: ' + @errorMessage;
@@ -45,7 +44,6 @@ BEGIN
         WHERE id_estudio = @id_estudio;
     END TRY
     BEGIN CATCH
-        -- Manejo de errores
         DECLARE @errorMessage NVARCHAR(1000);
         SET @errorMessage = ERROR_MESSAGE();
         PRINT 'Error durante la actualización: ' + @errorMessage;
@@ -65,7 +63,6 @@ BEGIN
         WHERE id_estudio = @id_estudio;
     END TRY
     BEGIN CATCH
-        -- Manejo de errores
         DECLARE @errorMessage NVARCHAR(1000);
         SET @errorMessage = ERROR_MESSAGE();
         PRINT 'Error durante la eliminación lógica: ' + @errorMessage;

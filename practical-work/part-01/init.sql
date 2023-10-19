@@ -12,16 +12,6 @@ GO
     exec sp_who 
 */
 
--- Eliminar todo tipo de conexiones que impidan borrar la base de datos
-/*
-    ALTER DATABASE [cure_sa]
-    SET SINGLE_USER
-    WITH ROLLBACK IMMEDIATE
-    GO
-
-    DROP DATABASE [cure_sa]
-*/
-
 -- Otra forma de saber si existe la base de datos
 /*
     IF DB_ID('cure_sa') IS NOT NULL 
@@ -29,6 +19,12 @@ GO
 */
 
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'cure_sa')
+    -- Eliminar todo tipo de conexiones que impidan borrar la base de datos
+    ALTER DATABASE [cure_sa]
+    SET SINGLE_USER
+    WITH ROLLBACK IMMEDIATE
+    GO
+
     DROP DATABASE [cure_sa];
 GO
 
