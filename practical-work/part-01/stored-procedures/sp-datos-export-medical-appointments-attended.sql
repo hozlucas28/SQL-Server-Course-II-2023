@@ -1,11 +1,13 @@
 USE [cure_sa]
 GO
 
-CREATE OR ALTER PROCEDURE [archivos].[exportarTurnosAtendidosXML]
+-- drop procedure [archivos].[exportarTurnosAtendidosXML]
+
+CREATE OR ALTER PROCEDURE [datos].[exportarTurnosAtendidosXML]
     @obraSocial VARCHAR(50),
 	@fechaInicio DATE,
 	@fechaFin DATE,
-	@cadenaXML NVARCHAR(255) OUTPUT
+	@cadenaXML NVARCHAR(MAX) OUTPUT
 AS
 BEGIN
 	IF NOT EXISTS (SELECT 1 FROM datos.prestadores pr WHERE pr.nombre = @obraSocial)

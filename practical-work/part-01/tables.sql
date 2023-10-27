@@ -130,7 +130,7 @@ CREATE TABLE [datos].[pacientes]
     id_cobertura INT,
     id_direccion INT,
     id_genero INT NOT NULL,
-    id_paciente INT IDENTITY (1, 1),
+    id_paciente INT IDENTITY (1, 1) /*historia clinica*/,
     id_tipo_documento INT NOT NULL,
     nacionalidad INT,
     nombre VARCHAR (50) NOT NULL,

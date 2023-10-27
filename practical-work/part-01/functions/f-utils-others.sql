@@ -1,8 +1,7 @@
-GO
 USE [cure_sa];
+GO
 
 -- Obtener el ID de un sexo
-GO
 CREATE OR ALTER FUNCTION [utils].[obtenerCharSexo]
     (
         @sexo VARCHAR(25)
@@ -18,4 +17,16 @@ BEGIN
         SET @char = 'F';
     
     RETURN @char
+END;
+GO
+
+CREATE OR ALTER FUNCTION [utils].[obtenerSexoConChar]
+(
+    @sexo CHAR(1)
+)RETURNS CHAR(9)
+AS
+BEGIN
+    IF @sexo = 'M'
+        return 'MASCULINO' 
+    return 'FEMENINO'
 END;

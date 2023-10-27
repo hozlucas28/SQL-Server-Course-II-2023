@@ -47,6 +47,8 @@ BEGIN
 		EXEC [datos].[guardarEspecialidad] 
 			@especialidad, 
 			@idEspecialidad OUTPUT;
+		
+		
 
 		EXEC [datos].[insertarMedico] 
 			@nombre, 

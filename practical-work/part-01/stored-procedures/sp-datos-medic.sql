@@ -14,10 +14,18 @@ BEGIN
 
     SET @idEspecialidad = [datos].[obtenerIdEspecialidad](@especialidad)
 
-    INSERT INTO [datos].[medicos]
-        (nombre, apellido, nro_matricula, id_especialidad)
-    VALUES
-        (@nombre, @apellido, @matricula, @idEspecialidad)
+    INSERT INTO [datos].[medicos](
+        nombre, 
+        apellido, 
+        nro_matricula, 
+        id_especialidad
+    )
+    VALUES(
+        @nombre, 
+        @apellido, 
+        @matricula, 
+        @idEspecialidad
+    )
 END;
 
 -- Eliminar médico

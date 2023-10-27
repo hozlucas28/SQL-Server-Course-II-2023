@@ -1,9 +1,9 @@
 - [ ] Generar casos de prueba para cada funcionalidad (opcional).
 - [ ] Otorgar el acceso a los Stored Procedures a los roles correspondientes.
-- [ ] Poner el collate a nivel de base de datos en el create database y eliminarlo de las tablas.
-- [ ] crear tablas con if exists.
-- [ ] exportar el xml como un string.
-- [ ] usar collate en las tablas temporales.
+- [X] Poner el collate a nivel de base de datos en el create database y eliminarlo de las tablas.
+- [X] crear tablas con if exists.
+- [X] exportar el xml como un string.
+- [X] usar collate en las tablas temporales.
 - [ ] hacer una solucion/projecto en management studio.
-- [ ] cambiar los nombres de los archivos para orden alfabetico (SP 00 nombre) 
+- [X] cambiar los nombres de los archivos para orden alfabetico (SP 00 nombre) 
 - [ ] ver donde podemos usar indices utiles.
