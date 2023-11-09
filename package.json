@@ -1,13 +1,24 @@
 {
+	"type": "module",
 	"devDependencies": {
+		"@types/node": "^20.9.0",
+		"@typescript-eslint/eslint-plugin": "^6.10.0",
+		"@typescript-eslint/parser": "^6.10.0",
+		"eslint": "^8.53.0",
 		"husky": "^8.0.3",
 		"lint-staged": "^13.3.0",
-		"prettier": "^3.0.3"
+		"prettier": "^3.0.3",
+		"typescript": "^5.2.2"
 	},
 	"lint-staged": {
 		"**/*": "prettier --write --ignore-unknown"
 	},
 	"scripts": {
+		"build": "tsc && node practical-work/dist/index.js",
+		"build:compress": "tsc && node practical-work/dist/index.js compress",
 		"prepare": "husky install"
+	},
+	"dependencies": {
+		"jszip": "^3.10.1"
 	}
 }
