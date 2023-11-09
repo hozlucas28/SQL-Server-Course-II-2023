@@ -5,5 +5,5 @@
 - [ ] exportar el xml como un string.
 - [ ] usar collate en las tablas temporales.
 - [ ] hacer una solucion/projecto en management studio.
-- [ ] cambiar los nombres de los archivos para orden alfabetico (SP 00 nombre) 
+- [ ] cambiar los nombres de los archivos para orden alfabetico (SP 00 nombre)
 - [ ] ver donde podemos usar indices utiles.
