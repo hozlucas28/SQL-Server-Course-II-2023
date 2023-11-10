@@ -19,6 +19,7 @@
 		"prepare": "husky install"
 	},
 	"dependencies": {
+		"convert-multiple-files-ul": "^1.0.1",
 		"jszip": "^3.10.1"
 	}
 }
