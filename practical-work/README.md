@@ -1,4 +1,4 @@
-# Trabajo Práctico Integrador – Unidad I (parte II)
+# Trabajo Práctico Integrador
 
 - Grupo: 2
 - Materia: Bases de Datos Aplicadas
@@ -36,12 +36,12 @@ entrega, número de grupo, nombre de la materia, nombres y DNI de los alumnos.
 Se presenta un modelo de base de datos a implementar por el hospital Cure SA, para la reserva
 de turnos médicos y la visualización de estudios clínicos realizados. El modelo es el siguiente:
 
-![](./../../.github/der.png)
+![](https://github.com/hozlucas28/SQL-Server-Course-II-2023/blob/Master/.github/der.png?raw=true)
 
 Para facilitar la lectura del diagrama se informa la identificación de la cardinalidad en las
 relaciones
 
-![](./../../.github/cardinality-identification.png)
+![](https://github.com/hozlucas28/SQL-Server-Course-II-2023/blob/Master/.github/cardinality-identification.png?raw=true)
 
 ### Aclaraciones:
 
