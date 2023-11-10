@@ -1,44 +1,39 @@
 import JSZip from 'jszip'
-import type { Dirent } from 'node:fs'
-import { appendFileSync, createWriteStream, existsSync, readFileSync, readdirSync, unlinkSync } from 'node:fs'
+import { createWriteStream, existsSync } from 'node:fs'
+import { appendFile, readFile, readdir, unlink } from 'node:fs/promises'
 import nodePath, { basename } from 'node:path'
-import { directive, distDir } from './constants.js'
+import { directive } from './constants.js'
 
-export function readFile({ path }: { path: string }): string {
-	return readFileSync(path, { encoding: 'utf-8' })
-}
+export async function deleteFiles({ path, exclude }: { path: string; exclude: string[] }) {
+	const files = await readdir(path, { encoding: 'utf-8', withFileTypes: true, recursive: false })
 
-export function readDir({ path }: { path: string }): Dirent[] {
-	return readdirSync(path, { encoding: 'utf-8', withFileTypes: true, recursive: false })
-}
-
-export function deleteFiles({ files }: { files: string[] }) {
 	for (const file of files) {
-		unlinkSync(nodePath.join(distDir, file))
+		if (exclude.includes(file.name)) continue
+		await unlink(nodePath.join(file.path, file.name))
 	}
 }
 
-export function createSeed({ seedFilePath, sqlFilesToMerge }: { seedFilePath: string; sqlFilesToMerge: string[] }) {
-	if (existsSync(seedFilePath)) unlinkSync(seedFilePath)
+export async function createSeed({ seedFilePath, sqlFilesToMerge }: { seedFilePath: string; sqlFilesToMerge: string[] }) {
+	if (existsSync(seedFilePath)) await unlink(seedFilePath)
 
 	for (const sqlFile of sqlFilesToMerge) {
 		if (sqlFile.endsWith('/') || sqlFile.endsWith('\\')) {
-			const innerFiles = readDir({ path: sqlFile })
+			const innerFiles = await readdir(sqlFile, { encoding: 'utf-8', withFileTypes: true, recursive: false })
 			for (const innerFile of innerFiles) {
 				const { name, path } = innerFile
-				const content = readFile({ path: `${path}${name}` })
-				appendFileSync(seedFilePath, `${content}\nGO\n`)
+				const content = await readFile(`${path}${name}`)
+				await appendFile(seedFilePath, `${content}\nGO\n`)
 			}
 		} else {
-			const content = readFile({ path: sqlFile })
-			appendFileSync(seedFilePath, `${content}\nGO\n`)
+			const content = await readFile(sqlFile)
+			await appendFile(seedFilePath, `${content}\nGO\n`)
 		}
 	}
 
 	if (directive === 'BUILD') console.log('Seed file created!')
 }
 
-export function createCompressed({
+export async function createCompressed({
 	compressedFilePath,
 	filesToSave,
 	testsDir,
@@ -49,17 +44,17 @@ export function createCompressed({
 }) {
 	const zip = new JSZip()
 
-	if (existsSync(compressedFilePath)) unlinkSync(compressedFilePath)
+	if (existsSync(compressedFilePath)) await unlink(compressedFilePath)
 
 	for (const file of filesToSave) {
-		zip.file(basename(file), readFile({ path: file }))
+		zip.file(basename(file), await readFile(file))
 	}
 
 	if (testsDir) {
-		for (const testFile of readDir({ path: testsDir })) {
+		for (const testFile of await readdir(testsDir, { encoding: 'utf-8', withFileTypes: true, recursive: false })) {
 			const { name, path } = testFile
 			const filePath = nodePath.join(path, name)
-			zip.file(filePath, readFile({ path: filePath }))
+			zip.file(filePath, await readFile(filePath))
 		}
 	}
 

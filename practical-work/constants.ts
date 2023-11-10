@@ -5,9 +5,10 @@ export const directive = (process.argv[2] ?? 'BUILD').toUpperCase() as 'BUILD' |
 export const distDir = 'dist'
 export const testsDir = '__tests__'
 
-export const seedFile = 'seed.sql'
-export const readmeFile = 'README.md'
 export const compressedFile = 'database.zip'
+export const readmeFile = 'README.md'
+export const seedFile = 'seed.sql'
+export const wordFile = 'documentation.docx'
 
 export const sqlFilesToMerge: string[] = [
 	'init.sql',
