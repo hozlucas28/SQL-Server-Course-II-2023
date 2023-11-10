@@ -4,11 +4,11 @@ import { appendFile, readFile, readdir, unlink } from 'node:fs/promises'
 import nodePath, { basename } from 'node:path'
 import { directive } from './constants.js'
 
-export async function deleteFiles({ path, exclude }: { path: string; exclude: string[] }) {
+export async function deleteFiles({ path, exclude }: { path: string; exclude?: string[] }) {
 	const files = await readdir(path, { encoding: 'utf-8', withFileTypes: true, recursive: false })
 
 	for (const file of files) {
-		if (exclude.includes(file.name)) continue
+		if (exclude?.includes(file.name)) continue
 		await unlink(nodePath.join(file.path, file.name))
 	}
 }
@@ -37,10 +37,12 @@ export async function createCompressed({
 	compressedFilePath,
 	filesToSave,
 	testsDir,
+	docsDir,
 }: {
 	compressedFilePath: string
 	filesToSave: string[]
 	testsDir?: string
+	docsDir?: string
 }) {
 	const zip = new JSZip()
 
@@ -53,6 +55,16 @@ export async function createCompressed({
 	if (testsDir) {
 		for (const testFile of await readdir(testsDir, { encoding: 'utf-8', withFileTypes: true, recursive: false })) {
 			const { name, path } = testFile
+			const filePath = nodePath.join(path, name)
+			zip.file(filePath, await readFile(filePath))
+		}
+	}
+
+	if (docsDir) {
+		for (const docFile of await readdir(docsDir, { encoding: 'utf-8', withFileTypes: true, recursive: false })) {
+			if (nodePath.extname(docFile.name) === '.docx') continue
+
+			const { name, path } = docFile
 			const filePath = nodePath.join(path, name)
 			zip.file(filePath, await readFile(filePath))
 		}

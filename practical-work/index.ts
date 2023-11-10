@@ -5,6 +5,7 @@ import {
 	compressedFile,
 	directive,
 	distDir,
+	docsDir,
 	readmeFile,
 	seedFile,
 	sqlFilesToMerge,
@@ -22,12 +23,13 @@ async function main() {
 
 	if (directive === 'COMPRESS') {
 		const compressedFilePath = nodePath.join(distDir, compressedFile)
-		const pdfFilePath = await convertWordFiles(wordFile, 'pdf', distDir, '1')
-		await createCompressed({ compressedFilePath, filesToSave: [seedFilePath, pdfFilePath, readmeFile], testsDir })
+		await convertWordFiles(nodePath.join(docsDir, wordFile), 'pdf', docsDir, '1')
+		await createCompressed({ compressedFilePath, filesToSave: [seedFilePath, readmeFile], testsDir, docsDir })
 	}
 
 	const excludeFiles = directive === 'COMPRESS' ? [compressedFile] : [seedFile]
 	await deleteFiles({ path: distDir, exclude: excludeFiles })
+	await deleteFiles({ path: docsDir, exclude: [wordFile] })
 }
 
 main()
