@@ -27,11 +27,11 @@ BEGIN
     IF NULLIF(@localidad, 'null') IS NULL
         RETURN
         
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[nombres_localidades] WHERE nombre = @localidad COLLATE Latin1_General_CS_AS) 
+    IF NOT EXISTS (SELECT 1 FROM [referencias].[nombres_localidades] WHERE nombre = @localidad) 
         INSERT INTO [referencias].[nombres_localidades] (nombre) VALUES (@localidad)
     ELSE
-        UPDATE [referencias].[nombres_localidades] SET nombre = @localidad WHERE nombre = @localidad COLLATE Latin1_General_CS_AS
+        UPDATE [referencias].[nombres_localidades] SET nombre = @localidad WHERE nombre = @localidad
 
-    SELECT @outIdLocalidad = id_localidad, @outNombre = nombre FROM [referencias].[nombres_localidades] WHERE nombre = @localidad COLLATE Latin1_General_CS_AS
+    SELECT @outIdLocalidad = id_localidad, @outNombre = nombre FROM [referencias].[nombres_localidades] WHERE nombre = @localidad
     RETURN
 END;

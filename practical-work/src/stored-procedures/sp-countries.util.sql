@@ -14,7 +14,7 @@ BEGIN
         SET @id = -1;
     ELSE
     BEGIN
-        IF NOT EXISTS (SELECT 1 FROM [referencias].[nacionalidades] WHERE UPPER(TRIM(nombre)) = @nacionalidad COLLATE Latin1_General_CS_AS) 
+        IF NOT EXISTS (SELECT 1 FROM [referencias].[nacionalidades] WHERE UPPER(TRIM(nombre)) = @nacionalidad) 
             INSERT INTO [referencias].[nacionalidades] (nombre) VALUES (@nacionalidad);
 
         SELECT @id = id_nacionalidad FROM [referencias].[nacionalidades] WHERE UPPER(TRIM(nombre)) = @nacionalidad;
@@ -34,14 +34,14 @@ BEGIN
     IF NULLIF(@nacionalidad, '') IS NULL
         RETURN
 
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[paises] WHERE gentilicio = @nacionalidad COLLATE Latin1_General_CS_AS) 
+    IF NOT EXISTS (SELECT 1 FROM [referencias].[paises] WHERE gentilicio = @nacionalidad) 
         IF NULLIF(@pais, '') IS NULL
             RETURN
         ELSE
             INSERT INTO [referencias].[paises] (nombre, gentilicio) VALUES (@pais, @nacionalidad)
     ELSE
-        UPDATE [referencias].[paises] SET gentilicio = @nacionalidad WHERE gentilicio = @nacionalidad COLLATE Latin1_General_CS_AS
+        UPDATE [referencias].[paises] SET gentilicio = @nacionalidad WHERE gentilicio = @nacionalidad
 
-    SELECT @outGentilicio = gentilicio, @outIdpais = id_pais, @outNombre = nombre FROM [referencias].[paises] WHERE gentilicio = @nacionalidad COLLATE Latin1_General_CS_AS
+    SELECT @outGentilicio = gentilicio, @outIdpais = id_pais, @outNombre = nombre FROM [referencias].[paises] WHERE gentilicio = @nacionalidad
     RETURN
 END;

@@ -1,6 +1,5 @@
 - [ ] Generar casos de prueba para cada funcionalidad (opcional).
 - [ ] Otorgar el acceso a los Stored Procedures a los roles correspondientes.
-- [ ] Poner el collate a nivel de base de datos en el create database y eliminarlo de las tablas.
 - [ ] crear tablas con if exists.
 - [ ] exportar el xml como un string.
 - [ ] usar collate en las tablas temporales.

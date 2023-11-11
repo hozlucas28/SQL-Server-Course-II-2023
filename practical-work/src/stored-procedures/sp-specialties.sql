@@ -15,7 +15,7 @@ BEGIN
     IF NULLIF(@nombre, '') IS NULL
         RETURN @id
 
-    IF NOT EXISTS (SELECT 1 FROM [datos].[especialidad] WHERE UPPER(TRIM(nombre)) = @nombre COLLATE Latin1_General_CS_AS) 
+    IF NOT EXISTS (SELECT 1 FROM [datos].[especialidad] WHERE UPPER(TRIM(nombre)) = @nombre) 
         RETURN @id
 
     SELECT @id = id_especialidad FROM [datos].[especialidad] WHERE UPPER(TRIM(nombre)) = @nombre
@@ -32,9 +32,9 @@ BEGIN
     IF NULLIF(@nombre, '') IS NULL
             RETURN
         SET @nombre = UPPER(@nombre);
-        IF NOT EXISTS (SELECT 1 FROM [datos].[especialidad] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS) 
+        IF NOT EXISTS (SELECT 1 FROM [datos].[especialidad] WHERE nombre = @nombre) 
             INSERT INTO [datos].[especialidad] (nombre) VALUES (@nombre)
 
-        SELECT @outIdEspecialidad = id_especialidad FROM [datos].[especialidad] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
+        SELECT @outIdEspecialidad = id_especialidad FROM [datos].[especialidad] WHERE nombre = @nombre
         RETURN
 END;

@@ -28,8 +28,7 @@ IF EXISTS (SELECT name FROM sys.databases WHERE name = 'cure_sa')
     DROP DATABASE [cure_sa];
 GO
 
-CREATE DATABASE [cure_sa]
-    COLLATE Latin1_General_CS_AS;
+CREATE DATABASE [cure_sa] COLLATE Latin1_General_CS_AS;
 GO
 
 USE [cure_sa];

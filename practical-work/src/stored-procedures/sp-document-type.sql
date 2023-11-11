@@ -15,10 +15,10 @@ BEGIN
     ELSE 
     BEGIN
 
-        IF NOT EXISTS (SELECT 1 FROM [referencias].[tipos_documentos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS) 
+        IF NOT EXISTS (SELECT 1 FROM [referencias].[tipos_documentos] WHERE nombre = @nombre) 
             INSERT INTO [referencias].[tipos_documentos] (nombre) VALUES (@nombre);
        
-        SELECT @idTipo = id_tipo_documento FROM [referencias].[tipos_documentos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS;
+        SELECT @idTipo = id_tipo_documento FROM [referencias].[tipos_documentos] WHERE nombre = @nombre;
  
     END
 END;
@@ -34,11 +34,11 @@ BEGIN
     IF NULLIF(@nombre, '') IS NULL
         RETURN
         
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[tipos_documentos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS) 
+    IF NOT EXISTS (SELECT 1 FROM [referencias].[tipos_documentos] WHERE nombre = @nombre) 
         INSERT INTO [referencias].[tipos_documentos] (nombre) VALUES (@nombre)
     ELSE
-        UPDATE [referencias].[tipos_documentos] SET nombre = @nombre WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
+        UPDATE [referencias].[tipos_documentos] SET nombre = @nombre WHERE nombre = @nombre
 
-    SELECT @outIdTipoDocumento = id_tipo_documento, @outNombre = nombre FROM [referencias].[tipos_documentos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
+    SELECT @outIdTipoDocumento = id_tipo_documento, @outNombre = nombre FROM [referencias].[tipos_documentos] WHERE nombre = @nombre
     RETURN
 END;

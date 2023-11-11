@@ -14,7 +14,7 @@ BEGIN
         SET @id = -1;
     ELSE
     BEGIN
-        IF NOT EXISTS (SELECT 1 FROM [referencias].[generos] WHERE UPPER(TRIM(nombre)) = @nombre COLLATE Latin1_General_CS_AS) 
+        IF NOT EXISTS (SELECT 1 FROM [referencias].[generos] WHERE UPPER(TRIM(nombre)) = @nombre) 
             INSERT INTO [referencias].[generos] (nombre) VALUES (@nombre);
 
         SELECT @id = id_genero FROM [referencias].[generos] WHERE UPPER(TRIM(nombre)) = @nombre;
@@ -33,10 +33,10 @@ BEGIN
     IF NULLIF(@nombre, '') IS NULL
         RETURN
         
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[generos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS) 
+    IF NOT EXISTS (SELECT 1 FROM [referencias].[generos] WHERE nombre = @nombre) 
         INSERT INTO [referencias].[generos] (nombre) VALUES (@nombre)
     ELSE
-        UPDATE [referencias].[generos] SET nombre = @nombre WHERE nombre = @nombre COLLATE Latin1_General_CS_AS
+        UPDATE [referencias].[generos] SET nombre = @nombre WHERE nombre = @nombre
 
-    SELECT @outIdGenero = id_genero, @outNombre = nombre FROM [referencias].[generos] WHERE nombre = @nombre COLLATE Latin1_General_CS_AS;
+    SELECT @outIdGenero = id_genero, @outNombre = nombre FROM [referencias].[generos] WHERE nombre = @nombre;
 END;

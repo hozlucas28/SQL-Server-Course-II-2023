@@ -83,7 +83,7 @@ BEGIN
             id_provincia = @idProvincia,
             piso = @piso
         WHERE
-            calle_y_nro = @calleYNro COLLATE Latin1_General_CS_AS AND
+            calle_y_nro = @calleYNro AND
             id_localidad = @idLocalidad AND
             id_provincia = @idProvincia
 
@@ -98,7 +98,7 @@ BEGIN
         @piso = piso
     FROM [referencias].[direcciones]
     WHERE
-        calle_y_nro = @calleYNro COLLATE Latin1_General_CS_AS AND
+        calle_y_nro = @calleYNro AND
         id_localidad = @idLocalidad AND
         id_provincia = @idProvincia
     RETURN

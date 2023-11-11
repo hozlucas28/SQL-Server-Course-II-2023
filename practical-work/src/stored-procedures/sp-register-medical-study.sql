@@ -33,10 +33,10 @@ BEGIN
     CREATE TABLE [#EstudiosMedicos]
     (
         [id] NVARCHAR(255) PRIMARY KEY,
-        [area] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
-        [estudio] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
-        [prestador] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
-        [plan] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
+        [area] NVARCHAR(255),
+        [estudio] NVARCHAR(255),
+        [prestador] NVARCHAR(255),
+        [plan] NVARCHAR(255),
         [porcentajeCobertura] INT,
         [costo] DECIMAL(18, 2),
         [requiereAutorizacion] BIT
@@ -86,8 +86,8 @@ BEGIN
             [em].[costo],
             [em].[requiereAutorizacion]
         FROM #EstudiosMedicos [em]
-        INNER JOIN [datos].[prestadores] p ON [em].[prestador] = [p].[nombre] COLLATE Latin1_General_CS_AS
-        WHERE [p].[plan_prestador] = [em].[plan] COLLATE Latin1_General_CS_AS
+        INNER JOIN [datos].[prestadores] p ON [em].[prestador] = [p].[nombre]
+        WHERE [p].[plan_prestador] = [em].[plan]
 
         DROP TABLE #EstudiosMedicos;
     END TRY

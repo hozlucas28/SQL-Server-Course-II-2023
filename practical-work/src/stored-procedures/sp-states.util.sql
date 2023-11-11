@@ -27,10 +27,10 @@ BEGIN
     IF NULLIF(@provincia, '') IS NULL
         RETURN
 
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[nombres_provincias] WHERE nombre = UPPER(@provincia) COLLATE Latin1_General_CS_AS) 
+    IF NOT EXISTS (SELECT 1 FROM [referencias].[nombres_provincias] WHERE nombre = UPPER(@provincia)) 
         INSERT INTO [referencias].[nombres_provincias] (nombre) VALUES (UPPER(@provincia))
 
-    SELECT @outIdPais = id_pais, @outIdProvincia = id_provincia, @outNombre = nombre FROM [referencias].[nombres_provincias] WHERE nombre = UPPER(@provincia) COLLATE Latin1_General_CS_AS
+    SELECT @outIdPais = id_pais, @outIdProvincia = id_provincia, @outNombre = nombre FROM [referencias].[nombres_provincias] WHERE nombre = UPPER(@provincia)
     RETURN
 END;
 
