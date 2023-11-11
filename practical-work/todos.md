@@ -1,7 +1,5 @@
 - [ ] Generar casos de prueba para cada funcionalidad (opcional).
 - [ ] Otorgar el acceso a los Stored Procedures a los roles correspondientes.
-- [ ] crear tablas con if exists.
 - [ ] exportar el xml como un string.
-- [ ] hacer una solucion/projecto en management studio.
 - [ ] cambiar los nombres de los archivos para orden alfabetico (SP 00 nombre)
 - [ ] ver donde podemos usar indices utiles.
