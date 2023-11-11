@@ -1,5 +1,5 @@
-- [ ] Generar casos de prueba para cada funcionalidad (opcional).
-- [ ] Otorgar el acceso a los Stored Procedures a los roles correspondientes.
-- [ ] exportar el xml como un string.
-- [ ] cambiar los nombres de los archivos para orden alfabetico (SP 00 nombre)
-- [ ] ver donde podemos usar indices utiles.
+- [ ] Cambiar el nombre de los test por la siguiente nomenclatura: `<número>-<caso>.test.sql`.
+- [ ] Colocar índices.
+- [ ] Exportar el `xml` como `string`.
+- [ ] Generar los test para corroborar las consideraciones descritas en la [consigna](./README.md/#consigna).
+- [ ] Otorgar acceso granular a los roles mediante los `Stored Procedures`, aplicando principio de mínimo privilegio.
