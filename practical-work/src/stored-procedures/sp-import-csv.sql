@@ -1,4 +1,4 @@
-USE [cure_sa];
+USE [CURESA];
 GO
 
 -- Importar médicos desde un archivo CSV

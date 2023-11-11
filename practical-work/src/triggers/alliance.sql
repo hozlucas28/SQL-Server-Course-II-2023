@@ -1,4 +1,4 @@
-USE [cure_sa]
+USE [CURESA]
 GO
 
 CREATE OR ALTER TRIGGER [datos].[quitarTurnos] 

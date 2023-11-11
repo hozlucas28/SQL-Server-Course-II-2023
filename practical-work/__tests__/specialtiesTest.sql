@@ -1,4 +1,4 @@
-use cure_sa;
+use CURESA;
 
 declare @nombre varchar(50) = 'odontologia   ';
 declare @outIdEspecialidad int;
@@ -18,6 +18,6 @@ use master;
 
 
 /*
-use cure_sa;
+use CURESA;
 select * from datos.especialidad;
 */

@@ -1,5 +1,5 @@
 GO
-USE [cure_sa];
+USE [CURESA];
 
 -- Obtener el ID de una especialidad
 GO

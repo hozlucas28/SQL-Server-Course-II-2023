@@ -1,5 +1,5 @@
 GO
-USE [cure_sa];
+USE [CURESA];
 
 -- Insertar paciente
 GO

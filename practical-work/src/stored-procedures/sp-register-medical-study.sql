@@ -1,4 +1,4 @@
-USE [cure_sa]
+USE [CURESA]
 GO
 
 -- TODO: buscar la forma de que [estudio] guarde los registros con acentos

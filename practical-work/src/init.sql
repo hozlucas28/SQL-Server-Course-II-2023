@@ -4,7 +4,7 @@ GO
 -- Ver processo activos de la base de datos
 /*
     select * from sys.sysprocesses 
-    where dbid = DB_ID('cure_sa')
+    where dbid = DB_ID('CURESA')
 */
 
 -- Ver conexiones(usuarios) a la base de datos
@@ -14,21 +14,21 @@ GO
 
 -- Otra forma de saber si existe la base de datos
 /*
-    IF DB_ID('cure_sa') IS NOT NULL 
-        DROP DATABASE [cure_sa]
+    IF DB_ID('CURESA') IS NOT NULL 
+        DROP DATABASE [CURESA]
 */
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'cure_sa')
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'CURESA')
     -- Eliminar todo tipo de conexiones que impidan borrar la base de datos
-    ALTER DATABASE [cure_sa]
+    ALTER DATABASE [CURESA]
     SET SINGLE_USER
     WITH ROLLBACK IMMEDIATE
     GO
 
-    DROP DATABASE [cure_sa];
+    DROP DATABASE [CURESA];
 GO
 
-CREATE DATABASE [cure_sa] COLLATE Latin1_General_CS_AS;
+CREATE DATABASE [CURESA] COLLATE Latin1_General_CS_AS;
 GO
 
-USE [cure_sa];
+USE [CURESA];
