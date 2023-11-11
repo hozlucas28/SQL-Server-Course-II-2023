@@ -32,11 +32,11 @@ BEGIN
 
     CREATE TABLE [#EstudiosMedicos]
     (
-        [id] NVARCHAR(255) PRIMARY KEY,
-        [area] NVARCHAR(255),
-        [estudio] NVARCHAR(255),
-        [prestador] NVARCHAR(255),
-        [plan] NVARCHAR(255),
+        [id] NVARCHAR(255) COLLATE Latin1_General_CS_AS PRIMARY KEY,
+        [area] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
+        [estudio] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
+        [prestador] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
+        [plan] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
         [porcentajeCobertura] INT,
         [costo] DECIMAL(18, 2),
         [requiereAutorizacion] BIT

@@ -11,9 +11,9 @@ BEGIN
 		DROP TABLE [#MedicosImportados]
 	
 	CREATE TABLE [#MedicosImportados] (
-		apellido VARCHAR(255),
-		nombre VARCHAR(255),
-		especialidad VARCHAR(255),
+		apellido VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		nombre VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		especialidad VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		nroMatricula INT PRIMARY KEY
 	)
 
@@ -73,9 +73,9 @@ BEGIN
 		DROP TABLE [#PrestadoresImportados]
 	
 	CREATE TABLE [#PrestadoresImportados] (
-		nombre VARCHAR(255), 
-		planPrestador VARCHAR(255),
-		campoVacio CHAR,
+		nombre VARCHAR(255) COLLATE Latin1_General_CS_AS, 
+		planPrestador VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		campoVacio CHAR COLLATE Latin1_General_CS_AS,
 	)
 
 	EXEC [archivos].[importarDatosCSV] 
@@ -109,58 +109,58 @@ BEGIN
 		DROP TABLE [#PacientesImportados]
 
     CREATE TABLE [#PacientesImportados] (
-		nombre VARCHAR(255),
-		apellido VARCHAR(255),
+		nombre VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		apellido VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		fechaNacimiento VARCHAR(20),
-		tipoDocumento VARCHAR(20),
+		tipoDocumento VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		nroDocumento INT PRIMARY KEY,
-		sexo VARCHAR(20),
-		genero VARCHAR(20),
+		sexo VARCHAR(20) COLLATE Latin1_General_CS_AS,
+		genero VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		telefono VARCHAR(40),
-		nacionalidad VARCHAR(50),
-		email VARCHAR(100),
-		calleYNro VARCHAR(255),
-		localidad VARCHAR(255),
-		provincia VARCHAR(255)
+		nacionalidad VARCHAR(50) COLLATE Latin1_General_CS_AS,
+		email VARCHAR(100) COLLATE Latin1_General_CS_AS,
+		calleYNro VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		localidad VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		provincia VARCHAR(255) COLLATE Latin1_General_CS_AS
 	)
 	
 	IF OBJECT_ID('tempdb..#PacientesImportadosFormateados') IS NOT NULL
 		DROP TABLE [#PacientesImportadosFormateados]
 	
 	CREATE TABLE [#PacientesImportadosFormateados] (
-		nombre VARCHAR(255),
-		apellido VARCHAR(255),
+		nombre VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		apellido VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		fechaNacimiento DATE,
-		tipoDocumento VARCHAR(20),
+		tipoDocumento VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		nroDocumento INT PRIMARY KEY,
-		sexo VARCHAR(20),
-		genero VARCHAR(20),
+		sexo VARCHAR(20) COLLATE Latin1_General_CS_AS,
+		genero VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		telefono VARCHAR(40),
-		nacionalidad VARCHAR(50),
-		email VARCHAR(100),
-		calleYNro VARCHAR(255),
-		localidad VARCHAR(255),
-		provincia VARCHAR(255)
+		nacionalidad VARCHAR(50) COLLATE Latin1_General_CS_AS,
+		email VARCHAR(100) COLLATE Latin1_General_CS_AS,
+		calleYNro VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		localidad VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		provincia VARCHAR(255) COLLATE Latin1_General_CS_AS
 	)
 	
 	IF OBJECT_ID('tempdb..#RegistrosInvalidos') IS NOT NULL
 		DROP TABLE [#RegistrosInvalidos]
 	
 	CREATE TABLE [#RegistrosInvalidos] (
-		nombre VARCHAR(255),
-		apellido VARCHAR(255),
+		nombre VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		apellido VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		fechaNacimiento DATE,
-		tipoDocumento VARCHAR(20),
+		tipoDocumento VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		nroDocumento INT,
-		sexo VARCHAR(20),
-		genero VARCHAR(20),
+		sexo VARCHAR(20) COLLATE Latin1_General_CS_AS,
+		genero VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		telefono VARCHAR(40),
-		nacionalidad VARCHAR(50),
-		email VARCHAR(100),
-		calleYNro VARCHAR(255),
-		localidad VARCHAR(255),
-		provincia VARCHAR(255),
-		error_desc VARCHAR(255)
+		nacionalidad VARCHAR(50) COLLATE Latin1_General_CS_AS,
+		email VARCHAR(100) COLLATE Latin1_General_CS_AS,
+		calleYNro VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		localidad VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		provincia VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		error_desc VARCHAR(255) COLLATE Latin1_General_CS_AS
 	)
 
 	EXEC [archivos].[importarDatosCSV] 
@@ -343,10 +343,10 @@ BEGIN
 		DROP TABLE [#SedesImportadas]
 
 	CREATE TABLE [#SedesImportadas] (
-		nombreSede VARCHAR(255),
-		calleYNro VARCHAR (255),
-		localidad VARCHAR (255),
-		provincia VARCHAR (255)
+		nombreSede VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		calleYNro VARCHAR (255) COLLATE Latin1_General_CS_AS,
+		localidad VARCHAR (255) COLLATE Latin1_General_CS_AS,
+		provincia VARCHAR (255) COLLATE Latin1_General_CS_AS
 	)
 
 	EXEC [archivos].[importarDatosCSV] 
