@@ -42,7 +42,7 @@ BEGIN
         [requiereAutorizacion] BIT
     )
 
-    INSERT INTO #EstudiosMedicos(
+    INSERT INTO [#EstudiosMedicos](
         [id],
         [area],
         [estudio],
@@ -67,14 +67,14 @@ BEGIN
     BEGIN TRY
         INSERT INTO [datos].[estudiosValidos]
         (
-            id_estudioValido,
-            area,
-            estudio,
-            id_prestador,
+            [id_estudioValido],
+            [area],
+            [estudio],
+            [id_prestador],
             [plan],
-            porcentajeCobertura,
-            costo,
-            requiereAutorizacion
+            [porcentajeCobertura],
+            [costo],
+            [requiereAutorizacion]
         )
         SELECT  
             [em].[id],
@@ -85,11 +85,11 @@ BEGIN
             [em].[porcentajeCobertura],
             [em].[costo],
             [em].[requiereAutorizacion]
-        FROM #EstudiosMedicos [em]
+        FROM [#EstudiosMedicos] [em]
         INNER JOIN [datos].[prestadores] p ON [em].[prestador] = [p].[nombre]
         WHERE [p].[plan_prestador] = [em].[plan]
 
-        DROP TABLE #EstudiosMedicos;
+        DROP TABLE [#EstudiosMedicos];
     END TRY
     BEGIN CATCH
         DECLARE @errorMessage NVARCHAR(1000)

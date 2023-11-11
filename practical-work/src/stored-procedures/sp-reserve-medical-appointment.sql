@@ -52,30 +52,30 @@ BEGIN
 	
 	IF @@ROWCOUNT > 0
 	BEGIN
-		IF EXISTS (SELECT 1 FROM [#disponibilidad] WHERE horaTurno IS NOT NULL AND idTipoTurno = @idTipoTurno AND idEstadoTurno = 1)
-			SELECT @horaTurnoAnterior = max(horaTurno) 
+		IF EXISTS (SELECT 1 FROM [#disponibilidad] WHERE [horaTurno] IS NOT NULL AND [idTipoTurno] = @idTipoTurno AND [idEstadoTurno] = 1)
+			SELECT @horaTurnoAnterior = max([horaTurno]) 
 			FROM [#disponibilidad] 
-			WHERE horaTurno < @hora AND idTipoTurno = @idTipoTurno AND idEstadoTurno = @idTurnoPendiente
+			WHERE [horaTurno] < @hora AND [idTipoTurno] = @idTipoTurno AND [idEstadoTurno] = @idTurnoPendiente
 
 		IF @horaTurnoAnterior IS NULL OR DATEADD(MINUTE, 15, @horaTurnoAnterior) <= @hora
 		BEGIN
-			SELECT TOP 1 @idMedico = id_medico, 
-				@idSede = id_sede, 
-				@idEspecialidad = id_especialidad, 
-				@idDireccionAtencion = direccion,
-				@idDiasXSede = id_dias_x_sede
+			SELECT TOP 1 @idMedico = [id_medico], 
+				@idSede = [id_sede], 
+				@idEspecialidad = [id_especialidad], 
+				@idDireccionAtencion = [direccion],
+				@idDiasXSede = [id_dias_x_sede]
 			FROM [#disponibilidad]
 
 			INSERT INTO [datos].[reservas_turnos_medicos] (
-                fecha,
-                hora,
-                id_medico,
-                id_especialidad,
-                id_direccion_atencion,
-                id_paciente,
-                id_dias_x_sede,
-                id_tipo_turno,
-                id_estado_turno
+                [fecha],
+                [hora],
+                [id_medico],
+                [id_especialidad],
+                [id_direccion_atencion],
+                [id_paciente],
+                [id_dias_x_sede],
+                [id_tipo_turno],
+                [id_estado_turno]
             ) VALUES (
                 @fecha,
                 @hora,
@@ -107,14 +107,14 @@ BEGIN
     IF @estado = 'CANCELADO'
 		RETURN
 
-    SELECT @idEstado = id_estado 
+    SELECT @idEstado = [id_estado] 
 	FROM [datos].[estados_turnos] 
-	WHERE nombre = @estado
+	WHERE [nombre] = @estado
 
     IF @idEstado IS NOT NULL
         UPDATE [datos].[reservas_turnos_medicos] 
-		SET id_estado_turno = @idEstado 
-		WHERE id_turno = @idTurno
+		SET [id_estado_turno] = @idEstado 
+		WHERE [id_turno] = @idTurno
 END;
 
 -- Cancelar turno médico
@@ -125,11 +125,11 @@ AS
 BEGIN
     DECLARE @idEstado INT
 
-    SELECT @idEstado = id_estado 
+    SELECT @idEstado = [id_estado] 
 	FROM [datos].[estados_turnos] 
-	WHERE nombre = 'CANCELADO';
+	WHERE [nombre] = 'CANCELADO';
 
     UPDATE [datos].[reservas_turnos_medicos] 
-	SET id_estado_turno = @idEstado 
-	WHERE id_turno = @idTurno;
+	SET [id_estado_turno] = @idEstado 
+	WHERE [id_turno] = @idTurno;
 END;

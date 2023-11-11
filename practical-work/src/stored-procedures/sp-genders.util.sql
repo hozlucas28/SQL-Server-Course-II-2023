@@ -14,10 +14,10 @@ BEGIN
         SET @id = -1;
     ELSE
     BEGIN
-        IF NOT EXISTS (SELECT 1 FROM [referencias].[generos] WHERE UPPER(TRIM(nombre)) = @nombre) 
-            INSERT INTO [referencias].[generos] (nombre) VALUES (@nombre);
+        IF NOT EXISTS (SELECT 1 FROM [referencias].[generos] WHERE UPPER(TRIM([nombre])) = @nombre) 
+            INSERT INTO [referencias].[generos] ([nombre]) VALUES (@nombre);
 
-        SELECT @id = id_genero FROM [referencias].[generos] WHERE UPPER(TRIM(nombre)) = @nombre;
+        SELECT @id = [id_genero] FROM [referencias].[generos] WHERE UPPER(TRIM([nombre])) = @nombre;
     END
 END;
 
@@ -33,10 +33,10 @@ BEGIN
     IF NULLIF(@nombre, '') IS NULL
         RETURN
         
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[generos] WHERE nombre = @nombre) 
-        INSERT INTO [referencias].[generos] (nombre) VALUES (@nombre)
+    IF NOT EXISTS (SELECT 1 FROM [referencias].[generos] WHERE [nombre] = @nombre) 
+        INSERT INTO [referencias].[generos] ([nombre]) VALUES (@nombre)
     ELSE
-        UPDATE [referencias].[generos] SET nombre = @nombre WHERE nombre = @nombre
+        UPDATE [referencias].[generos] SET [nombre] = @nombre WHERE [nombre] = @nombre
 
-    SELECT @outIdGenero = id_genero, @outNombre = nombre FROM [referencias].[generos] WHERE nombre = @nombre;
+    SELECT @outIdGenero = [id_genero], @outNombre = [nombre] FROM [referencias].[generos] WHERE [nombre] = @nombre;
 END;

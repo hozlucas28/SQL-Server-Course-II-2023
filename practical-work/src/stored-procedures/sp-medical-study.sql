@@ -11,7 +11,7 @@ CREATE OR ALTER PROCEDURE [datos].[registrarEstudio]
 AS
 BEGIN
     BEGIN TRY
-        INSERT INTO [datos].[estudios] (nombre_estudio, id_paciente, autorizado, documento_resultado, fecha, imagen_resultado)
+        INSERT INTO [datos].[estudios] ([nombre_estudio], [id_paciente], [autorizado], [documento_resultado], [fecha], [imagen_resultado])
         VALUES (@nombre_estudio, @id_paciente, @autorizado, @documento_resultado, @fecha, @imagen_resultado);
     END TRY
     BEGIN CATCH
@@ -35,13 +35,13 @@ AS
 BEGIN
     BEGIN TRY
         UPDATE [datos].[estudios]
-        SET nombre_estudio = @nombre_estudio,
-            id_paciente = @id_paciente,
-            autorizado = @autorizado,
-            documento_resultado = @documento_resultado,
-            fecha = @fecha,
-            imagen_resultado = @imagen_resultado
-        WHERE id_estudio = @id_estudio;
+        SET [nombre_estudio] = @nombre_estudio,
+            [id_paciente] = @id_paciente,
+            [autorizado] = @autorizado,
+            [documento_resultado] = @documento_resultado,
+            [fecha] = @fecha,
+            [imagen_resultado] = @imagen_resultado
+        WHERE [id_estudio] = @id_estudio;
     END TRY
     BEGIN CATCH
         DECLARE @errorMessage NVARCHAR(1000);
@@ -59,8 +59,8 @@ AS
 BEGIN
     BEGIN TRY
         UPDATE [datos].[estudios]
-        SET autorizado = 0
-        WHERE id_estudio = @id_estudio;
+        SET [autorizado] = 0
+        WHERE [id_estudio] = @id_estudio;
     END TRY
     BEGIN CATCH
         DECLARE @errorMessage NVARCHAR(1000);

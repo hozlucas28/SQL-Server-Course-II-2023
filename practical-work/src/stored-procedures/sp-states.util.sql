@@ -9,10 +9,10 @@ CREATE OR ALTER PROCEDURE [referencias].[obtenerOInsertarIdProvincia]
 AS
 BEGIN
     SET @provincia  = UPPER (@provincia)
-    IF NOT EXISTS (SELECT 1 FROM referencias.nombres_provincias WHERE nombre = @provincia)
-        INSERT INTO referencias.nombres_provincias (nombre) VALUES (@provincia);
+    IF NOT EXISTS (SELECT 1 FROM [referencias].[nombres_provincias] WHERE [nombre] = @provincia)
+        INSERT INTO [referencias].[nombres_provincias] ([nombre]) VALUES (@provincia);
 
-	SELECT @idProvincia = id_provincia FROM referencias.nombres_provincias WHERE nombre = @provincia;
+	SELECT @idProvincia = [id_provincia] FROM [referencias].[nombres_provincias] WHERE [nombre] = @provincia;
 END;
 
 -- Actualizar/Insertar una provincia
@@ -27,10 +27,10 @@ BEGIN
     IF NULLIF(@provincia, '') IS NULL
         RETURN
 
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[nombres_provincias] WHERE nombre = UPPER(@provincia)) 
-        INSERT INTO [referencias].[nombres_provincias] (nombre) VALUES (UPPER(@provincia))
+    IF NOT EXISTS (SELECT 1 FROM [referencias].[nombres_provincias] WHERE [nombre] = UPPER(@provincia)) 
+        INSERT INTO [referencias].[nombres_provincias] ([nombre]) VALUES (UPPER(@provincia))
 
-    SELECT @outIdPais = id_pais, @outIdProvincia = id_provincia, @outNombre = nombre FROM [referencias].[nombres_provincias] WHERE nombre = UPPER(@provincia)
+    SELECT @outIdPais = [id_pais], @outIdProvincia = [id_provincia], @outNombre = [nombre] FROM [referencias].[nombres_provincias] WHERE [nombre] = UPPER(@provincia)
     RETURN
 END;
 

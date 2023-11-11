@@ -13,19 +13,19 @@ BEGIN
     DECLARE @idProvincia INT;
     DECLARE @idLocalidad INT;
 
-	EXEC referencias.obtenerOInsertarIdProvincia @Provincia, @IdProvincia OUTPUT;
-	EXEC referencias.obtenerOInsertarIdLocalidad @Localidad,@IdProvincia, @IdLocalidad OUTPUT;
+	EXEC [referencias].[obtenerOInsertarIdProvincia] @Provincia, @IdProvincia OUTPUT;
+	EXEC [referencias].[obtenerOInsertarIdLocalidad] @Localidad,@IdProvincia, @IdLocalidad OUTPUT;
 
-	IF NOT EXISTS (SELECT 1 FROM referencias.direcciones 
-					WHERE calle_y_nro = @calleYNro
-                    AND id_localidad = @IdLocalidad 
-                    AND id_provincia = @IdProvincia)
+	IF NOT EXISTS (SELECT 1 FROM [referencias].[direcciones] 
+					WHERE [calle_y_nro] = @calleYNro
+                    AND [id_localidad] = @IdLocalidad 
+                    AND [id_provincia] = @IdProvincia)
 
-        INSERT INTO referencias.direcciones (calle_y_nro,id_localidad,id_provincia) 
+        INSERT INTO [referencias].[direcciones] ([calle_y_nro],[id_localidad],[id_provincia]) 
 		VALUES (@calleYNro,@IdLocalidad,@IdProvincia);
 
-	SELECT @idDireccion = id_direccion FROM referencias.direcciones 
-	WHERE calle_y_nro = @calleYNro AND id_localidad = @IdLocalidad AND id_provincia = @IdProvincia;
+	SELECT @idDireccion = [id_direccion] FROM [referencias].[direcciones] 
+	WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @IdLocalidad AND [id_provincia] = @IdProvincia;
 END;
 
 -- Actualizar/Insertar una dirección
@@ -53,16 +53,16 @@ BEGIN
     IF NULLIF(@calleYNro, '') IS NULL OR @idLocalidad IS NULL OR @idProvincia IS NULL
         RETURN
 
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[direcciones] WHERE calle_y_nro = @calleYNro AND id_localidad = @idLocalidad AND id_provincia = @idProvincia)
+    IF NOT EXISTS (SELECT 1 FROM [referencias].[direcciones] WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @idLocalidad AND [id_provincia] = @idProvincia)
         INSERT INTO [referencias].[direcciones] (
-            calle_y_nro,
-            cod_postal,
-            departamento,
-            id_direccion,
-            id_localidad,
-            id_pais,
-            id_provincia,
-            piso
+            [calle_y_nro],
+            [cod_postal],
+            [departamento],
+            [id_direccion],
+            [id_localidad],
+            [id_pais],
+            [id_provincia],
+            [piso]
         ) VALUES (
             @calleYNro,
             @codPostal,
@@ -75,31 +75,31 @@ BEGIN
         )
     ELSE
         UPDATE [referencias].[direcciones] SET
-            calle_y_nro = @calleYNro,
-            cod_postal = @codPostal,
-            departamento = @departamento,
-            id_localidad = @idLocalidad,
-            id_pais = @idPais,
-            id_provincia = @idProvincia,
-            piso = @piso
+            [calle_y_nro] = @calleYNro,
+            [cod_postal] = @codPostal,
+            [departamento] = @departamento,
+            [id_localidad] = @idLocalidad,
+            [id_pais] = @idPais,
+            [id_provincia] = @idProvincia,
+            [piso] = @piso
         WHERE
-            calle_y_nro = @calleYNro AND
-            id_localidad = @idLocalidad AND
-            id_provincia = @idProvincia
+            [calle_y_nro] = @calleYNro AND
+            [id_localidad] = @idLocalidad AND
+            [id_provincia] = @idProvincia
 
     SELECT
-        @calleYNro = calle_y_nro,
-        @codPostal = cod_postal,
-        @departamento = departamento,
-        @idDireccion = id_direccion,
-        @idLocalidad = id_localidad,
-        @idPais = id_pais,
-        @idProvincia = id_provincia,
-        @piso = piso
+        @calleYNro = [calle_y_nro],
+        @codPostal = [cod_postal],
+        @departamento = [departamento],
+        @idDireccion = [id_direccion],
+        @idLocalidad = [id_localidad],
+        @idPais = [id_pais],
+        @idProvincia = [id_provincia],
+        @piso = [piso]
     FROM [referencias].[direcciones]
     WHERE
-        calle_y_nro = @calleYNro AND
-        id_localidad = @idLocalidad AND
-        id_provincia = @idProvincia
+        [calle_y_nro] = @calleYNro AND
+        [id_localidad] = @idLocalidad AND
+        [id_provincia] = @idProvincia
     RETURN
 END;
