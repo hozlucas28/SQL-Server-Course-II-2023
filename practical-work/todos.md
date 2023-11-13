@@ -1,5 +1,14 @@
-- [ ] Cambiar el nombre de los test por la siguiente nomenclatura: `<número>-<caso>.test.sql`.
+- [ ] Cambiar el nombre de los test por la siguiente nomenclatura: `test-<caso>.sql`.
 - [ ] Colocar índices.
 - [x] Exportar el `xml` como `string`.
+- [ ] hacer que constraints sea ejecutable mas de una vez
 - [ ] Generar los test para corroborar las consideraciones descritas en la [consigna](./README.md/#consigna).
 - [ ] Otorgar acceso granular a los roles mediante los `Stored Procedures`, aplicando principio de mínimo privilegio.
+- [ ] comentar cada trozo del codigo
+- [ ] mapear los sps de forma logica para los roles y permisos 
+- [ ] El archivo .sql con el script debe incluir comentarios donde consten este enunciado, la fecha de entrega, número de grupo, nombre de la materia, nombres y DNI de los alumnos.
+- [ ] Los estudios clínicos son ingresados al sistema por el técnico encargado de realizar el estudio, una vez finalizado el estudio (en el caso de las imágenes) y en el caso de los laboratorios cuando el mismo se encuentre terminado.
+- [ ] Los turnos para atención médica tienen como estado inicial disponible, según el médico, la especialidad y la sede.
+- [ ] testear alianza comercial 
+- [ ] Los estudios clínicos deben ser autorizados, e indicar si se cubre el costo completo del mismo o solo un porcentaje. El sistema de Cure se comunica con el servicio de la prestadora, se le envía el código del estudio, el dni del paciente y el plan; el sistema de la prestadora informa si está autorizado o no y el importe a facturarle al paciente.
+- [ ] ver como arreglar la importacion del json, parece que no esta codificado como UTF16 lo que genera problemas, ver como importar con una codificacion especifica.
