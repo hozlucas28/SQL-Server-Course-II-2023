@@ -1,7 +1,7 @@
 USE [master];
 GO
 
--- Ver processo activos de la base de datos
+-- Ver procesos activos de la base de datos
 /*
     select * from sys.sysprocesses 
     where dbid = DB_ID('CURESA')

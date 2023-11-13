@@ -1,5 +1,5 @@
 - [ ] Cambiar el nombre de los test por la siguiente nomenclatura: `<número>-<caso>.test.sql`.
 - [ ] Colocar índices.
-- [ ] Exportar el `xml` como `string`.
+- [x] Exportar el `xml` como `string`.
 - [ ] Generar los test para corroborar las consideraciones descritas en la [consigna](./README.md/#consigna).
 - [ ] Otorgar acceso granular a los roles mediante los `Stored Procedures`, aplicando principio de mínimo privilegio.
