@@ -32,7 +32,10 @@ ELSE
 EXEC [datos].[registrarTurnoMedico] @idPaciente, @fecha, @horaTurno2, @nombreMedico, 
                             @apellidoMedico, @especialidad,@nombreSede, @tipoTurno, @idTurno OUTPUT;
 
-IF @idTurno IS NULL
+IF @idTurno = -1
     PRINT '+PASO CASO 2 ID: ' + CAST(@idTurno AS VARCHAR)
 ELSE
-    PRINT '-NO PASO CASO 2'
+    PRINT '-NO PASO CASO 2' 
+
+
+delete from datos.reservas_turnos_medicos;

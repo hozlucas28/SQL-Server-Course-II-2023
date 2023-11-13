@@ -87,6 +87,8 @@ BEGIN
                 @idTipoTurno,
                 @idTurnoPendiente
             )
+            SELECT @idTurno = id_turno FROM [datos].[reservas_turnos_medicos] 
+            WHERE @idMedico = id_medico AND @fecha = fecha AND @hora = hora AND @idPaciente = id_paciente;
 		END
 		ELSE
 			PRINT '- No se pudo registrar el turno ( sin disponibilidad )';
