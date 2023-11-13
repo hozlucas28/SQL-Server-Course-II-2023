@@ -13,7 +13,7 @@ BEGIN
 
 	IF @fechaInicio > @fechaFin 
 	BEGIN	
-		print("Fecha inicio mayor a fecha fin.")
+		PRINT('Fecha inicio mayor a fecha fin.');
 		RETURN;
 	END
 

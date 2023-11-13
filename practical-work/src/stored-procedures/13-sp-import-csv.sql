@@ -18,7 +18,7 @@ BEGIN
 	)
 
 	EXEC [archivos].[importarDatosCSV] 
-		@tablaDestino = '[#MedicosImportados]', 
+		@tablaDestino = '#MedicosImportados', 
 		@rutaArchivo = @rutaArchivo, 
 		@delimitadorCampos = @separador
 
@@ -51,7 +51,7 @@ BEGIN
 		EXEC [datos].[insertarMedico] 
 			@nombre, 
 			@apellido, 
-			@idEspecialidad, 
+			@especialidad, 
 			@nroMatricula;
 
 		DELETE TOP(1) FROM [#MedicosImportados]
@@ -79,7 +79,7 @@ BEGIN
 	)
 
 	EXEC [archivos].[importarDatosCSV] 
-		@tablaDestino = '[#PrestadoresImportados]', 
+		@tablaDestino = '#PrestadoresImportados', 
 		@rutaArchivo = @rutaArchivo, 
 		@delimitadorCampos = @separador
 
@@ -164,7 +164,7 @@ BEGIN
 	)
 
 	EXEC [archivos].[importarDatosCSV] 
-		@tablaDestino = '[#PacientesImportados]', 
+		@tablaDestino = '#PacientesImportados', 
 		@rutaArchivo = @rutaArchivo, 
 		@delimitadorCampos = @separador;
 	
