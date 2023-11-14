@@ -40,55 +40,84 @@ CREATE ROLE [Personal Técnico Clínico];
 GO
 
 /* ---------------------------- ASIGNAR PERMISOS ---------------------------- */
-
--- Médico
-GRANT SELECT ON [datos].[dias_x_sede] TO [Médico];
-GRANT SELECT ON [datos].[medicos] TO [Médico]; -- Limitar el accionar a sus datos a través de SP.
-GRANT SELECT ON [datos].[pacientes] TO [Médico]; -- Limitar el accionar a sus pacientes a través de SP.
-GRANT SELECT ON [datos].[reservas_turnos_medicos] TO [Médico];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estudios] TO [Médico]; -- Limitar el accionar a sus pacientes a través de SP.
-
--- Paciente
-GRANT SELECT ON [datos].[reservas_turnos_medicos] TO [Paciente]; -- Limitar el accionar a sus datos a través de SP.
-GRANT SELECT, UPDATE ON [datos].[pacientes] TO [Paciente]; -- Limitar el accionar a sus datos a través de SP.
-GRANT SELECT, UPDATE ON [datos].[usuarios] TO [Paciente]; -- Limitar el accionar a sus datos a través de SP.
-
--- Administrador General
-GRANT SELECT, INSERT, UPDATE, DELETE ON [referencias].[generos] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [referencias].[paises] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [referencias].[nombres_provincias] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [referencias].[nombres_localidades] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [referencias].[direcciones] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [referencias].[tipos_documentos] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[pacientes] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estudios] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[usuarios] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[coberturas] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[prestadores] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[reservas_turnos_medicos] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estados_turnos] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[tipos_turnos] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[dias_x_sede] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[sede_de_atencion] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[medicos] TO [Administrador General];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[especialidad] TO [Administrador General];
-
--- Personal Administrativo
-GRANT SELECT ON [datos].[coberturas] TO [Personal Administrativo];
-GRANT SELECT ON [datos].[estudios] TO [Personal Administrativo];
-GRANT SELECT ON [datos].[prestadores] TO [Personal Administrativo];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[dias_x_sede] TO [Personal Administrativo];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[especialidad] TO [Personal Administrativo];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estados_turnos] TO [Personal Administrativo];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[medicos] TO [Personal Administrativo];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[reservas_turnos_medicos] TO [Personal Administrativo];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[sede_de_atencion] TO [Personal Administrativo];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[tipos_turnos] TO [Personal Administrativo];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [referencias].[direcciones] TO [Personal Administrativo];
-
--- Personal Técnico Clínico
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estudios] TO [Personal Técnico Clínico];
-GRANT SELECT, INSERT, UPDATE, DELETE ON [datos].[estudiosValidos] TO [Personal Técnico Clínico];
-GRANT SELECT ON [archivos].[importarEstudiosJSON] TO [Personal Técnico Clínico];
-
 -- GRANT EXECUTE ON [Nombre del SP] TO [Nombre del rol];
+
+
+-- SP Personal Administrativo
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdNacionalidad] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarNacionalidad] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdLocalidad] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[referencias].[insertarLocalidad] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdProvincia] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarProvincias] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdDireccion] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarDireccion] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[utils].[obtenerCharSexo] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdGenero] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarGenero] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOIsertarIdTipoDocumento] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[referencias].[insertarTipoDocumento] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[datos].[insertarPaciente] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarPaciente] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[datos].[borrarPaciente] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[datos].[existePaciente] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[datos].[obtenerIdEspecialidad] TO [Personal Administrativo];
+
+-- SP Administrador General
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdNacionalidad] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarNacionalidad] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdLocalidad] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[referencias].[insertarLocalidad] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdProvincia] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarProvincias] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdDireccion] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarDireccion] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[utils].[obtenerCharSexo] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdGenero] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarGenero] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOIsertarIdTipoDocumento] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[referencias].[insertarTipoDocumento] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[insertarPaciente] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarPaciente] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[borrarPaciente] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[existePaciente] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[obtenerIdEspecialidad] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarContraseña] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[insertarMedico] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[eliminarMedico] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[obtenerIdEspecialidad] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[guardarEspecialidad] TO [Administrador General];
+
+-- SP Personal Tecnico Clinico
+GRANT EXECUTE ON OBJECT::[archivos].[importarDatosCSV] TO [Personal Técnico Clínico];
+GRANT EXECUTE ON OBJECT::[archivos].[importarMedicosCSV] TO [Personal Técnico Clínico];
+GRANT EXECUTE ON OBJECT::[archivos].[importarPrestadoresCSV] TO [Personal Técnico Clínico];
+GRANT EXECUTE ON OBJECT::[archivos].[archivos].[importarPacientesCSV] TO [Personal Técnico Clínico];
+GRANT EXECUTE ON OBJECT::[archivos].[importarSedesCSV] TO [Personal Técnico Clínico];
+GRANT EXECUTE ON OBJECT::[archivos].[exportarTurnosAtendidosXML] TO [Personal Técnico Clínico];
+GRANT EXECUTE ON OBJECT::[archivos].[importarEstudiosJSON] TO [Personal Técnico Clínico];
+
+-- SP Paciente
+GRANT EXECUTE ON OBJECT::[datos].[registrarTurnoMedico] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarTurnoMedico] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[datos].[cancelarTurnoMedico] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdNacionalidad] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarNacionalidad] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdLocalidad] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[insertarLocalidad] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdProvincia] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarProvincias] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdDireccion] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarDireccion] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[utils].[obtenerCharSexo] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdGenero] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[actualizarGenero] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[obtenerOIsertarIdTipoDocumento] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[referencias].[insertarTipoDocumento] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[datos].[insertarPaciente] TO [Paciente];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarPaciente] TO [Paciente];
+
+-- SP Medico
+GRANT EXECUTE ON OBJECT::[datos].[registrarEstudio] TO [Médico];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarEstudio] TO [Médico];
+GRANT EXECUTE ON OBJECT::[datos].[eliminarEstudio] TO [Médico];
