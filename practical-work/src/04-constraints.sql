@@ -1,8 +1,34 @@
 USE [CURESA];
 GO
 
+/* --------------------------- Ver check constraints --------------------------- */
 
-/* --------------------------- Crear Restricciones -------------------------- */
+/*
+SELECT
+name, definition 
+FROM
+    sys.check_constraints
+*/
+
+
+/* --------------------------- Ver foreign keys --------------------------- */
+
+/*
+SELECT 
+   OBJECT_NAME(f.parent_object_id) AS 'Table name',
+   COL_NAME(fc.parent_object_id,fc.parent_column_id) AS 'Field name',
+   delete_referential_action_desc AS 'On Delete'
+FROM sys.foreign_keys AS f,
+     sys.foreign_key_columns AS fc,
+     sys.tables t 
+WHERE f.OBJECT_ID = fc.constraint_object_id
+AND t.OBJECT_ID = fc.referenced_object_id
+ORDER BY 1
+*/
+
+
+/* --------------------------- Crear Restricciones --------------------------- */
+
 
 -- Géneros
 ALTER TABLE [referencias].[generos] ADD CONSTRAINT [pk_id_genero] PRIMARY KEY ([id_genero]);
@@ -58,7 +84,7 @@ ALTER TABLE [datos].[estudiosValidos] ADD CONSTRAINT [pk_id_estudioValido] PRIMA
 
 -- Usuarios
 ALTER TABLE [datos].[usuarios] ADD CONSTRAINT [pk_id_usuario] PRIMARY KEY ([id_usuario]),
-    CONSTRAINT [fk_id_paciente_usuario] FOREIGN KEY ([id_paciente]) REFERENCES [datos].[pacientes] ([id_paciente]);
+    CONSTRAINT [fk_id_paciente_usuario] FOREIGN KEY ([id_paciente]) REFERENCES [datos].[pacientes] ([id_paciente]) ON DELETE CASCADE;
 
 -- Sedes de atención
 ALTER TABLE [datos].[sede_de_atencion] ADD CONSTRAINT [pk_id_medico_sede_de_atención] PRIMARY KEY ([id_sede]),
