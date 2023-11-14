@@ -4,27 +4,27 @@ GO
 -- Pacientes
 
 EXEC [archivos].importarPacientesCSV 
-    @rutaArchivo = "C:\importar\Pacientes.csv";
+    @rutaArchivo = "..\dataset\Pacientes.csv";
 
 -- Prestadores
 
 EXEC [archivos].importarPrestadoresCSV 
-    @rutaArchivo = "C:\importar\Prestador.csv"
+    @rutaArchivo = "..\dataset\Prestador.csv"
 
 -- Medicos
 
 EXEC [archivos].[importarMedicosCSV]
-    @rutaArchivo = "C:\importar\Medicos.csv";
+    @rutaArchivo = "..\dataset\Medicos.csv";
 
 -- Sedes
 
 EXEC [archivos].importarSedesCSV
-    @rutaArchivo = "C:\importar\Sedes.csv";
+    @rutaArchivo = "..\dataset\Sedes.csv";
 
 -- Estudios Validos
 
 EXEC [archivos].[importarEstudiosJSON]
-    @rutaArchivo = "C:\importar\Centro_Autorizaciones.Estudios clinicos.json";
+    @rutaArchivo = "..\Centro_Autorizaciones.Estudios clinicos.json";
 
 -- Borrar
 
