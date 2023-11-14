@@ -1,6 +1,7 @@
 USE [CURESA];
 GO
 
+
 /* ---------------------------- Eliminar Índices ---------------------------- */
 
 IF EXISTS (SELECT * FROM sys.indexes WHERE name = 'index_id_genero')

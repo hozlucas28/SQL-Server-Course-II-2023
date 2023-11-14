@@ -1,6 +1,7 @@
 USE [CURESA];
 GO
 
+
 /* ----------------------------- Eliminar Tablas ---------------------------- */
 
 IF OBJECT_ID('[referencias].[direcciones]', 'U') IS NOT NULL

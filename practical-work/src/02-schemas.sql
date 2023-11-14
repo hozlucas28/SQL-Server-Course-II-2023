@@ -1,6 +1,7 @@
 USE [CURESA];
 GO
 
+
 /* ---------------------------- Eliminar Esquemas --------------------------- */
 
 IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'archivos')

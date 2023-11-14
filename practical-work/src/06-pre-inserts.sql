@@ -1,6 +1,7 @@
 USE [CURESA];
 GO
 
+
 /* -------------------------- Eliminar Inserciones -------------------------- */
 
 DELETE FROM [datos].[tipos_turnos];

@@ -1,6 +1,7 @@
 USE [CURESA];
 GO
 
+
 /* --------------------------- Crear Restricciones -------------------------- */
 
 -- Géneros

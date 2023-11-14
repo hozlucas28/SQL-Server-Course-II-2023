@@ -1,6 +1,7 @@
 USE [CURESA];
 GO
 
+
 /* ----------------------------- Eliminar Roles ----------------------------- */
 
 IF EXISTS (SELECT * FROM sys.database_principals WHERE name = 'Médico' AND type_desc = 'DATABASE_ROLE')
