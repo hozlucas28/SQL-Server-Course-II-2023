@@ -66,7 +66,7 @@ ALTER TABLE [datos].[prestadores] ADD CONSTRAINT pk_id_prestador PRIMARY KEY (id
 
 -- Coberturas
 ALTER TABLE [datos].[coberturas] ADD CONSTRAINT [pk_id_cobertura] PRIMARY KEY ([id_cobertura]),
-    CONSTRAINT [fk_id_prestador_coberturas] FOREIGN KEY ([id_prestador]) REFERENCES [datos].[prestadores] ([id_prestador]) ON DELETE CASCADE;
+    CONSTRAINT [fk_id_prestador_coberturas] FOREIGN KEY ([id_prestador]) REFERENCES [datos].[prestadores] ([id_prestador]);
 
 -- Pacientes
 ALTER TABLE [datos].[pacientes] ADD CONSTRAINT [pk_id_paciente] PRIMARY KEY ([id_paciente]),
