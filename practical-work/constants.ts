@@ -19,6 +19,6 @@ export const sqlFilesToMerge: string[] = [
 	'05-indexes.sql',
 	'06-pre-inserts.sql',
 	'07-roles.sql',
-	'stored-procedures/',
-	'triggers/',
+	'stored-procedures',
+	'triggers',
 ].map((file) => path.join('src', file))
