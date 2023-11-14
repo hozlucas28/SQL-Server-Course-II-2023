@@ -21,10 +21,12 @@ EXEC [archivos].[importarMedicosCSV]
 EXEC [archivos].importarSedesCSV
     @rutaArchivo = "..\dataset\Sedes.csv";
 
--- Estudios Validos
+-- Estudios Validos [Personal Técnico Clínico]
 
 EXEC [archivos].[importarEstudiosJSON]
-    @rutaArchivo = "..\Centro_Autorizaciones.Estudios clinicos.json";
+    @rutaArchivo = "C:\Users\gonza\Desktop\SQL-Server-Course-II-2023\practical-work\dataset\Centro_Autorizaciones.Estudios clinicos.json";
+
+select * from datos.estudiosValidos
 
 -- Borrar
 

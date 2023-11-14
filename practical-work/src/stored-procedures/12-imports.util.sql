@@ -4,7 +4,7 @@ GO
 
 /* --------------- Procedimientos Almacenados - Importaciones --------------- */
 
--- TODO: Validar parámetros con INSTR.
+
 CREATE OR ALTER PROCEDURE [archivos].[importarDatosCSV]
     @tablaDestino VARCHAR(255),
     @delimitadorCampos VARCHAR(4) = ';',

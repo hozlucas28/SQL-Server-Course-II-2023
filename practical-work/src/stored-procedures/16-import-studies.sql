@@ -4,7 +4,6 @@ GO
 
 /* ------------- Procedimientos Almacenados - Importar Estudios ------------- */
 
--- TODO: Buscar la forma de que [estudio] guarde los registros con acentos.
 -- Importar estudios desde un archivo JSON
 CREATE OR ALTER PROCEDURE [archivos].[importarEstudiosJSON]
     @rutaArchivo VARCHAR(255)
