@@ -22,10 +22,12 @@ export async function createSeed({ seedFilePath, sqlFilesToMerge }: { seedFilePa
 			for (const innerFile of innerFiles) {
 				const { name, path } = innerFile
 				const content = await readFile(`${path}${name}`)
+				console.log(`${path}${name}`)
 				await appendFile(seedFilePath, `${content}\nGO\n`)
 			}
 		} else {
 			const content = await readFile(sqlFile)
+			console.log(sqlFile)
 			await appendFile(seedFilePath, `${content}\nGO\n`)
 		}
 	}
