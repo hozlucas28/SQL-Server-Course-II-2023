@@ -1,8 +1,10 @@
 USE [CURESA];
 GO
 
--- Insertar paciente
 
+/* ----------------- Procedimientos Almacenados - Pacientes ----------------- */
+
+-- Insertar paciente
 CREATE OR ALTER PROCEDURE [datos].[insertarPaciente]  
 	@nombre VARCHAR(255), 
     @apellido VARCHAR(255), 
@@ -24,14 +26,14 @@ CREATE OR ALTER PROCEDURE [datos].[insertarPaciente]
     @idCobertura INT = NULL
 AS
 BEGIN
-    DECLARE @fechaActual DATE = GETDATE();
-    DECLARE @idDireccion INT, @idTipoDocumento INT, @idNacionalidad INT, @sexoChar CHAR(1), @idGenero INT;
+    DECLARE @fechaActual DATE = GETDATE()
+    DECLARE @idDireccion INT, @idTipoDocumento INT, @idNacionalidad INT, @sexoChar CHAR(1), @idGenero INT
 
-    EXEC [referencias].[obtenerOInsertarIdDireccion] @calleYNro, @localidad, @provincia, @idDireccion OUT;
-	EXEC [referencias].[obtenerOIsertarIdTipoDocumento] @tipoDocumento, @idTipoDocumento OUT;
-	EXEC [referencias].[obtenerOInsertarIdNacionalidad] @nacionalidad, @idNacionalidad OUT;
-	SET @sexoChar = [utils].[obtenerCharSexo](@sexo); 
-	EXEC [referencias].[obtenerOInsertarIdGenero] @genero, @idGenero OUT;
+    EXEC [referencias].[obtenerOInsertarIdDireccion] @calleYNro, @localidad, @provincia, @idDireccion OUT
+	EXEC [referencias].[obtenerOIsertarIdTipoDocumento] @tipoDocumento, @idTipoDocumento OUT
+	EXEC [referencias].[obtenerOInsertarIdNacionalidad] @nacionalidad, @idNacionalidad OUT
+	SET @sexoChar = [utils].[obtenerCharSexo] (@sexo) 
+	EXEC [referencias].[obtenerOInsertarIdGenero] @genero, @idGenero OUT
 
     INSERT INTO [datos].[pacientes]
         (
@@ -77,7 +79,6 @@ END;
 GO
 
 -- Actualizar paciente
-
 CREATE OR ALTER PROCEDURE [datos].[actualizarPaciente]
     @idPaciente INT,
     @cobertura INT = NULL,
@@ -102,10 +103,10 @@ BEGIN
     DECLARE @idNacionalidad INT = NULL
 
     IF @genero IS NOT NULL 
-		SET @idGenero = [referencias].[obtenerIdGenero](@genero)
+		SET @idGenero = [referencias].[obtenerIdGenero] (@genero)
 
     IF @nacionalidad IS NOT NULL
-        SET @idNacionalidad = [referencias].[obtenerIdNacionalidad](@nacionalidad)
+        SET @idNacionalidad = [referencias].[obtenerIdNacionalidad] (@nacionalidad)
 
     UPDATE datos.pacientes SET
         [id_cobertura] = ISNULL(@cobertura, [id_cobertura]),
@@ -130,15 +131,15 @@ END;
 GO
 
 -- Borrar paciente
-
 CREATE OR ALTER PROCEDURE [datos].[borrarPaciente]
     @id INT
 AS
     UPDATE [datos].[pacientes] SET [valido] = 0 WHERE [id_paciente] = @id;
-
--- existe paciente por mail
 GO
-CREATE OR ALTER FUNCTION [datos].[existePacientePorEmail]
+
+-- Verificar si existe el paciente
+GO
+CREATE OR ALTER FUNCTION [datos].[existePaciente]
     ( 
         @email VARCHAR(255)
     )
@@ -146,6 +147,6 @@ CREATE OR ALTER FUNCTION [datos].[existePacientePorEmail]
 AS
 BEGIN
     IF EXISTS (SELECT 1 FROM [datos].[pacientes] WHERE [email] = @email)
-        RETURN 1;
-    RETURN 0;
+        RETURN 1
+    RETURN 0
 END
