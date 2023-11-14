@@ -9,7 +9,7 @@ export async function deleteFiles({ path, exclude }: { path: string; exclude?: s
 
 	for (const file of files) {
 		if (exclude?.includes(file.name)) continue
-		await unlink(nodePath.join(file.path, file.name))
+		await unlink(nodePath.join(path, file.name))
 	}
 }
 
@@ -20,14 +20,12 @@ export async function createSeed({ seedFilePath, sqlFilesToMerge }: { seedFilePa
 		if (statSync(sqlFile).isDirectory()) {
 			const innerFiles = await readdir(sqlFile, { encoding: 'utf-8', withFileTypes: true, recursive: false })
 			for (const innerFile of innerFiles) {
-				const { name, path } = innerFile
-				console.log(nodePath.join(path, name))
-				const content = await readFile(nodePath.join(path, name))
+				const { name } = innerFile
+				const content = await readFile(nodePath.join(sqlFile, name))
 				await appendFile(seedFilePath, `${content}\nGO\n`)
 			}
 		} else {
 			const content = await readFile(sqlFile)
-			console.log(sqlFile)
 			await appendFile(seedFilePath, `${content}\nGO\n`)
 		}
 	}
@@ -56,8 +54,8 @@ export async function createCompressed({
 
 	if (testsDir) {
 		for (const testFile of await readdir(testsDir, { encoding: 'utf-8', withFileTypes: true, recursive: false })) {
-			const { name, path } = testFile
-			const filePath = nodePath.join(path, name)
+			const { name } = testFile
+			const filePath = nodePath.join(testsDir, name)
 			zip.file(filePath, await readFile(filePath))
 		}
 	}
@@ -66,8 +64,8 @@ export async function createCompressed({
 		for (const docFile of await readdir(docsDir, { encoding: 'utf-8', withFileTypes: true, recursive: false })) {
 			if (nodePath.extname(docFile.name) === '.docx') continue
 
-			const { name, path } = docFile
-			const filePath = nodePath.join(path, name)
+			const { name } = docFile
+			const filePath = nodePath.join(docsDir, name)
 			zip.file(filePath, await readFile(filePath))
 		}
 	}
