@@ -1,6 +1,10 @@
-USE [CURESA]
+USE [CURESA];
 GO
 
+
+/* ----- Procedimientos Almacenados - Exportaciones De Turnos Atendidos ----- */
+
+-- Exportar turnos atendidos a un archivo XML
 CREATE OR ALTER PROCEDURE [archivos].[exportarTurnosAtendidosXML]
     @obraSocial VARCHAR(50),
 	@fechaInicio DATE,
@@ -9,12 +13,12 @@ CREATE OR ALTER PROCEDURE [archivos].[exportarTurnosAtendidosXML]
 AS
 BEGIN
 	IF NOT EXISTS (SELECT 1 FROM [datos].[prestadores] pr WHERE pr.[nombre] = @obraSocial)
-		RETURN;
+		RETURN
 
 	IF @fechaInicio > @fechaFin 
 	BEGIN	
-		PRINT('Fecha inicio mayor a fecha fin.');
-		RETURN;
+		PRINT('Fecha inicio mayor a fecha fin.')
+		RETURN
 	END
 
 	SET @cadenaXML = (
@@ -40,4 +44,4 @@ BEGIN
 			t.[fecha] BETWEEN @fechaInicio AND @fechaFin
 		FOR XML PATH('Turno'), ROOT('Turnos')
 	)
-END
+END;
