@@ -1,6 +1,7 @@
 USE [CURESA];
 GO
 
+
 /* ----------------------------- Importar Datos ----------------------------- */
 
 -- Pacientes
@@ -25,4 +26,3 @@ SELECT TOP 10 * FROM [datos].[sede_de_atencion];
 -- Estudios válidos
 EXEC [archivos].[importarEstudiosJSON] @rutaArchivo = "C:\importar\Centro_Autorizaciones.Estudios clinicos.json";
 SELECT TOP 10 * FROM [datos].[estudiosValidos]
-GO
