@@ -1,6 +1,9 @@
 USE [CURESA];
 GO
 
+
+/* ------------------- Procedimientos Almacenados - Países ------------------ */
+
 -- Obtener el ID de una nacionalidad
 CREATE OR ALTER PROCEDURE [referencias].[obtenerOInsertarIdNacionalidad]
     @nacionalidad VARCHAR(50) = NULL,
@@ -42,6 +45,4 @@ BEGIN
         UPDATE [referencias].[paises] SET [gentilicio] = @nacionalidad WHERE [gentilicio] = @nacionalidad
 
     SELECT @outGentilicio = [gentilicio], @outIdpais = [id_pais], @outNombre = [nombre] FROM [referencias].[paises] WHERE [gentilicio] = @nacionalidad
-    RETURN
 END;
-GO
