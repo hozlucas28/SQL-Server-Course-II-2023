@@ -1,7 +1,7 @@
 USE [CURESA]
 GO
 
-EXEC [datos].[registrarEstudiosValidosDesdeJSON] 
+EXEC [archivos].[importarEstudiosJSON] 
     "..\dataset\Centro_Autorizaciones_Estudios_clinicos.json"
 
 SELECT * FROM [datos].[estudiosValidos]

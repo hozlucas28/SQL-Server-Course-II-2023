@@ -9,7 +9,7 @@ DELETE FROM [datos].[estados_turnos];
 GO
 
 
-/* ---------------------------- Crear Inserciones --------------------------- */
+/* ---------------------------- Crear Inserciones ---------------------------- */
 
 INSERT INTO [datos].[tipos_turnos] ([nombre_tipo]) VALUES ('PRESENCIAL'), ('VIRTUAL');
 
