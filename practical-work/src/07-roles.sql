@@ -39,11 +39,10 @@ CREATE ROLE [Personal Administrativo];
 CREATE ROLE [Personal Técnico Clínico];
 GO
 
+
 /* ---------------------------- ASIGNAR PERMISOS ---------------------------- */
--- GRANT EXECUTE ON [Nombre del SP] TO [Nombre del rol];
 
-
--- SP Personal Administrativo
+-- Personal Administrativo
 GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdNacionalidad] TO [Personal Administrativo];
 GRANT EXECUTE ON OBJECT::[referencias].[actualizarNacionalidad] TO [Personal Administrativo];
 GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdLocalidad] TO [Personal Administrativo];
@@ -63,7 +62,7 @@ GRANT EXECUTE ON OBJECT::[datos].[borrarPaciente] TO [Personal Administrativo];
 GRANT EXECUTE ON OBJECT::[datos].[existePaciente] TO [Personal Administrativo];
 GRANT EXECUTE ON OBJECT::[datos].[obtenerIdEspecialidad] TO [Personal Administrativo];
 
--- SP Administrador General
+-- Administrador General
 GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdNacionalidad] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[referencias].[actualizarNacionalidad] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdLocalidad] TO [Administrador General];
@@ -88,7 +87,7 @@ GRANT EXECUTE ON OBJECT::[datos].[eliminarMedico] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[datos].[obtenerIdEspecialidad] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[datos].[guardarEspecialidad] TO [Administrador General];
 
--- SP Personal Tecnico Clinico
+-- Personal técnico clínico
 GRANT EXECUTE ON OBJECT::[archivos].[importarDatosCSV] TO [Personal Técnico Clínico];
 GRANT EXECUTE ON OBJECT::[archivos].[importarMedicosCSV] TO [Personal Técnico Clínico];
 GRANT EXECUTE ON OBJECT::[archivos].[importarPrestadoresCSV] TO [Personal Técnico Clínico];
@@ -97,7 +96,7 @@ GRANT EXECUTE ON OBJECT::[archivos].[importarSedesCSV] TO [Personal Técnico Cl�
 GRANT EXECUTE ON OBJECT::[archivos].[exportarTurnosAtendidosXML] TO [Personal Técnico Clínico];
 GRANT EXECUTE ON OBJECT::[archivos].[importarEstudiosJSON] TO [Personal Técnico Clínico];
 
--- SP Paciente
+-- Paciente
 GRANT EXECUTE ON OBJECT::[datos].[registrarTurnoMedico] TO [Paciente];
 GRANT EXECUTE ON OBJECT::[datos].[actualizarTurnoMedico] TO [Paciente];
 GRANT EXECUTE ON OBJECT::[datos].[cancelarTurnoMedico] TO [Paciente];
@@ -117,7 +116,7 @@ GRANT EXECUTE ON OBJECT::[referencias].[insertarTipoDocumento] TO [Paciente];
 GRANT EXECUTE ON OBJECT::[datos].[insertarPaciente] TO [Paciente];
 GRANT EXECUTE ON OBJECT::[datos].[actualizarPaciente] TO [Paciente];
 
--- SP Medico
+-- Médico
 GRANT EXECUTE ON OBJECT::[datos].[registrarEstudio] TO [Médico];
 GRANT EXECUTE ON OBJECT::[datos].[actualizarEstudio] TO [Médico];
 GRANT EXECUTE ON OBJECT::[datos].[eliminarEstudio] TO [Médico];
