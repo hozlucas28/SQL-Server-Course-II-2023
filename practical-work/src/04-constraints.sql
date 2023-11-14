@@ -1,11 +1,12 @@
-GO
 USE [CURESA];
-
--- Generos
 GO
+
+/* --------------------------- Crear Restricciones -------------------------- */
+
+-- Géneros
 ALTER TABLE [referencias].[generos] ADD CONSTRAINT [pk_id_genero] PRIMARY KEY ([id_genero]);
 
--- Paises
+-- Países
 ALTER TABLE [referencias].[paises] ADD CONSTRAINT [pk_id_pais] PRIMARY KEY ([id_pais]);
 
 ALTER TABLE [referencias].[nacionalidades] ADD CONSTRAINT [pk_id_nacionalidad] PRIMARY KEY ([id_nacionalidad]);
@@ -34,7 +35,7 @@ ALTER TABLE [referencias].[direcciones] ADD CONSTRAINT [pk_id_direccion] PRIMARY
 -- Prestadores
 ALTER TABLE [datos].[prestadores] ADD CONSTRAINT pk_id_prestador PRIMARY KEY (id_prestador);
 
--- Coverturas
+-- Coberturas
 ALTER TABLE [datos].[coberturas] ADD CONSTRAINT [pk_id_cobertura] PRIMARY KEY ([id_cobertura]),
     CONSTRAINT [fk_id_prestador_coberturas] FOREIGN KEY ([id_prestador]) REFERENCES [datos].[prestadores] ([id_prestador]);
 
@@ -85,7 +86,3 @@ ALTER TABLE [datos].[reservas_turnos_medicos] ADD CONSTRAINT [pk_id_turno] PRIMA
     CONSTRAINT [fk_id_estado] FOREIGN KEY ([id_tipo_turno]) REFERENCES [datos].[estados_turnos] ([id_estado]),
     CONSTRAINT [fk_id_paciente_turno] FOREIGN KEY ([id_paciente]) REFERENCES [datos].[pacientes] ([id_paciente]),
     CONSTRAINT [fk_id_dias_x_sede] FOREIGN KEY ([id_dias_x_sede]) REFERENCES [datos].[dias_x_sede] ([id_dias_x_sede]);
-
-go
-
-use master;
