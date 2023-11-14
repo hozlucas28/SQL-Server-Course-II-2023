@@ -1,9 +1,4 @@
-- [ ] Cambiar el nombre de los test por la siguiente nomenclatura: `test-<caso>.sql`.
 - [ ] Generar los test para corroborar las consideraciones descritas en la [consigna](./README.md/#consigna).
 - [ ] Los estudios clínicos deben ser autorizados, e indicar si se cubre el costo completo del mismo o solo un porcentaje. El sistema de Cure se comunica con el servicio de la prestadora, se le envía el código del estudio, el DNI del paciente y el plan; el sistema de la prestadora informa si está autorizado o no y el importe a facturarle al paciente.
-- [ ] Los estudios clínicos son ingresados al sistema por el técnico encargado de realizar el estudio, una vez finalizado el estudio (en el caso de las imágenes) y en el caso de los laboratorios cuando el mismo se encuentre terminado.
-- [ ] Los turnos para atención médica tienen como estado inicial disponible, según el médico, la especialidad y la sede.
-- [ ] Mapear los `Stored Procedures` de forma lógica para los roles y permisos.
 - [ ] Otorgar acceso granular a los roles mediante los `Stored Procedures`, aplicando principio de mínimo privilegio.
-- [ ] Testear alianza comercial. [PRIORITARIO]
-- [ ] Ver como arreglar la importación del json, parece que no esta codificado como UTF16 lo que genera problemas, ver como importar con una codificación especifica.
+- [ ] Testear alianza comercial.
