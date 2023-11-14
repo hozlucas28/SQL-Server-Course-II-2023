@@ -1,9 +1,8 @@
-GO
 USE [CURESA];
+GO
 
 /* ----------------------------- Eliminar Roles ----------------------------- */
 
-GO
 IF EXISTS (SELECT * FROM sys.database_principals WHERE name = 'Médico' AND type_desc = 'DATABASE_ROLE')
 BEGIN
     DROP ROLE [Médico];
@@ -28,15 +27,16 @@ IF EXISTS (SELECT * FROM sys.database_principals WHERE name = 'Personal Técnico
 BEGIN
     DROP ROLE [Personal Técnico Clínico];
 END;
+GO
 
 /* ------------------------------- Crear Roles ------------------------------ */
 
-GO
 CREATE ROLE [Médico];
 CREATE ROLE [Paciente];
 CREATE ROLE [Administrador General];
 CREATE ROLE [Personal Administrativo];
 CREATE ROLE [Personal Técnico Clínico];
+GO
 
 /* ---------------------------- ASIGNAR PERMISOS ---------------------------- */
 
