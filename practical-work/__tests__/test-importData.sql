@@ -4,29 +4,37 @@ GO
 -- Pacientes
 
 EXEC [archivos].importarPacientesCSV 
-    @rutaArchivo = "..\dataset\Pacientes.csv";
+    @rutaArchivo = "C:\importar\Pacientes.csv";
+
+select top 10 
 
 -- Prestadores
 
 EXEC [archivos].importarPrestadoresCSV 
-    @rutaArchivo = "..\dataset\Prestador.csv"
+    @rutaArchivo = "C:\importar\Prestador.csv"
+
+select top 10 from datos.prestadores
 
 -- Medicos
 
 EXEC [archivos].[importarMedicosCSV]
-    @rutaArchivo = "..\dataset\Medicos.csv";
+    @rutaArchivo = "C:\importar\Medicos.csv";
+
+select top 10 from datos.medicos
 
 -- Sedes
 
 EXEC [archivos].importarSedesCSV
-    @rutaArchivo = "..\dataset\Sedes.csv";
+    @rutaArchivo = "C:\importar\Sedes.csv";
+
+select top 10 from datos.sede_de_atencion
 
 -- Estudios Validos [Personal Técnico Clínico]
 
 EXEC [archivos].[importarEstudiosJSON]
-    @rutaArchivo = "C:\Users\gonza\Desktop\SQL-Server-Course-II-2023\practical-work\dataset\Centro_Autorizaciones.Estudios clinicos.json";
+    @rutaArchivo = "C:\importar\Centro_Autorizaciones.Estudios clinicos.json";
 
-select * from datos.estudiosValidos
+select top 10 from datos.estudiosValidos
 
 -- Borrar
 
