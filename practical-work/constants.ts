@@ -11,6 +11,8 @@ export const readmeFile = 'README.md'
 export const seedFile = 'seed.sql'
 export const wordFile = 'documentation.docx'
 
+export const repositoryDirectAccess = 'repository.url'
+
 export const sqlFilesToMerge: string[] = [
 	'01-init.sql',
 	'02-schemas.sql',
