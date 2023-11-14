@@ -1,5 +1,5 @@
 import JSZip from 'jszip'
-import { createWriteStream, existsSync } from 'node:fs'
+import { createWriteStream, existsSync, statSync } from 'node:fs'
 import { appendFile, readFile, readdir, unlink } from 'node:fs/promises'
 import nodePath, { basename } from 'node:path'
 import { directive } from './constants.js'
@@ -17,12 +17,12 @@ export async function createSeed({ seedFilePath, sqlFilesToMerge }: { seedFilePa
 	if (existsSync(seedFilePath)) await unlink(seedFilePath)
 
 	for (const sqlFile of sqlFilesToMerge) {
-		if (sqlFile.endsWith('/') || sqlFile.endsWith('\\')) {
+		if (statSync(sqlFile).isDirectory()) {
 			const innerFiles = await readdir(sqlFile, { encoding: 'utf-8', withFileTypes: true, recursive: false })
 			for (const innerFile of innerFiles) {
 				const { name, path } = innerFile
-				const content = await readFile(`${path}${name}`)
-				console.log(`${path}${name}`)
+				console.log(nodePath.join(path, name))
+				const content = await readFile(nodePath.join(path, name))
 				await appendFile(seedFilePath, `${content}\nGO\n`)
 			}
 		} else {
