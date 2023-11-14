@@ -12,11 +12,13 @@ export const seedFile = 'seed.sql'
 export const wordFile = 'documentation.docx'
 
 export const sqlFilesToMerge: string[] = [
-	'init.sql',
-	'schemas.sql',
-	'tables.sql',
-	'constraints.sql',
+	'01-init.sql',
+	'02-schemas.sql',
+	'03-tables.sql',
+	'04-constraints.sql',
+	'05-indexes.sql',
+	'06-pre-inserts.sql',
+	'07-roles.sql',
 	'stored-procedures/',
 	'triggers/',
-	'roles.sql',
 ].map((file) => path.join('src', file))
