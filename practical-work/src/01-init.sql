@@ -18,16 +18,15 @@ GO
         DROP DATABASE [CURESA]
 */
 
-IF EXISTS (SELECT name FROM sys.databases WHERE name = 'CURESA')
-    -- Eliminar todo tipo de conexiones que impidan borrar la base de datos
-    ALTER DATABASE [CURESA]
-    SET SINGLE_USER
-    WITH ROLLBACK IMMEDIATE
 
+/* ------------------------- Eliminar Base De Datos ------------------------- */
+
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'CURESA')
+    ALTER DATABASE [CURESA] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
     DROP DATABASE [CURESA]
 GO
 
-CREATE DATABASE [CURESA] COLLATE Latin1_General_CS_AS;
-GO
 
-USE [CURESA];
+/* --------------------------- Crear Base De Datos -------------------------- */
+
+CREATE DATABASE [CURESA] COLLATE Latin1_General_CS_AS;
