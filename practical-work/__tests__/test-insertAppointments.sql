@@ -37,5 +37,6 @@ IF @idTurno = -1
 ELSE
     PRINT '-NO PASO CASO 2' 
 
-
+/*
 delete from datos.reservas_turnos_medicos;
+*/
