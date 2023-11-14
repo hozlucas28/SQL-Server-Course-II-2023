@@ -1,8 +1,10 @@
 USE [CURESA];
 GO
 
--- Insertar médico
 
+/* ------------------ Procedimientos Almacenados - Médicos ------------------ */
+
+-- Insertar médico
 CREATE OR ALTER PROCEDURE [datos].[insertarMedico]
     @nombre VARCHAR(50),
     @apellido VARCHAR(50),
@@ -22,7 +24,6 @@ END;
 GO
 
 -- Eliminar médico
-
 CREATE OR ALTER PROCEDURE [datos].[eliminarMedico]
     @id INT
 AS
