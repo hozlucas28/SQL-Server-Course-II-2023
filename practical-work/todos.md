@@ -1,2 +1,0 @@
-- [ ] Los estudios clínicos deben ser autorizados, e indicar si se cubre el costo completo del mismo o solo un porcentaje. El sistema de Cure se comunica con el servicio de la prestadora, se le envía el código del estudio, el DNI del paciente y el plan; el sistema de la prestadora informa si está autorizado o no y el importe a facturarle al paciente.
-- [ ] Testear alianza comercial.
