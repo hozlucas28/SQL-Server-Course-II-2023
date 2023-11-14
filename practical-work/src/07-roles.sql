@@ -91,7 +91,7 @@ GRANT EXECUTE ON OBJECT::[datos].[guardarEspecialidad] TO [Administrador General
 GRANT EXECUTE ON OBJECT::[archivos].[importarDatosCSV] TO [Personal Técnico Clínico];
 GRANT EXECUTE ON OBJECT::[archivos].[importarMedicosCSV] TO [Personal Técnico Clínico];
 GRANT EXECUTE ON OBJECT::[archivos].[importarPrestadoresCSV] TO [Personal Técnico Clínico];
-GRANT EXECUTE ON OBJECT::[archivos].[archivos].[importarPacientesCSV] TO [Personal Técnico Clínico];
+GRANT EXECUTE ON OBJECT::[archivos].[importarPacientesCSV] TO [Personal Técnico Clínico];
 GRANT EXECUTE ON OBJECT::[archivos].[importarSedesCSV] TO [Personal Técnico Clínico];
 GRANT EXECUTE ON OBJECT::[archivos].[exportarTurnosAtendidosXML] TO [Personal Técnico Clínico];
 GRANT EXECUTE ON OBJECT::[archivos].[importarEstudiosJSON] TO [Personal Técnico Clínico];
