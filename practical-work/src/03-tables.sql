@@ -164,6 +164,7 @@ CREATE TABLE [datos].[estudiosValidos]
     [plan] NVARCHAR(255) NOT NULL,
     [porcentajeCobertura] INT NOT NULL,
     [costo] DECIMAL(18, 2) NOT NULL,
+    [total] as (costo * (1 - CAST(porcentajeCobertura AS DECIMAL) / 100)),
     [requiereAutorizacion] BIT DEFAULT 0
 );
 
