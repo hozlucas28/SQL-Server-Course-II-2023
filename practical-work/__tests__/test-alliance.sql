@@ -3,26 +3,6 @@ GO
 
 /* ---------------------------- Verificar Alianza --------------------------- */
 
--- Pacientes
-EXEC [archivos].[importarPacientesCSV] @rutaArchivo = "C:\Users\gonza\Desktop\SQL-Server-Course-II-2023\practical-work\dataset\Pacientes.csv";
-SELECT TOP 10 * FROM [datos].[pacientes];
-GO
-
--- Prestadores
-EXEC [archivos].[importarPrestadoresCSV] @rutaArchivo = "C:\Users\gonza\Desktop\SQL-Server-Course-II-2023\practical-work\dataset\Prestador.csv";
-SELECT TOP 10 * FROM [datos].[prestadores];
-GO
-
--- Médicos
-EXEC [archivos].[importarMedicosCSV] @rutaArchivo = "C:\Users\gonza\Desktop\SQL-Server-Course-II-2023\practical-work\dataset\Medicos.csv";
-SELECT TOP 10 * FROM [datos].[medicos];
-GO
-
--- Sedes
-EXEC [archivos].[importarSedesCSV] @rutaArchivo = "C:\Users\gonza\Desktop\SQL-Server-Course-II-2023\practical-work\dataset\Sedes.csv";
-SELECT TOP 10 * FROM [datos].[sede_de_atencion];
-
-
 SELECT * FROM [datos].[reservas_turnos_medicos];
 
 DECLARE @idPaciente INT = 137;
@@ -39,6 +19,10 @@ UPDATE [datos].[pacientes] SET [id_cobertura] = @idCobertura WHERE [id_paciente]
 
 SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_paciente] = @idPaciente;
 
+select * from datos.prestadores
+
 DELETE FROM [datos].[prestadores] WHERE [id_prestador] = @idPrestador;
+
+select * from datos.prestadores
 
 SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_paciente] = @idPaciente;

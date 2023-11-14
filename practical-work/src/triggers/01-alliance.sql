@@ -32,5 +32,9 @@ BEGIN
         SET @count = @count - 1
     END
 
+    UPDATE [datos].[prestadores]
+    SET borrado = 1
+    WHERE id_prestador IN (SELECT id_prestador FROM deleted)
+
     DROP TABLE [#TurnosACancelar]
 END;
