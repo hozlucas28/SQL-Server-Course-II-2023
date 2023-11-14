@@ -1,6 +1,9 @@
 USE [CURESA];
 GO
 
+
+/* ---------------- Procedimientos Almacenados - Direcciones ---------------- */
+
 -- Obtener el ID de una dirección
 CREATE OR ALTER PROCEDURE [referencias].[obtenerOInsertarIdDireccion]
     @calleYNro VARCHAR(50),
@@ -9,11 +12,11 @@ CREATE OR ALTER PROCEDURE [referencias].[obtenerOInsertarIdDireccion]
     @idDireccion INT OUTPUT
 AS
 BEGIN
-    DECLARE @idProvincia INT;
-    DECLARE @idLocalidad INT;
+    DECLARE @idProvincia INT
+    DECLARE @idLocalidad INT
 
-	EXEC [referencias].[obtenerOInsertarIdProvincia] @Provincia, @IdProvincia OUTPUT;
-	EXEC [referencias].[obtenerOInsertarIdLocalidad] @Localidad,@IdProvincia, @IdLocalidad OUTPUT;
+	EXEC [referencias].[obtenerOInsertarIdProvincia] @Provincia, @IdProvincia OUTPUT
+	EXEC [referencias].[obtenerOInsertarIdLocalidad] @Localidad,@IdProvincia, @IdLocalidad OUTPUT
 
 	IF NOT EXISTS (SELECT 1 FROM [referencias].[direcciones] 
 					WHERE [calle_y_nro] = @calleYNro
@@ -21,10 +24,10 @@ BEGIN
                     AND [id_provincia] = @IdProvincia)
 
         INSERT INTO [referencias].[direcciones] ([calle_y_nro],[id_localidad],[id_provincia]) 
-		VALUES (@calleYNro,@IdLocalidad,@IdProvincia);
+		VALUES (@calleYNro,@IdLocalidad,@IdProvincia)
 
 	SELECT @idDireccion = [id_direccion] FROM [referencias].[direcciones] 
-	WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @IdLocalidad AND [id_provincia] = @IdProvincia;
+	WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @IdLocalidad AND [id_provincia] = @IdProvincia
 END;
 GO
 
@@ -101,5 +104,4 @@ BEGIN
         [calle_y_nro] = @calleYNro AND
         [id_localidad] = @idLocalidad AND
         [id_provincia] = @idProvincia
-    RETURN
 END;
