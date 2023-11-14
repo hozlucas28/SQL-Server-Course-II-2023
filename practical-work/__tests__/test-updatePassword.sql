@@ -1,13 +1,14 @@
 USE [CURESA];
+GO
 
-DECLARE @contraseñaOriginal VARCHAR(255) = 'hola', 
-        @contraseñaCambiada VARCHAR(255) = 'clave secreta mega segura',
-        @idUsuario INT;
+-- Actualizar contraseña del usuario
+DECLARE @contraseñaOriginal VARCHAR(255) = '12345';
+DECLARE @contraseñaCambiada VARCHAR(255) = 'LaYutaExistePorUstedes62-23';
+DECLARE @idUsuario INT;
 
-INSERT INTO datos.usuarios (contraseña) values (@contraseñaOriginal);
-
-SELECT @idUsuario = id_usuario FROM datos.usuarios WHERE contraseña = @contraseñaOriginal;
-
+INSERT INTO [datos].[usuarios] ([contraseña]) values (@contraseñaOriginal);
+SELECT @idUsuario = [id_usuario] FROM [datos].[usuarios] WHERE [contraseña] = @contraseñaOriginal;
 EXEC [datos].[actualizarContraseña] @idUsuario, @contraseñaCambiada;
 
-SELECT * FROM datos.usuarios WHERE id_usuario = @idUsuario; 
+-- Mostrar usuario actualizado
+SELECT * FROM [datos].[usuarios] WHERE [id_usuario] = @idUsuario;
