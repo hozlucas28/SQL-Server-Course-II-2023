@@ -3,7 +3,12 @@ GO
 
 
 /* ------------- Procedimientos Almacenados - Importar Estudios ------------- */
+C -> COSTO
+P -> PORCENTAJE COBERTURA
+T -> TOTAL
+T = C * (1 - P / 100)
 
+-- TODO: Buscar la forma de que [estudio] guarde los registros con acentos.
 -- Importar estudios desde un archivo JSON
 CREATE OR ALTER PROCEDURE [archivos].[importarEstudiosJSON]
     @rutaArchivo VARCHAR(255)
@@ -85,7 +90,7 @@ BEGIN
             [p].[id_prestador],
             [em].[plan],
             [em].[porcentajeCobertura],
-            [em].[costo],
+            [em].[costo] * (1 - [porcentajeCobertura]/100),
             [em].[requiereAutorizacion]
         FROM [#EstudiosMedicos] [em]
         INNER JOIN [datos].[prestadores] p ON [em].[prestador] = [p].[nombre]
