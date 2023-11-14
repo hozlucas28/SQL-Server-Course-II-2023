@@ -1,35 +1,38 @@
-use CURESA;
+USE CURESA;
+GO
 
-/*
-exec [archivos].importarPrestadoresCSV
-    @rutaArchivo = "C:\Users\gonza\Desktop\SQL-Server-Course-II-2023\practical-work\dataset\Prestador.csv"
+select * from datos.reservas_turnos_medicos
 
-exec archivos.importarMedicosCSV
-    @rutaArchivo = 
-    "C:\Users\gonza\Desktop\SQL-Server-Course-II-2023\practical-work\dataset\Medicos.csv"
+DECLARE
+@idPaciente INT,
+@idPrestador INT,
+@idCobertura INT;
 
-exec archivos.importarSedesCSV
-    @rutaArchivo = 
-    "C:\Users\gonza\Desktop\SQL-Server-Course-II-2023\practical-work\dataset\Sedes.csv"
+SET @idPaciente = 137;
+SET @idPrestador = 1;
 
-exec archivos.importarPacientesCSV
-    @rutaArchivo = 
-    "C:\Users\gonza\Desktop\SQL-Server-Course-II-2023\practical-work\dataset\Pacientes.csv"
-*/
-
-insert into datos.coberturas
+INSERT INTO datos.coberturas
 (id_prestador, imagen_credencial, nro_socio)
-VALUES(1, null, 137)
+VALUES(@idPrestador, null, @idPaciente)
 
-select * from 
+SELECT @idCobertura = id_cobertura
+FROM datos.coberturas
+WHERE id_prestador = @idPrestador
+
+SELECT * FROM 
 datos.pacientes
-where id_paciente = 137
+WHERE id_paciente = @idPaciente
 
-update datos.pacientes 
-set id_cobertura = 1
-where id_paciente = 137
+UPDATE datos.pacientes 
+SET id_cobertura = @idCobertura
+WHERE id_paciente = @idPaciente
 
-select * from datos.reservas_turnos_medicos;
+SELECT * FROM datos.reservas_turnos_medicos
+WHERE id_paciente = @idPaciente;
 
-delete from datos.prestadores
-where id_prestador = 1
+DELETE FROM datos.prestadores
+WHERE id_prestador = @idPrestador
+
+SELECT * FROM datos.reservas_turnos_medicos
+WHERE id_paciente = @idPaciente;
+

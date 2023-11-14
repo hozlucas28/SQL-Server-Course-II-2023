@@ -14,6 +14,8 @@ FROM
 /* --------------------------- Ver foreign keys --------------------------- */
 
 /*
+use curesa
+
 SELECT 
    OBJECT_NAME(f.parent_object_id) AS 'Table name',
    COL_NAME(fc.parent_object_id,fc.parent_column_id) AS 'Field name',
