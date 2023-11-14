@@ -7,7 +7,7 @@
   - Gonzalo Ezequiel Sosa
   - Lucas Ariel Clivio
   - Lucas Nahuel Hoz
-- Fecha de entrega [TODO]
+- Fecha de entrega: 14/11/2023
 
 ## Consigna
 
