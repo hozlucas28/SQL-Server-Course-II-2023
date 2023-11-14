@@ -188,7 +188,8 @@ CREATE TABLE [datos].[prestadores]
 (
     [id_prestador] INT IDENTITY (1, 1),
     [nombre] VARCHAR(50) NOT NULL,
-    [plan_prestador] VARCHAR(30) NOT NULL
+    [plan_prestador] VARCHAR(30) NOT NULL,
+    [borrado] BIT DEFAULT 0
 );
 
 CREATE TABLE [datos].[reservas_turnos_medicos]

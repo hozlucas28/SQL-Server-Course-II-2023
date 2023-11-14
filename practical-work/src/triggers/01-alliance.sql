@@ -1,7 +1,7 @@
 USE [CURESA];
 GO
 
-CREATE OR ALTER TRIGGER [datos].[quitarTurnos] ON [datos].[prestadores] AFTER DELETE
+CREATE OR ALTER TRIGGER [datos].[quitarTurnos] ON [datos].[prestadores] INSTEAD OF DELETE
 AS
 BEGIN
     IF OBJECT_ID('tempdb..[#TurnosACancelar]') IS NOT NULL 

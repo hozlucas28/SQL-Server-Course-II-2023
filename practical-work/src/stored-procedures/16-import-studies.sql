@@ -84,7 +84,7 @@ BEGIN
             [p].[id_prestador],
             [em].[plan],
             [em].[porcentajeCobertura],
-            [em].[costo] * (1 - [em].[porcentajeCobertura]/100),
+            [em].[costo],
             [em].[requiereAutorizacion]
         FROM [#EstudiosMedicos] [em]
         INNER JOIN [datos].[prestadores] p ON [em].[prestador] = [p].[nombre]
