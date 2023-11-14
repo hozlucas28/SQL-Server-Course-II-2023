@@ -1,6 +1,9 @@
 USE [CURESA];
 GO
 
+
+/* ---------------- Procedimientos Almacenados - Importar CSV --------------- */
+
 -- Importar médicos desde un archivo CSV
 CREATE OR ALTER PROCEDURE [archivos].[importarMedicosCSV]
 	@rutaArchivo VARCHAR(255),
@@ -27,12 +30,12 @@ BEGIN
 	DECLARE	@especialidad VARCHAR(255)
 	DECLARE @idEspecialidad INT
 	DECLARE @nroMatricula INT
-	DECLARE @count INT;
+	DECLARE @count INT
 
 	DELETE FROM [#MedicosImportados] 
-	WHERE [#MedicosImportados].[nroMatricula] IN (SELECT [nro_matricula] FROM [datos].[medicos]);
+	WHERE [#MedicosImportados].[nroMatricula] IN (SELECT [nro_matricula] FROM [datos].[medicos])
 
-	SELECT @count = count(*) FROM [#MedicosImportados];
+	SELECT @count = count(*) FROM [#MedicosImportados]
 
 	SET NOCOUNT ON
 	WHILE @count > 0
@@ -46,24 +49,24 @@ BEGIN
 
 		EXEC [datos].[guardarEspecialidad] 
 			@especialidad, 
-			@idEspecialidad OUTPUT;
+			@idEspecialidad OUTPUT
 
 		EXEC [datos].[insertarMedico] 
 			@nombre, 
 			@apellido, 
 			@especialidad, 
-			@nroMatricula;
+			@nroMatricula
 
 		DELETE TOP(1) FROM [#MedicosImportados]
 		SET @count = @count - 1
 	END
 	SET NOCOUNT OFF
 
-	DROP TABLE [#MedicosImportados];
+	DROP TABLE [#MedicosImportados]
 END;
+GO
 
 -- Importar prestadores desde un archivo CSV
-GO
 CREATE OR ALTER PROCEDURE [archivos].[importarPrestadoresCSV]
 	@rutaArchivo VARCHAR(255),
 	@separador VARCHAR(4) = ';'
@@ -90,13 +93,14 @@ BEGIN
   	  	WHERE 
 			[#PrestadoresImportados].[nombre] = p.[nombre] AND 
 			[#PrestadoresImportados].[planPrestador] = p.[plan_prestador]
-	);
+	)
 
 	INSERT INTO [datos].[prestadores] ([nombre], [plan_prestador]) 
 	SELECT [nombre], [planPrestador] FROM [#PrestadoresImportados]
 	
 	DROP TABLE [#PrestadoresImportados]
 END;
+GO
 
 -- Importar pacientes desde un archivo CSV
 GO
@@ -166,7 +170,7 @@ BEGIN
 	EXEC [archivos].[importarDatosCSV] 
 		@tablaDestino = '#PacientesImportados', 
 		@rutaArchivo = @rutaArchivo, 
-		@delimitadorCampos = @separador;
+		@delimitadorCampos = @separador
 	
 	SET NOCOUNT ON
 
@@ -187,10 +191,9 @@ BEGIN
 		[provincia]
 	FROM [#PacientesImportados]
 	
-	DROP TABLE [#PacientesImportados];
+	DROP TABLE [#PacientesImportados]
 
 	-- Validaciones
-
 	INSERT INTO [#RegistrosInvalidos]
 	SELECT 
 		[nombre],
@@ -244,10 +247,9 @@ BEGIN
 		WHERE [email] = pif.[email]
 		GROUP BY [email]
 		HAVING COUNT([nroDocumento]) > 1
-	);
+	)
 
-	-- Borrar registros invalidos de pacientes importados formateados
-
+	-- Borrar registros inválidos de pacientes importados
 	DELETE FROM [#PacientesImportadosFormateados]
 	WHERE EXISTS (
     SELECT 1
@@ -255,21 +257,20 @@ BEGIN
     WHERE 
         ri.[tipoDocumento] = [#PacientesImportadosFormateados].[tipoDocumento] AND
         ri.[nroDocumento] = [#PacientesImportadosFormateados].[nroDocumento] 
-	);
+	)
 
 	-- Agregar información a los registros de pacientes
-	
 	BEGIN TRY
 		DECLARE 
 			@nombre VARCHAR(255), @apellido VARCHAR(255), @fechaNacimiento DATE,
 			@tipoDocumento VARCHAR(20), @nroDocumento INT, 
 			@sexo VARCHAR(20), @genero VARCHAR(20),
 			@telefono VARCHAR(40), @nacionalidad VARCHAR(50), @email VARCHAR(40), 
-			@calleYNro VARCHAR(255), @localidad VARCHAR(255), @provincia VARCHAR(255); 
+			@calleYNro VARCHAR(255), @localidad VARCHAR(255), @provincia VARCHAR(255)
 		DECLARE 
-			@idDireccion INT, @idTipoDocumento INT, @idNacionalidad INT, @sexoChar CHAR(1), @idGenero INT;
+			@idDireccion INT, @idTipoDocumento INT, @idNacionalidad INT, @sexoChar CHAR(1), @idGenero INT
 		DECLARE 
-			@count INT = (SELECT count(1) from [#PacientesImportadosFormateados]);
+			@count INT = (SELECT count(1) from [#PacientesImportadosFormateados])
 
 		
 
@@ -289,7 +290,7 @@ BEGIN
 				@calleYNro = [calleYNro],
 				@localidad = [localidad],
 				@provincia = [provincia]
-			FROM [#PacientesImportadosFormateados];
+			FROM [#PacientesImportadosFormateados]
 
 			EXEC [datos].[insertarPaciente] 
 				@nombre, 
@@ -304,7 +305,7 @@ BEGIN
 				@email, 
 				@calleYNro, 
 				@localidad, 
-				@provincia;
+				@provincia
 			
 			DELETE TOP (1) FROM [#PacientesImportadosFormateados]
 			SET @count = @count - 1 
@@ -313,14 +314,14 @@ BEGIN
 	BEGIN CATCH
 		DECLARE @errorMessage NVARCHAR(1000)
 		SET @errorMessage = 'Error durante la inserción de pacientes: ' + ERROR_MESSAGE();
-		THROW 51004, @errorMessage, 1;
+		THROW 51004, @errorMessage, 1
 	END CATCH
 	
-	DECLARE @cantTotalRI INT = (SELECT count(1) FROM [#RegistrosInvalidos]);
+	DECLARE @cantTotalRI INT = (SELECT count(1) FROM [#RegistrosInvalidos])
 	
 	IF @cantTotalRI > 0
 	BEGIN
-		PRINT 'Cantidad total de registros inválidos: ' + CAST(@cantTotalRI AS VARCHAR);
+		PRINT 'Cantidad total de registros inválidos: ' + CAST(@cantTotalRI AS VARCHAR)
 		SELECT [error_desc], count(1) AS Cant FROM [#RegistrosInvalidos]
 		GROUP BY [error_desc]
 	END
@@ -328,9 +329,10 @@ BEGIN
 	
 	SET NOCOUNT OFF
 
-    DROP TABLE [#PacientesImportadosFormateados];
-	DROP TABLE [#RegistrosInvalidos];
+    DROP TABLE [#PacientesImportadosFormateados]
+	DROP TABLE [#RegistrosInvalidos]
 END;
+GO
 
 -- Importar sedes desde un archivo CSV
 GO
@@ -377,7 +379,7 @@ BEGIN
 			@calleYNro, 
 			@localidad, 
 			@provincia, 
-			@idDireccion OUTPUT;
+			@idDireccion OUTPUT
 
 		INSERT INTO [datos].[sede_de_atencion] ([nombre], [direccion]) 
 		VALUES (@nombreSede, @idDireccion)
