@@ -62,11 +62,11 @@ IF OBJECT_ID('[datos].[medicos]', 'U') IS NOT NULL
 
 IF OBJECT_ID('[datos].[reservas_turnos_medicos]', 'U') IS NOT NULL
     DROP TABLE [datos].[reservas_turnos_medicos];
+GO
 
 
 /* ------------------------------ Crear Tablas ------------------------------ */
 
-GO
 CREATE TABLE [referencias].[generos]
 (
     [id_genero] INT IDENTITY (1, 1),
@@ -248,7 +248,3 @@ CREATE TABLE [datos].[especialidad]
     [id_especialidad] INT IDENTITY (1, 1),
     [nombre] VARCHAR(50) NOT NULL
 );
-
-INSERT INTO datos.tipos_turnos (nombre_tipo) VALUES ('PRESENCIAL'), ('VIRTUAL'); 
-
-INSERT INTO datos.estados_turnos (nombre) VALUES ('PENDIENTE'),('ATENDIDO'),('AUSENTE'),('CANCELADO');
