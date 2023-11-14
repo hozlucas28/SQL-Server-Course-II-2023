@@ -1,8 +1,10 @@
-GO
 USE [CURESA];
-
--- Insertar turno médico
 GO
+
+
+/* ------------------- Procedimientos Almacenados - Turnos ------------------ */
+
+-- Insertar turno
 CREATE OR ALTER PROCEDURE [datos].[registrarTurnoMedico]
     @idPaciente INT,
     @fecha DATE,
@@ -22,7 +24,7 @@ BEGIN
 	DECLARE @idMedico INT
 	DECLARE @idSede INT
 	DECLARE @idTipoTurno INT
-	DECLARE @idTurnoPendiente INT = 1;
+	DECLARE @idTurnoPendiente INT = 1
 
 	IF UPPER(@tipoTurno) = 'PRESENCIAL' SET @idTipoTurno = 1
 	ELSE IF UPPER(@tipoTurno) = 'VIRTUAL' SET @idTipoTurno = 2
@@ -88,17 +90,17 @@ BEGIN
                 @idTurnoPendiente
             )
             SELECT @idTurno = id_turno FROM [datos].[reservas_turnos_medicos] 
-            WHERE @idMedico = id_medico AND @fecha = fecha AND @hora = hora AND @idPaciente = id_paciente;
+            WHERE @idMedico = id_medico AND @fecha = fecha AND @hora = hora AND @idPaciente = id_paciente
 		END
 		ELSE
-			PRINT '- No se pudo registrar el turno ( sin disponibilidad )';
+			PRINT '- No se pudo registrar el turno ( sin disponibilidad )'
 	END
 
 	DROP TABLE [#disponibilidad]
 END;
-
--- Actualizar turno médico
 GO
+
+-- Actualizar turno
 CREATE OR ALTER PROCEDURE [datos].[actualizarTurnoMedico]
     @idTurno INT,
     @estado VARCHAR(255)
@@ -118,9 +120,9 @@ BEGIN
 		SET [id_estado_turno] = @idEstado 
 		WHERE [id_turno] = @idTurno
 END;
-
--- Cancelar turno médico
 GO
+
+-- Cancelar turno
 CREATE OR ALTER PROCEDURE [datos].[cancelarTurnoMedico]
     @idTurno INT
 AS
@@ -129,9 +131,9 @@ BEGIN
 
     SELECT @idEstado = [id_estado] 
 	FROM [datos].[estados_turnos] 
-	WHERE [nombre] = 'CANCELADO';
+	WHERE [nombre] = 'CANCELADO'
 
     UPDATE [datos].[reservas_turnos_medicos] 
 	SET [id_estado_turno] = @idEstado 
-	WHERE [id_turno] = @idTurno;
+	WHERE [id_turno] = @idTurno
 END;
