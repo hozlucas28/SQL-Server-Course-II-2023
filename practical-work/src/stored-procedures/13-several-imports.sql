@@ -242,6 +242,9 @@ BEGIN
 		WHERE [email] = pif.[email]
 		HAVING COUNT([nroDocumento]) > 1
 	)
+    OR [email] IN (
+		SELECT email FROM [datos].[pacientes]
+	)
 	AND [nroDocumento] NOT IN (
 		SELECT MAX([nroDocumento]) FROM [#PacientesImportadosFormateados]
 		WHERE [email] = pif.[email]
