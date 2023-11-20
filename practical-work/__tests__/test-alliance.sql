@@ -1,28 +1,26 @@
 USE [CURESA];
 GO
 
+
 /* ---------------------------- Verificar Alianza --------------------------- */
+
+DECLARE @id_paciente INT = 137;
+DECLARE @id_prestador INT = 1;
+DECLARE @idCobertura INT;
 
 SELECT * FROM [datos].[reservas_turnos_medicos];
 
-DECLARE @idPaciente INT = 137;
-DECLARE @idPrestador INT = 1;
-DECLARE @idCobertura INT;
+EXEC [datos].[registrarCobertura] @idPrestador = @id_prestador, @imagenCredencial = null, @nroSocio = @id_paciente;
 
-INSERT INTO [datos].[coberturas] ([id_prestador], [imagen_credencial], [nro_socio]) VALUES (@idPrestador, null, @idPaciente);
+SELECT * FROM [datos].[coberturas] WHERE [id_prestador] = @id_prestador;
 
-SELECT @idCobertura = [id_cobertura] FROM [datos].[coberturas] WHERE [id_prestador] = @idPrestador;
+SELECT @idCobertura = [id_cobertura] FROM [datos].[coberturas] WHERE [id_prestador] = @id_prestador;
+EXEC [datos].[actualizarPaciente] @idPaciente = @id_paciente, @cobertura = @idCobertura;
 
-SELECT * FROM [datos].[pacientes] WHERE [id_paciente] = @idPaciente;
+SELECT * FROM [datos].[prestadores] WHERE [id_prestador] = @id_prestador;
+SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_paciente] = @id_Paciente;
 
-UPDATE [datos].[pacientes] SET [id_cobertura] = @idCobertura WHERE [id_paciente] = @idPaciente;
+EXEC [datos].[eliminarPrestador] @idPrestador = @id_prestador;
 
-SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_paciente] = @idPaciente;
-
-select * from datos.prestadores
-
-DELETE FROM [datos].[prestadores] WHERE [id_prestador] = @idPrestador;
-
-select * from datos.prestadores
-
-SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_paciente] = @idPaciente;
+SELECT * FROM [datos].[prestadores];
+SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_paciente] = @id_Paciente;
