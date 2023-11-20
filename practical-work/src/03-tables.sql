@@ -182,7 +182,8 @@ CREATE TABLE [datos].[coberturas]
     [id_cobertura] INT IDENTITY (1, 1),
     [id_prestador] INT,
     [imagen_credencial] VARCHAR (128),
-    [nro_socio] VARCHAR(30) NOT NULL
+    [nro_socio] VARCHAR(30) NOT NULL,
+    [borrado] BIT DEFAULT 0
 );
 
 CREATE TABLE [datos].[prestadores]
