@@ -88,7 +88,9 @@ BEGIN
             [em].[requiereAutorizacion]
         FROM [#EstudiosMedicos] [em]
         INNER JOIN [datos].[prestadores] p ON [em].[prestador] = [p].[nombre]
-        WHERE [p].[plan_prestador] = [em].[plan]
+        WHERE [p].[plan_prestador] = [em].[plan] AND [em].[id] NOT IN (
+            SELECT [id_estudioValido] FROM [datos].[estudiosValidos]
+        )
 
         DROP TABLE [#EstudiosMedicos]
     END TRY
