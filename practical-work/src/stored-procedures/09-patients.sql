@@ -108,7 +108,7 @@ BEGIN
     IF @nacionalidad IS NOT NULL
         SET @idNacionalidad = [referencias].[obtenerIdNacionalidad] (@nacionalidad)
 
-    UPDATE datos.pacientes SET
+    UPDATE [datos].[pacientes] SET
         [id_cobertura] = ISNULL(@cobertura, [id_cobertura]),
         [id_direccion] = ISNULL(@idDireccion, [id_direccion]),
         [id_tipo_documento] = ISNULL(@tipoDocumento, [id_tipo_documento]),
