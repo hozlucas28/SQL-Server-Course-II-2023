@@ -4,7 +4,7 @@ GO
 /*
     Se requiere la ejecución previa de los siguientes tests:
         1° - < test-importData.sql >
-        2° - < test-insertAppointments.sql >
+        2° - < test-insertAppointments.sql > (por cada iteración del presente test)
 */
 
 
