@@ -61,6 +61,12 @@ GRANT EXECUTE ON OBJECT::[datos].[actualizarPaciente] TO [Personal Administrativ
 GRANT EXECUTE ON OBJECT::[datos].[borrarPaciente] TO [Personal Administrativo];
 GRANT EXECUTE ON OBJECT::[datos].[existePaciente] TO [Personal Administrativo];
 GRANT EXECUTE ON OBJECT::[datos].[obtenerIdEspecialidad] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[datos].[registrarCobertura] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarCobertura] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[datos].[eliminarCobertura] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[datos].[registrarPrestador] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarPrestador] TO [Personal Administrativo];
+GRANT EXECUTE ON OBJECT::[datos].[eliminarPrestador] TO [Personal Administrativo];
 
 -- Administrador General
 GRANT EXECUTE ON OBJECT::[referencias].[obtenerOInsertarIdNacionalidad] TO [Administrador General];
@@ -81,11 +87,19 @@ GRANT EXECUTE ON OBJECT::[datos].[actualizarPaciente] TO [Administrador General]
 GRANT EXECUTE ON OBJECT::[datos].[borrarPaciente] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[datos].[existePaciente] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[datos].[obtenerIdEspecialidad] TO [Administrador General];
-GRANT EXECUTE ON OBJECT::[datos].[actualizarContraseña] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[insertarUsuario] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarUsuario] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[borrarUsuario] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[datos].[insertarMedico] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[datos].[eliminarMedico] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[datos].[obtenerIdEspecialidad] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[datos].[guardarEspecialidad] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[registrarCobertura] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarCobertura] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[eliminarCobertura] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[registrarPrestador] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarPrestador] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[eliminarPrestador] TO [Administrador General];
 
 -- Personal técnico clínico
 GRANT EXECUTE ON OBJECT::[archivos].[importarDatosCSV] TO [Personal Técnico Clínico];
