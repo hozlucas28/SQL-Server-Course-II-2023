@@ -8,7 +8,7 @@ DECLARE @nuevaContra VARCHAR(255) = 'LaYutaExistePorUstedes62-23';
 DECLARE @viejaContra VARCHAR(255) = '12345';
 DECLARE @id_usuario INT = NULL;
 
--- Eliminar usuario
+-- Limpiar registros del test
 SELECT @id_usuario = [id_usuario] FROM [datos].[usuarios] WHERE [contraseña] = @nuevaContra;
 IF @id_usuario IS NOT NULL
     EXEC [datos].[borrarUsuario] @id = @id_usuario;
