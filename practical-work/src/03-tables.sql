@@ -222,12 +222,13 @@ CREATE TABLE [datos].[tipos_turnos]
 
 CREATE TABLE [datos].[dias_x_sede]
 (
-    [dia] DATE NOT NULL,
-    [hora_inicio] TIME NOT NULL,
-    [hora_fin] TIME NOT NULL,
-    [id_medico] INT NOT NULL,
 	[id_dias_x_sede] INT IDENTITY(1,1),
-    [id_sede] INT NOT NULL,
+    [alta] BIT DEFAULT 1,
+    [dia] DATE NOT NULL,
+    [hora_fin] TIME NOT NULL,
+    [hora_inicio] TIME NOT NULL,
+    [id_medico] INT NOT NULL,
+    [id_sede] INT NOT NULL
 );
 
 CREATE TABLE [datos].[sede_de_atencion]
