@@ -1,6 +1,10 @@
 USE [CURESA];
 GO
 
+/*
+    Se requiere la ejecución previa de la semilla: < seed.sql >
+*/
+
 
 /* ----------------------------- Importar Datos ----------------------------- */
 
