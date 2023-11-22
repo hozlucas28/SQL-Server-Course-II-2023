@@ -100,6 +100,9 @@ GRANT EXECUTE ON OBJECT::[datos].[eliminarCobertura] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[datos].[registrarPrestador] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[datos].[actualizarPrestador] TO [Administrador General];
 GRANT EXECUTE ON OBJECT::[datos].[eliminarPrestador] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[insertarDiasXSede] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[actualizarDiasXSede] TO [Administrador General];
+GRANT EXECUTE ON OBJECT::[datos].[eliminarDiasXSede] TO [Administrador General];
 
 -- Personal técnico clínico
 GRANT EXECUTE ON OBJECT::[archivos].[importarDatosCSV] TO [Personal Técnico Clínico];
