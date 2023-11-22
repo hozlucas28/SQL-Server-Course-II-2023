@@ -1,6 +1,11 @@
 USE [CURESA];
 GO
 
+/*
+    Se requiere la ejecución previa de los siguientes tests:
+        - < test-importData.sql >
+*/
+
 
 /* ----------------------------- Insertar Turnos ---------------------------- */
 
@@ -26,23 +31,44 @@ SELECT TOP(1) @idPaciente = [id_paciente] FROM [datos].[pacientes];
 SELECT TOP(1) @idMedico = [id_medico], @nombreMedico = [nombre], @apellidoMedico = [apellido] FROM [datos].[medicos];
 SELECT TOP(1) @nombreSede = [nombre], @idSede = [id_sede] FROM [datos].[sede_de_atencion];
 
-INSERT INTO [datos].[dias_x_sede] ([dia], [hora_inicio], [hora_fin], [id_medico], [id_sede])
-    VALUES (@fecha, '10:00:00', '18:00:00', @idMedico, @idSede);
+-- Registrar Días x Sede
+EXEC [datos].[insertarDiasXSede]
+    @dia = @fecha,
+    @horaInicio = '10:00:00',
+    @horaFin = '18:00:00',
+    @idMedico = @idMedico,
+    @idSede = @idSede;
 
--- Ejecutar procedimiento almacenado
-EXEC [datos].[registrarTurnoMedico] @idPaciente, @fecha, @horaTurno, @nombreMedico, @apellidoMedico,
-    @especialidad, @nombreSede, @tipoTurno, @idTurno OUTPUT;
+-- Insertar turnos y verificar casos
+EXEC [datos].[registrarTurnoMedico]
+    @idPaciente,
+    @fecha,
+    @horaTurno,
+    @nombreMedico,
+    @apellidoMedico,
+    @especialidad,
+    @nombreSede,
+    @tipoTurno,
+    @idTurno OUTPUT;
 
--- Verificar ejecución del procedimiento almacenado
 IF @idTurno IS NOT NULL
     PRINT '=> [ / ] El caso 1 se completo con éxito (ID: ' + CAST(@idTurno AS VARCHAR) + ').'
 ELSE
-    PRINT '=> [ X ] El caso 1 no se completo con éxito.'
+    PRINT '=> [ X ] El caso 1 no se completo con éxito.';
+SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_turno] = @idTurno;
 
-EXEC [datos].[registrarTurnoMedico] @idPaciente, @fecha, @horaTurno2, @nombreMedico, 
-                            @apellidoMedico, @especialidad,@nombreSede, @tipoTurno, @idTurno OUTPUT;
+EXEC [datos].[registrarTurnoMedico]
+    @idPaciente,
+    @fecha,
+    @horaTurno2,
+    @nombreMedico,
+    @apellidoMedico,
+    @especialidad,@nombreSede,
+    @tipoTurno,
+    @idTurno OUTPUT;
 
 IF @idTurno = -1
     PRINT '=> [ / ] El caso 2 se completo con éxito (ID: ' + CAST(@idTurno AS VARCHAR) + ').'
 ELSE
-    PRINT '=> [ X ] El caso 2 no se completo con éxito.'
+    PRINT '=> [ X ] El caso 2 no se completo con éxito.';
+SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_turno] = @idTurno;
