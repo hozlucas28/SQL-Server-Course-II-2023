@@ -1,26 +1,30 @@
 USE [CURESA];
 GO
 
+/*
+    Se requiere la ejecución previa de los siguientes tests:
+        1° - < test-importData.sql >
+        2° - < test-insertAppointments.sql >
+*/
+
 
 /* ---------------------------- Verificar Alianza --------------------------- */
 
-DECLARE @id_paciente INT = 137;
-DECLARE @id_prestador INT = 1;
+DECLARE @idPaciente INT = 137;
+DECLARE @idPrestador INT = 1;
 DECLARE @idCobertura INT;
 
-SELECT * FROM [datos].[reservas_turnos_medicos];
+-- Registrar cobertura
+EXEC [datos].[registrarCobertura] @idPrestador = @idPrestador, @imagenCredencial = null, @nroSocio = @idPaciente;
+SELECT * FROM [datos].[coberturas] WHERE [id_prestador] = @idPrestador;
 
-EXEC [datos].[registrarCobertura] @idPrestador = @id_prestador, @imagenCredencial = null, @nroSocio = @id_paciente;
+-- Asignar cobertura al paciente
+SELECT @idCobertura = [id_cobertura] FROM [datos].[coberturas] WHERE [id_prestador] = @idPrestador;
+EXEC [datos].[actualizarPaciente] @idPaciente = @idPaciente, @cobertura = @idCobertura;
+SELECT * FROM [datos].[prestadores] WHERE [id_prestador] = @idPrestador;
+SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_paciente] = @idPaciente;
 
-SELECT * FROM [datos].[coberturas] WHERE [id_prestador] = @id_prestador;
-
-SELECT @idCobertura = [id_cobertura] FROM [datos].[coberturas] WHERE [id_prestador] = @id_prestador;
-EXEC [datos].[actualizarPaciente] @idPaciente = @id_paciente, @cobertura = @idCobertura;
-
-SELECT * FROM [datos].[prestadores] WHERE [id_prestador] = @id_prestador;
-SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_paciente] = @id_Paciente;
-
-EXEC [datos].[eliminarPrestador] @idPrestador = @id_prestador;
-
-SELECT * FROM [datos].[prestadores];
-SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_paciente] = @id_Paciente;
+-- Verificar turnos post-eliminación del prestador
+EXEC [datos].[eliminarPrestador] @idPrestador = @idPrestador;
+SELECT * FROM [datos].[prestadores] WHERE [id_prestador] = @idPrestador;
+SELECT * FROM [datos].[reservas_turnos_medicos] WHERE [id_paciente] = @idPaciente;
