@@ -4,7 +4,6 @@ GO
 
 /* --------------- Procedimientos Almacenados - Importaciones --------------- */
 
-
 CREATE OR ALTER PROCEDURE [archivos].[importarDatosCSV]
     @tablaDestino VARCHAR(255),
     @delimitadorCampos VARCHAR(4) = ';',
@@ -29,14 +28,6 @@ BEGIN
         THROW 51001, @error, 1
         RETURN
     END
-    
-    /*Validación de existencia del archivo
-    IF NOT EXISTS (SELECT 1 FROM sys.dm_os_file_exists(@rutaArchivo))
-    BEGIN
-        SET @error = 'El archivo ' + @rutaArchivo + ' no existe.'
-        THROW 51002, @error, 1
-        RETURN
-    END*/
     
     DECLARE @SQL NVARCHAR(MAX)
     SET @SQL = N'
