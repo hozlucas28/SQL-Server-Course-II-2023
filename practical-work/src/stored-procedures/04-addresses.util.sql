@@ -5,7 +5,7 @@ GO
 /* ---------------- Procedimientos Almacenados - Direcciones ---------------- */
 
 -- Obtener el ID de una dirección
-CREATE OR ALTER PROCEDURE [referencias].[obtenerOInsertarIdDireccion]
+CREATE OR ALTER PROCEDURE [utilities].[obtenerOInsertarIdDireccion]
     @calleYNro VARCHAR(50),
     @localidad VARCHAR(255),
     @provincia VARCHAR(255),
@@ -15,25 +15,25 @@ BEGIN
     DECLARE @idProvincia INT
     DECLARE @idLocalidad INT
 
-	EXEC [referencias].[obtenerOInsertarIdProvincia] @Provincia, @IdProvincia OUTPUT
-	EXEC [referencias].[obtenerOInsertarIdLocalidad] @Localidad,@IdProvincia, @IdLocalidad OUTPUT
+	EXEC [utilities].[obtenerOInsertarIdProvincia] @Provincia, @IdProvincia OUTPUT
+	EXEC [utilities].[obtenerOInsertarIdLocalidad] @Localidad,@IdProvincia, @IdLocalidad OUTPUT
 
-	IF NOT EXISTS (SELECT 1 FROM [referencias].[direcciones] 
+	IF NOT EXISTS (SELECT 1 FROM [utilities].[direcciones] 
 					WHERE [calle_y_nro] = @calleYNro
                     AND [id_localidad] = @IdLocalidad 
                     AND [id_provincia] = @IdProvincia)
 
-        INSERT INTO [referencias].[direcciones] ([calle_y_nro],[id_localidad],[id_provincia]) 
+        INSERT INTO [utilities].[direcciones] ([calle_y_nro],[id_localidad],[id_provincia]) 
 		VALUES (@calleYNro,@IdLocalidad,@IdProvincia)
 
-	SELECT @idDireccion = [id_direccion] FROM [referencias].[direcciones] 
+	SELECT @idDireccion = [id_direccion] FROM [utilities].[direcciones] 
 	WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @IdLocalidad AND [id_provincia] = @IdProvincia
 END;
 GO
 
 -- Actualizar/Insertar una dirección
 
-CREATE OR ALTER PROCEDURE [referencias].[actualizarDireccion]
+CREATE OR ALTER PROCEDURE [utilities].[actualizarDireccion]
     @calleYNro VARCHAR(50),
     @codPostal SMALLINT = NULL,
     @departamento SMALLINT = NULL,
@@ -56,8 +56,8 @@ BEGIN
     IF NULLIF(@calleYNro, '') IS NULL OR @idLocalidad IS NULL OR @idProvincia IS NULL
         RETURN
 
-    IF NOT EXISTS (SELECT 1 FROM [referencias].[direcciones] WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @idLocalidad AND [id_provincia] = @idProvincia)
-        INSERT INTO [referencias].[direcciones] (
+    IF NOT EXISTS (SELECT 1 FROM [utilities].[direcciones] WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @idLocalidad AND [id_provincia] = @idProvincia)
+        INSERT INTO [utilities].[direcciones] (
             [calle_y_nro],
             [cod_postal],
             [departamento],
@@ -77,7 +77,7 @@ BEGIN
             @piso
         )
     ELSE
-        UPDATE [referencias].[direcciones] SET
+        UPDATE [utilities].[direcciones] SET
             [calle_y_nro] = @calleYNro,
             [cod_postal] = @codPostal,
             [departamento] = @departamento,
@@ -99,7 +99,7 @@ BEGIN
         @idPais = [id_pais],
         @idProvincia = [id_provincia],
         @piso = [piso]
-    FROM [referencias].[direcciones]
+    FROM [utilities].[direcciones]
     WHERE
         [calle_y_nro] = @calleYNro AND
         [id_localidad] = @idLocalidad AND

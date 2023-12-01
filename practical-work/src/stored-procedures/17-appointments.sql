@@ -5,7 +5,7 @@ GO
 /* ------------------- Procedimientos Almacenados - Turnos ------------------ */
 
 -- Insertar turno
-CREATE OR ALTER PROCEDURE [datos].[registrarTurnoMedico]
+CREATE OR ALTER PROCEDURE [data].[registrarTurnoMedico]
     @idPaciente INT,
     @fecha DATE,
     @hora TIME,
@@ -40,10 +40,10 @@ BEGIN
 		[t].[id_tipo_turno] AS [idTipoTurno],
 		[t].[id_estado_turno] as [idEstadoTurno]
     INTO [#disponibilidad]
-    FROM [datos].[dias_x_sede] AS [dxs]
-	JOIN [datos].[medicos] AS [m] ON [m].[id_medico] = [dxs].[id_medico]
-    JOIN [datos].[sede_de_atencion] AS [s] ON [s].[id_sede] = [dxs].[id_sede]
-    LEFT JOIN [datos].[reservas_turnos_medicos] AS [t] ON [dxs].[id_dias_x_sede] = [t].[id_dias_x_sede]
+    FROM [data].[dias_x_sede] AS [dxs]
+	JOIN [data].[medicos] AS [m] ON [m].[id_medico] = [dxs].[id_medico]
+    JOIN [data].[sede_de_atencion] AS [s] ON [s].[id_sede] = [dxs].[id_sede]
+    LEFT JOIN [data].[reservas_turnos_medicos] AS [t] ON [dxs].[id_dias_x_sede] = [t].[id_dias_x_sede]
     WHERE
         [m].[nombre] = @nombreMedico AND
         [m].[apellido] = @apellidoMedico AND
@@ -68,7 +68,7 @@ BEGIN
 				@idDiasXSede = [id_dias_x_sede]
 			FROM [#disponibilidad]
 
-			INSERT INTO [datos].[reservas_turnos_medicos] (
+			INSERT INTO [data].[reservas_turnos_medicos] (
                 [fecha],
                 [hora],
                 [id_medico],
@@ -89,7 +89,7 @@ BEGIN
                 @idTipoTurno,
                 @idTurnoPendiente
             )
-            SELECT @idTurno = id_turno FROM [datos].[reservas_turnos_medicos] 
+            SELECT @idTurno = id_turno FROM [data].[reservas_turnos_medicos] 
             WHERE @idMedico = id_medico AND @fecha = fecha AND @hora = hora AND @idPaciente = id_paciente
 		END
 		ELSE
@@ -101,7 +101,7 @@ END;
 GO
 
 -- Actualizar turno
-CREATE OR ALTER PROCEDURE [datos].[actualizarTurnoMedico]
+CREATE OR ALTER PROCEDURE [data].[actualizarTurnoMedico]
     @idTurno INT,
     @estado VARCHAR(255)
 AS
@@ -112,28 +112,28 @@ BEGIN
 		RETURN
 
     SELECT @idEstado = [id_estado] 
-	FROM [datos].[estados_turnos] 
+	FROM [data].[estados_turnos] 
 	WHERE [nombre] = @estado
 
     IF @idEstado IS NOT NULL
-        UPDATE [datos].[reservas_turnos_medicos] 
+        UPDATE [data].[reservas_turnos_medicos] 
 		SET [id_estado_turno] = @idEstado 
 		WHERE [id_turno] = @idTurno
 END;
 GO
 
 -- Cancelar turno
-CREATE OR ALTER PROCEDURE [datos].[cancelarTurnoMedico]
+CREATE OR ALTER PROCEDURE [data].[cancelarTurnoMedico]
     @idTurno INT
 AS
 BEGIN
     DECLARE @idEstado INT
 
     SELECT @idEstado = [id_estado] 
-	FROM [datos].[estados_turnos] 
+	FROM [data].[estados_turnos] 
 	WHERE [nombre] = 'CANCELADO'
 
-    UPDATE [datos].[reservas_turnos_medicos] 
+    UPDATE [data].[reservas_turnos_medicos] 
 	SET [id_estado_turno] = @idEstado 
 	WHERE [id_turno] = @idTurno
 END;

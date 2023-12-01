@@ -5,23 +5,23 @@ GO
 /* ------------------ Procedimientos Almacenados - Usuarios ----------------- */
 
 -- Insertar usuario
-CREATE OR ALTER PROCEDURE [datos].[insertarUsuario]
+CREATE OR ALTER PROCEDURE [data].[insertarUsuario]
 	@contraseña VARCHAR(256),
     @idPaciente INT = NULL
 AS
 BEGIN
-    INSERT INTO [datos].[usuarios] ([contraseña], [id_paciente]) VALUES (@contraseña, @idPaciente)
+    INSERT INTO [data].[usuarios] ([contraseña], [id_paciente]) VALUES (@contraseña, @idPaciente)
 END;
 GO
 
 -- Actualizar usuario
-CREATE OR ALTER PROCEDURE [datos].[actualizarUsuario]
+CREATE OR ALTER PROCEDURE [data].[actualizarUsuario]
     @contraseña VARCHAR(256) = NULL,
     @idPaciente INT = NULL,
     @idUsuario INT
 AS
 BEGIN
-    UPDATE [datos].[usuarios] SET
+    UPDATE [data].[usuarios] SET
         [contraseña] = ISNULL(@contraseña, [contraseña]),
         [id_paciente] = ISNULL(@idPaciente, [id_paciente])
     WHERE
@@ -30,7 +30,7 @@ END;
 GO
 
 -- Borrar usuario
-CREATE OR ALTER PROCEDURE [datos].[borrarUsuario]
+CREATE OR ALTER PROCEDURE [data].[borrarUsuario]
     @id INT
 AS
-    DELETE FROM [datos].[usuarios] WHERE [id_usuario] = @id
+    DELETE FROM [data].[usuarios] WHERE [id_usuario] = @id

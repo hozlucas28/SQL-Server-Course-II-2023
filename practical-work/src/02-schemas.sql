@@ -4,29 +4,23 @@ GO
 
 /* ---------------------------- Eliminar Esquemas --------------------------- */
 
-IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'archivos')
-    DROP SCHEMA [archivos];
+IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'files')
+    DROP SCHEMA [files];
 
-IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'datos')
-    DROP SCHEMA [datos];
+IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'data')
+    DROP SCHEMA [data];
 
-IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'referencias')
-    DROP SCHEMA [referencias];
-
-IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'utils')
-    DROP SCHEMA [utils]
+IF EXISTS (SELECT * FROM sys.schemas WHERE name = 'utilities')
+    DROP SCHEMA [utilities];
 GO
 
 
 /* ----------------------------- Crear Esquemas ----------------------------- */
 
-CREATE SCHEMA [archivos];
+CREATE SCHEMA [files];
 GO
 
-CREATE SCHEMA [datos];
+CREATE SCHEMA [data];
 GO
 
-CREATE SCHEMA [referencias];
-GO
-
-CREATE SCHEMA [utils];
+CREATE SCHEMA [utilities];

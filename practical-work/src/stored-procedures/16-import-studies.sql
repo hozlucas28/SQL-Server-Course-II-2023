@@ -4,7 +4,7 @@ GO
 
 /* ------------- Procedimientos Almacenados - Importar Estudios ------------- */
 
-CREATE OR ALTER PROCEDURE [archivos].[importarEstudiosJSON]
+CREATE OR ALTER PROCEDURE [files].[importarEstudiosJSON]
     @rutaArchivo VARCHAR(255)
 AS
 BEGIN
@@ -66,7 +66,7 @@ BEGIN
     )
 
     BEGIN TRY
-        INSERT INTO [datos].[estudiosValidos]
+        INSERT INTO [data].[estudiosValidos]
         (
             [id_estudioValido],
             [area],
@@ -87,9 +87,9 @@ BEGIN
             [em].[costo],
             [em].[requiereAutorizacion]
         FROM [#EstudiosMedicos] [em]
-        INNER JOIN [datos].[prestadores] p ON [em].[prestador] = [p].[nombre]
+        INNER JOIN [data].[prestadores] p ON [em].[prestador] = [p].[nombre]
         WHERE [p].[plan_prestador] = [em].[plan] AND [em].[id] NOT IN (
-            SELECT [id_estudioValido] FROM [datos].[estudiosValidos]
+            SELECT [id_estudioValido] FROM [data].[estudiosValidos]
         )
 
         DROP TABLE [#EstudiosMedicos]

@@ -6,7 +6,7 @@ GO
 
 -- Obtener el ID de una especialidad
 GO
-CREATE OR ALTER FUNCTION [datos].[obtenerIdEspecialidad]
+CREATE OR ALTER FUNCTION [data].[obtenerIdEspecialidad]
     (
         @nombre VARCHAR(50)
     ) RETURNS INT
@@ -18,16 +18,16 @@ BEGIN
     IF NULLIF(@nombre, '') IS NULL
         RETURN @id
 
-    IF NOT EXISTS (SELECT 1 FROM [datos].[especialidad] WHERE UPPER(TRIM([nombre])) = @nombre) 
+    IF NOT EXISTS (SELECT 1 FROM [data].[especialidad] WHERE UPPER(TRIM([nombre])) = @nombre) 
         RETURN @id
 
-    SELECT @id = [id_especialidad] FROM [datos].[especialidad] WHERE UPPER(TRIM([nombre])) = @nombre
+    SELECT @id = [id_especialidad] FROM [data].[especialidad] WHERE UPPER(TRIM([nombre])) = @nombre
     RETURN @id
 END;
 GO
 
 -- Actualizar/Insertar una especialidad
-CREATE OR ALTER PROCEDURE [datos].[guardarEspecialidad]
+CREATE OR ALTER PROCEDURE [data].[guardarEspecialidad]
     @nombre VARCHAR(50) = 'null',
     @outIdEspecialidad INT OUTPUT
 AS
@@ -35,8 +35,8 @@ BEGIN
     IF NULLIF(@nombre, '') IS NULL
             RETURN
         SET @nombre = UPPER(@nombre)
-        IF NOT EXISTS (SELECT 1 FROM [datos].[especialidad] WHERE [nombre] = @nombre) 
-            INSERT INTO [datos].[especialidad] ([nombre]) VALUES (@nombre)
+        IF NOT EXISTS (SELECT 1 FROM [data].[especialidad] WHERE [nombre] = @nombre) 
+            INSERT INTO [data].[especialidad] ([nombre]) VALUES (@nombre)
 
-        SELECT @outIdEspecialidad = [id_especialidad] FROM [datos].[especialidad] WHERE [nombre] = @nombre
+        SELECT @outIdEspecialidad = [id_especialidad] FROM [data].[especialidad] WHERE [nombre] = @nombre
 END;

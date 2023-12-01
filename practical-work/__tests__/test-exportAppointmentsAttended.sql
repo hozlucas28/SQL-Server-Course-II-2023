@@ -19,17 +19,17 @@ DECLARE @idCobertura INT;
 DECLARE @obraSocial VARCHAR(50);
 
 -- Registrar cobertura
-EXEC [datos].[registrarCobertura] @idPrestador = @id_prestador, @imagenCredencial = null, @nroSocio = @id_paciente;
-SELECT * FROM [datos].[coberturas] WHERE [id_prestador] = @id_prestador;
+EXEC [data].[registrarCobertura] @idPrestador = @id_prestador, @imagenCredencial = null, @nroSocio = @id_paciente;
+SELECT * FROM [data].[coberturas] WHERE [id_prestador] = @id_prestador;
 
 -- Asignar cobertura a paciente
-SELECT @idCobertura = [id_cobertura] FROM [datos].[coberturas] WHERE [id_prestador] = @id_prestador;
-EXEC [datos].[actualizarPaciente] @idPaciente = @id_paciente, @cobertura = @idCobertura;
-SELECT * FROM [datos].[pacientes] WHERE [id_paciente] = @id_paciente;
+SELECT @idCobertura = [id_cobertura] FROM [data].[coberturas] WHERE [id_prestador] = @id_prestador;
+EXEC [data].[actualizarPaciente] @idPaciente = @id_paciente, @cobertura = @idCobertura;
+SELECT * FROM [data].[pacientes] WHERE [id_paciente] = @id_paciente;
 
 -- Exportar turnos atendidos
-SELECT @obraSocial = [nombre] FROM [datos].[prestadores] WHERE [id_prestador] = @id_prestador;
-EXEC [archivos].[exportarTurnosAtendidosXML] @obraSocial = @obraSocial, @fechaInicio = @fechaInicio, @fechaFin = @fechaFin, @cadenaXML = @cadenaXML OUTPUT;
+SELECT @obraSocial = [nombre] FROM [data].[prestadores] WHERE [id_prestador] = @id_prestador;
+EXEC [files].[exportarTurnosAtendidosXML] @obraSocial = @obraSocial, @fechaInicio = @fechaInicio, @fechaFin = @fechaFin, @cadenaXML = @cadenaXML OUTPUT;
 
 -- Mostrar XML
 PRINT @cadenaXML;

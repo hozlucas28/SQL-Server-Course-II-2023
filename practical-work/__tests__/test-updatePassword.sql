@@ -13,15 +13,15 @@ DECLARE @viejaContra VARCHAR(255) = '12345';
 DECLARE @idUsuario INT = NULL;
 
 -- Limpiar registros del test
-SELECT @idUsuario = [id_usuario] FROM [datos].[usuarios] WHERE [contraseña] = @nuevaContra;
+SELECT @idUsuario = [id_usuario] FROM [data].[usuarios] WHERE [contraseña] = @nuevaContra;
 IF @idUsuario IS NOT NULL
-    EXEC [datos].[borrarUsuario] @id = @idUsuario;
+    EXEC [data].[borrarUsuario] @id = @idUsuario;
 
 -- Crear usuario
-EXEC [datos].[insertarUsuario] @contraseña = @viejaContra;
-SELECT * FROM [datos].[usuarios] WHERE [contraseña] = @viejaContra;
+EXEC [data].[insertarUsuario] @contraseña = @viejaContra;
+SELECT * FROM [data].[usuarios] WHERE [contraseña] = @viejaContra;
 
 -- Actualizar contraseña del usuario
-SELECT @idUsuario = [id_usuario] FROM [datos].[usuarios] WHERE [contraseña] = @viejaContra;
-EXEC [datos].[actualizarUsuario] @idUsuario = @idUsuario, @contraseña = @nuevaContra;
-SELECT * FROM [datos].[usuarios] WHERE [id_usuario] = @idUsuario;
+SELECT @idUsuario = [id_usuario] FROM [data].[usuarios] WHERE [contraseña] = @viejaContra;
+EXEC [data].[actualizarUsuario] @idUsuario = @idUsuario, @contraseña = @nuevaContra;
+SELECT * FROM [data].[usuarios] WHERE [id_usuario] = @idUsuario;

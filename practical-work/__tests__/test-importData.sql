@@ -9,24 +9,24 @@ GO
 /* ----------------------------- Importar Datos ----------------------------- */
 
 -- Pacientes
-EXEC [archivos].[importarPacientesCSV] @rutaArchivo = "C:\importar\Pacientes.csv";
-SELECT TOP 10 * FROM [datos].[pacientes];
+EXEC [files].[importarPacientesCSV] @rutaArchivo = "C:\importar\Pacientes.csv";
+SELECT TOP 10 * FROM [data].[pacientes];
 GO
 
 -- Prestadores
-EXEC [archivos].[importarPrestadoresCSV] @rutaArchivo = "C:\importar\Prestador.csv";
-SELECT TOP 10 * FROM [datos].[prestadores];
+EXEC [files].[importarPrestadoresCSV] @rutaArchivo = "C:\importar\Prestador.csv";
+SELECT TOP 10 * FROM [data].[prestadores];
 GO
 
 -- Médicos
-EXEC [archivos].[importarMedicosCSV] @rutaArchivo = "C:\importar\Medicos.csv";
-SELECT TOP 10 * FROM [datos].[medicos];
+EXEC [files].[importarMedicosCSV] @rutaArchivo = "C:\importar\Medicos.csv";
+SELECT TOP 10 * FROM [data].[medicos];
 GO
 
 -- Sedes
-EXEC [archivos].[importarSedesCSV] @rutaArchivo = "C:\importar\Sedes.csv";
-SELECT TOP 10 * FROM [datos].[sede_de_atencion];
+EXEC [files].[importarSedesCSV] @rutaArchivo = "C:\importar\Sedes.csv";
+SELECT TOP 10 * FROM [data].[sede_de_atencion];
 
 -- Estudios válidos
-EXEC [archivos].[importarEstudiosJSON] @rutaArchivo = "C:\importar\Centro_Autorizaciones.Estudios clinicos.json";
-SELECT TOP 10 * FROM [datos].[estudiosValidos];
+EXEC [files].[importarEstudiosJSON] @rutaArchivo = "C:\importar\Centro_Autorizaciones.Estudios clinicos.json";
+SELECT TOP 10 * FROM [data].[estudiosValidos];

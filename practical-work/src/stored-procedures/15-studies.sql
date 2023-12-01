@@ -5,7 +5,7 @@ GO
 /* ------------------ Procedimientos Almacenados - Estudios ----------------- */
 
 -- Registrar estudio
-CREATE OR ALTER PROCEDURE [datos].[registrarEstudio]
+CREATE OR ALTER PROCEDURE [data].[registrarEstudio]
     @nombreEstudio VARCHAR(60),
     @idPaciente INT,
     @autorizado BIT = 1,
@@ -15,7 +15,7 @@ CREATE OR ALTER PROCEDURE [datos].[registrarEstudio]
 AS
 BEGIN
     BEGIN TRY
-        INSERT INTO [datos].[estudios] ([nombre_estudio], [id_paciente], [autorizado], [documento_resultado], [fecha], [imagen_resultado])
+        INSERT INTO [data].[estudios] ([nombre_estudio], [id_paciente], [autorizado], [documento_resultado], [fecha], [imagen_resultado])
             VALUES (@nombreEstudio, @idPaciente, @autorizado, @documentoResultado, @fecha, @imagenResultado)
     END TRY
     BEGIN CATCH
@@ -28,7 +28,7 @@ END;
 GO
 
 -- Actualizar estudio
-CREATE OR ALTER PROCEDURE [datos].[actualizarEstudio]
+CREATE OR ALTER PROCEDURE [data].[actualizarEstudio]
     @idEstudio INT = NULL,
     @nombreEstudio VARCHAR(60) = NULL,
     @idPaciente INT = NULL,
@@ -39,7 +39,7 @@ CREATE OR ALTER PROCEDURE [datos].[actualizarEstudio]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [datos].[estudios]
+        UPDATE [data].[estudios]
         SET [nombre_estudio] = ISNULL(@nombreEstudio, [nombre_estudio]),
             [id_paciente] = ISNULL(@idPaciente, [id_paciente]),
             [autorizado] = ISNULL(@autorizado, [autorizado]),
@@ -58,12 +58,12 @@ END;
 GO
 
 -- Eliminar estudio (forma lógica)
-CREATE OR ALTER PROCEDURE [datos].[eliminarEstudio]
+CREATE OR ALTER PROCEDURE [data].[eliminarEstudio]
     @idEstudio INT
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [datos].[estudios]
+        UPDATE [data].[estudios]
         SET [autorizado] = 0
         WHERE [id_estudio] = @idEstudio
     END TRY

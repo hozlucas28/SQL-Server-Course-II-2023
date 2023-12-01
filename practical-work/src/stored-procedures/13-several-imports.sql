@@ -5,7 +5,7 @@ GO
 /* ---------------- Procedimientos Almacenados - Importar CSV --------------- */
 
 -- Importar médicos desde un archivo CSV
-CREATE OR ALTER PROCEDURE [archivos].[importarMedicosCSV]
+CREATE OR ALTER PROCEDURE [files].[importarMedicosCSV]
 	@rutaArchivo VARCHAR(255),
 	@separador VARCHAR(4) = ';'
 AS
@@ -20,7 +20,7 @@ BEGIN
 		[nroMatricula] INT PRIMARY KEY
 	)
 
-	EXEC [archivos].[importarDatosCSV] 
+	EXEC [files].[importarDatosCSV] 
 		@tablaDestino = '#MedicosImportados', 
 		@rutaArchivo = @rutaArchivo, 
 		@delimitadorCampos = @separador
@@ -33,7 +33,7 @@ BEGIN
 	DECLARE @count INT
 
 	DELETE FROM [#MedicosImportados] 
-	WHERE [#MedicosImportados].[nroMatricula] IN (SELECT [nro_matricula] FROM [datos].[medicos])
+	WHERE [#MedicosImportados].[nroMatricula] IN (SELECT [nro_matricula] FROM [data].[medicos])
 
 	SELECT @count = count(*) FROM [#MedicosImportados]
 
@@ -47,11 +47,11 @@ BEGIN
 			@nroMatricula = [NroMatricula]
 		FROM [#MedicosImportados]
 
-		EXEC [datos].[guardarEspecialidad] 
+		EXEC [data].[guardarEspecialidad] 
 			@especialidad, 
 			@idEspecialidad OUTPUT
 
-		EXEC [datos].[insertarMedico] 
+		EXEC [data].[insertarMedico] 
 			@nombre, 
 			@apellido, 
 			@especialidad, 
@@ -67,7 +67,7 @@ END;
 GO
 
 -- Importar prestadores desde un archivo CSV
-CREATE OR ALTER PROCEDURE [archivos].[importarPrestadoresCSV]
+CREATE OR ALTER PROCEDURE [files].[importarPrestadoresCSV]
 	@rutaArchivo VARCHAR(255),
 	@separador VARCHAR(4) = ';'
 AS
@@ -81,7 +81,7 @@ BEGIN
 		[campoVacio] CHAR COLLATE Latin1_General_CS_AS,
 	)
 
-	EXEC [archivos].[importarDatosCSV] 
+	EXEC [files].[importarDatosCSV] 
 		@tablaDestino = '#PrestadoresImportados', 
 		@rutaArchivo = @rutaArchivo, 
 		@delimitadorCampos = @separador
@@ -89,13 +89,13 @@ BEGIN
 	DELETE FROM [#PrestadoresImportados]
 	WHERE EXISTS (
     	SELECT 1
-  		FROM [datos].[prestadores] AS p
+  		FROM [data].[prestadores] AS p
   	  	WHERE 
 			[#PrestadoresImportados].[nombre] = p.[nombre] AND 
 			[#PrestadoresImportados].[planPrestador] = p.[plan_prestador]
 	)
 
-	INSERT INTO [datos].[prestadores] ([nombre], [plan_prestador]) 
+	INSERT INTO [data].[prestadores] ([nombre], [plan_prestador]) 
 	SELECT [nombre], [planPrestador] FROM [#PrestadoresImportados]
 	
 	DROP TABLE [#PrestadoresImportados]
@@ -104,7 +104,7 @@ GO
 
 -- Importar pacientes desde un archivo CSV
 GO
-CREATE OR ALTER PROCEDURE [archivos].[importarPacientesCSV]
+CREATE OR ALTER PROCEDURE [files].[importarPacientesCSV]
 	@rutaArchivo VARCHAR(255),
 	@separador VARCHAR(4) = ';'
 AS
@@ -167,7 +167,7 @@ BEGIN
 		[error_desc] VARCHAR(255) COLLATE Latin1_General_CS_AS
 	)
 
-	EXEC [archivos].[importarDatosCSV] 
+	EXEC [files].[importarDatosCSV] 
 		@tablaDestino = '#PacientesImportados', 
 		@rutaArchivo = @rutaArchivo, 
 		@delimitadorCampos = @separador
@@ -243,7 +243,7 @@ BEGIN
 		HAVING COUNT([nroDocumento]) > 1
 	)
     OR [email] IN (
-		SELECT email FROM [datos].[pacientes]
+		SELECT email FROM [data].[pacientes]
 	)
 	AND [nroDocumento] NOT IN (
 		SELECT MAX([nroDocumento]) FROM [#PacientesImportadosFormateados]
@@ -295,7 +295,7 @@ BEGIN
 				@provincia = [provincia]
 			FROM [#PacientesImportadosFormateados]
 
-			EXEC [datos].[insertarPaciente] 
+			EXEC [data].[insertarPaciente] 
 				@nombre, 
 				@apellido, 
 				@fechaNacimiento, 
@@ -339,7 +339,7 @@ GO
 
 -- Importar sedes desde un archivo CSV
 GO
-CREATE OR ALTER PROCEDURE [archivos].[importarSedesCSV]
+CREATE OR ALTER PROCEDURE [files].[importarSedesCSV]
 	@rutaArchivo VARCHAR(255),
 	@separador VARCHAR(4) = ';'
 AS
@@ -354,7 +354,7 @@ BEGIN
 		[provincia] VARCHAR (255) COLLATE Latin1_General_CS_AS
 	)
 
-	EXEC [archivos].[importarDatosCSV] 
+	EXEC [files].[importarDatosCSV] 
 		@tablaDestino = '#SedesImportadas', 
 		@rutaArchivo = @rutaArchivo, 
 		@delimitadorCampos = @separador
@@ -378,13 +378,13 @@ BEGIN
 			@provincia = [provincia]
 		FROM [#SedesImportadas]
 
-		EXEC [referencias].[obtenerOInsertarIdDireccion] 
+		EXEC [utilities].[obtenerOInsertarIdDireccion] 
 			@calleYNro, 
 			@localidad, 
 			@provincia, 
 			@idDireccion OUTPUT
 
-		INSERT INTO [datos].[sede_de_atencion] ([nombre], [direccion]) 
+		INSERT INTO [data].[sede_de_atencion] ([nombre], [direccion]) 
 		VALUES (@nombreSede, @idDireccion)
 	
 		DELETE TOP(1) FROM [#SedesImportadas]

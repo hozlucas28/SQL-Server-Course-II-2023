@@ -5,14 +5,14 @@ GO
 /* ----------------- Procedimientos Almacenados - Coberturas ---------------- */
 
 -- Registrar cobertura
-CREATE OR ALTER PROCEDURE [datos].[registrarCobertura]
+CREATE OR ALTER PROCEDURE [data].[registrarCobertura]
     @idPrestador INT,
     @imagenCredencial VARCHAR (128),
     @nroSocio VARCHAR(30)
 AS
 BEGIN
     BEGIN TRY
-        INSERT INTO [datos].[coberturas] ([id_prestador], [imagen_credencial], [nro_socio])
+        INSERT INTO [data].[coberturas] ([id_prestador], [imagen_credencial], [nro_socio])
         VALUES (@idPrestador, @imagenCredencial, @nroSocio)
     END TRY
     BEGIN CATCH
@@ -25,7 +25,7 @@ END;
 GO
 
 -- Actualizar cobertura
-CREATE OR ALTER PROCEDURE [datos].[actualizarCobertura]
+CREATE OR ALTER PROCEDURE [data].[actualizarCobertura]
     @fechaRegistro DATE = NULL,
     @idCobertura INT,
     @idPrestador INT = NULL,
@@ -34,7 +34,7 @@ CREATE OR ALTER PROCEDURE [datos].[actualizarCobertura]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [datos].[coberturas]
+        UPDATE [data].[coberturas]
         SET [fecha_registro] = ISNULL(@fechaRegistro, [fecha_registro]),
             [id_prestador] = ISNULL(@idPrestador, [id_prestador]),
             [imagen_credencial] = ISNULL(@imagenCredencial, [imagen_credencial]),
@@ -51,12 +51,12 @@ END;
 GO
 
 -- Eliminar cobertura (forma lógica)
-CREATE OR ALTER PROCEDURE [datos].[eliminarCobertura]
+CREATE OR ALTER PROCEDURE [data].[eliminarCobertura]
     @idCobertura INT
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [datos].[coberturas]
+        UPDATE [data].[coberturas]
         SET [borrado] = 1
         WHERE [id_cobertura] = @idCobertura
     END TRY

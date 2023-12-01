@@ -5,7 +5,7 @@ GO
 /* ---------------- Procedimientos Almacenados - Días X Sede ---------------- */
 
 -- Registrar días x sede
-CREATE OR ALTER PROCEDURE [datos].[insertarDiasXSede]
+CREATE OR ALTER PROCEDURE [data].[insertarDiasXSede]
 	@dia DATE,
     @horaInicio TIME,
     @horaFin TIME,
@@ -13,13 +13,13 @@ CREATE OR ALTER PROCEDURE [datos].[insertarDiasXSede]
     @idSede INT
 AS
 BEGIN
-    INSERT INTO [datos].[dias_x_sede] ([dia], [hora_inicio], [hora_fin], [id_medico], [id_sede])
+    INSERT INTO [data].[dias_x_sede] ([dia], [hora_inicio], [hora_fin], [id_medico], [id_sede])
         VALUES (@dia, @horaInicio, @horaFin, @idMedico, @idSede);
 END;
 GO
 
 -- Actualizar días x sede
-CREATE OR ALTER PROCEDURE [datos].[actualizarDiasXSede]
+CREATE OR ALTER PROCEDURE [data].[actualizarDiasXSede]
     @dia DATE = NULL,
     @horaInicio TIME = NULL,
     @horaFin TIME = NULL,
@@ -29,7 +29,7 @@ CREATE OR ALTER PROCEDURE [datos].[actualizarDiasXSede]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [datos].[dias_x_sede]
+        UPDATE [data].[dias_x_sede]
         SET [dia] = ISNULL(@dia, [dia]),
             [hora_inicio] = ISNULL(@horaInicio, [hora_inicio]),
             [hora_fin] = ISNULL(@horaFin, [hora_fin]),
@@ -47,12 +47,12 @@ END;
 GO
 
 -- Eliminar días x sede
-CREATE OR ALTER PROCEDURE [datos].[eliminarDiasXSede]
+CREATE OR ALTER PROCEDURE [data].[eliminarDiasXSede]
     @idSede INT
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [datos].[dias_x_sede]
+        UPDATE [data].[dias_x_sede]
         SET [alta] = 0
         WHERE [id_sede] = @idSede
     END TRY

@@ -5,7 +5,7 @@ GO
 /* ------------------- Procedimientos Almacenados - Otros ------------------- */
 
 -- Obtener el ID de un sexo
-CREATE OR ALTER FUNCTION [utils].[obtenerCharSexo]
+CREATE OR ALTER FUNCTION [utilities].[obtenerCharSexo]
     (
         @sexo VARCHAR(25)
     ) RETURNS CHAR

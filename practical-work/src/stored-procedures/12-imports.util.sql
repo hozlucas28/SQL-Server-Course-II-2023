@@ -4,7 +4,7 @@ GO
 
 /* --------------- Procedimientos Almacenados - Importaciones --------------- */
 
-CREATE OR ALTER PROCEDURE [archivos].[importarDatosCSV]
+CREATE OR ALTER PROCEDURE [files].[importarDatosCSV]
     @tablaDestino VARCHAR(255),
     @delimitadorCampos VARCHAR(4) = ';',
     @delimitadorFilas VARCHAR(4) = '\n',
