@@ -16,10 +16,10 @@ BEGIN
         SET @id = -1
     ELSE
     BEGIN
-        IF NOT EXISTS (SELECT 1 FROM [utilities].[generos] WHERE UPPER(TRIM([nombre])) = @nombre) 
-            INSERT INTO [utilities].[generos] ([nombre]) VALUES (@nombre)
+        IF NOT EXISTS (SELECT 1 FROM [utilities].[Genders] WHERE UPPER(TRIM([nombre])) = @nombre) 
+            INSERT INTO [utilities].[Genders] ([nombre]) VALUES (@nombre)
 
-        SELECT @id = [id_genero] FROM [utilities].[generos] WHERE UPPER(TRIM([nombre])) = @nombre
+        SELECT @id = [id_genero] FROM [utilities].[Genders] WHERE UPPER(TRIM([nombre])) = @nombre
     END
 END;
 GO
@@ -34,10 +34,10 @@ BEGIN
     IF NULLIF(@nombre, '') IS NULL
         RETURN
         
-    IF NOT EXISTS (SELECT 1 FROM [utilities].[generos] WHERE [nombre] = @nombre) 
-        INSERT INTO [utilities].[generos] ([nombre]) VALUES (@nombre)
+    IF NOT EXISTS (SELECT 1 FROM [utilities].[Genders] WHERE [nombre] = @nombre) 
+        INSERT INTO [utilities].[Genders] ([nombre]) VALUES (@nombre)
     ELSE
-        UPDATE [utilities].[generos] SET [nombre] = @nombre WHERE [nombre] = @nombre
+        UPDATE [utilities].[Genders] SET [nombre] = @nombre WHERE [nombre] = @nombre
 
-    SELECT @outIdGenero = [id_genero], @outNombre = [nombre] FROM [utilities].[generos] WHERE [nombre] = @nombre
+    SELECT @outIdGenero = [id_genero], @outNombre = [nombre] FROM [utilities].[Genders] WHERE [nombre] = @nombre
 END;

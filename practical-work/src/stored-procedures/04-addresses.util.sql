@@ -18,15 +18,15 @@ BEGIN
 	EXEC [utilities].[obtenerOInsertarIdProvincia] @Provincia, @IdProvincia OUTPUT
 	EXEC [utilities].[obtenerOInsertarIdLocalidad] @Localidad,@IdProvincia, @IdLocalidad OUTPUT
 
-	IF NOT EXISTS (SELECT 1 FROM [utilities].[direcciones] 
+	IF NOT EXISTS (SELECT 1 FROM [utilities].[Addresses] 
 					WHERE [calle_y_nro] = @calleYNro
                     AND [id_localidad] = @IdLocalidad 
                     AND [id_provincia] = @IdProvincia)
 
-        INSERT INTO [utilities].[direcciones] ([calle_y_nro],[id_localidad],[id_provincia]) 
+        INSERT INTO [utilities].[Addresses] ([calle_y_nro],[id_localidad],[id_provincia]) 
 		VALUES (@calleYNro,@IdLocalidad,@IdProvincia)
 
-	SELECT @idDireccion = [id_direccion] FROM [utilities].[direcciones] 
+	SELECT @idDireccion = [id_direccion] FROM [utilities].[Addresses] 
 	WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @IdLocalidad AND [id_provincia] = @IdProvincia
 END;
 GO
@@ -56,8 +56,8 @@ BEGIN
     IF NULLIF(@calleYNro, '') IS NULL OR @idLocalidad IS NULL OR @idProvincia IS NULL
         RETURN
 
-    IF NOT EXISTS (SELECT 1 FROM [utilities].[direcciones] WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @idLocalidad AND [id_provincia] = @idProvincia)
-        INSERT INTO [utilities].[direcciones] (
+    IF NOT EXISTS (SELECT 1 FROM [utilities].[Addresses] WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @idLocalidad AND [id_provincia] = @idProvincia)
+        INSERT INTO [utilities].[Addresses] (
             [calle_y_nro],
             [cod_postal],
             [departamento],
@@ -77,7 +77,7 @@ BEGIN
             @piso
         )
     ELSE
-        UPDATE [utilities].[direcciones] SET
+        UPDATE [utilities].[Addresses] SET
             [calle_y_nro] = @calleYNro,
             [cod_postal] = @codPostal,
             [departamento] = @departamento,
@@ -99,7 +99,7 @@ BEGIN
         @idPais = [id_pais],
         @idProvincia = [id_provincia],
         @piso = [piso]
-    FROM [utilities].[direcciones]
+    FROM [utilities].[Addresses]
     WHERE
         [calle_y_nro] = @calleYNro AND
         [id_localidad] = @idLocalidad AND

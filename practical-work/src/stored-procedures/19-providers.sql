@@ -11,7 +11,7 @@ CREATE OR ALTER PROCEDURE [data].[registrarPrestador]
 AS
 BEGIN
     BEGIN TRY
-        INSERT INTO [data].[prestadores] ([nombre], [plan_prestador])
+        INSERT INTO [data].[Providers] ([nombre], [plan_prestador])
         VALUES (@nombre, @planPrestador)
     END TRY
     BEGIN CATCH
@@ -31,7 +31,7 @@ CREATE OR ALTER PROCEDURE [data].[actualizarPrestador]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [data].[prestadores]
+        UPDATE [data].[Providers]
         SET [nombre] = ISNULL(@nombre, [nombre]),
             [plan_prestador] = ISNULL(@planPrestador, [plan_prestador])
         WHERE [id_prestador] = @idPrestador
@@ -51,7 +51,7 @@ CREATE OR ALTER PROCEDURE [data].[eliminarPrestador]
 AS
 BEGIN
     BEGIN TRY
-        DELETE FROM [data].[prestadores] WHERE [id_prestador] = @idPrestador
+        DELETE FROM [data].[Providers] WHERE [id_prestador] = @idPrestador
     END TRY
     BEGIN CATCH
         DECLARE @errorMessage NVARCHAR(1000)

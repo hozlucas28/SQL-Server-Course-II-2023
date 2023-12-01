@@ -40,10 +40,10 @@ BEGIN
 		[t].[id_tipo_turno] AS [idTipoTurno],
 		[t].[id_estado_turno] as [idEstadoTurno]
     INTO [#disponibilidad]
-    FROM [data].[dias_x_sede] AS [dxs]
-	JOIN [data].[medicos] AS [m] ON [m].[id_medico] = [dxs].[id_medico]
-    JOIN [data].[sede_de_atencion] AS [s] ON [s].[id_sede] = [dxs].[id_sede]
-    LEFT JOIN [data].[reservas_turnos_medicos] AS [t] ON [dxs].[id_dias_x_sede] = [t].[id_dias_x_sede]
+    FROM [data].[Days_X_Headquarter] AS [dxs]
+	JOIN [data].[Medics] AS [m] ON [m].[id_medico] = [dxs].[id_medico]
+    JOIN [data].[Care_Headquarters] AS [s] ON [s].[id_sede] = [dxs].[id_sede]
+    LEFT JOIN [data].[Medical_Appointment_Reservations] AS [t] ON [dxs].[id_dias_x_sede] = [t].[id_dias_x_sede]
     WHERE
         [m].[nombre] = @nombreMedico AND
         [m].[apellido] = @apellidoMedico AND
@@ -68,7 +68,7 @@ BEGIN
 				@idDiasXSede = [id_dias_x_sede]
 			FROM [#disponibilidad]
 
-			INSERT INTO [data].[reservas_turnos_medicos] (
+			INSERT INTO [data].[Medical_Appointment_Reservations] (
                 [fecha],
                 [hora],
                 [id_medico],
@@ -89,7 +89,7 @@ BEGIN
                 @idTipoTurno,
                 @idTurnoPendiente
             )
-            SELECT @idTurno = id_turno FROM [data].[reservas_turnos_medicos] 
+            SELECT @idTurno = id_turno FROM [data].[Medical_Appointment_Reservations] 
             WHERE @idMedico = id_medico AND @fecha = fecha AND @hora = hora AND @idPaciente = id_paciente
 		END
 		ELSE
@@ -112,11 +112,11 @@ BEGIN
 		RETURN
 
     SELECT @idEstado = [id_estado] 
-	FROM [data].[estados_turnos] 
+	FROM [data].[Shift_Status] 
 	WHERE [nombre] = @estado
 
     IF @idEstado IS NOT NULL
-        UPDATE [data].[reservas_turnos_medicos] 
+        UPDATE [data].[Medical_Appointment_Reservations] 
 		SET [id_estado_turno] = @idEstado 
 		WHERE [id_turno] = @idTurno
 END;
@@ -130,10 +130,10 @@ BEGIN
     DECLARE @idEstado INT
 
     SELECT @idEstado = [id_estado] 
-	FROM [data].[estados_turnos] 
+	FROM [data].[Shift_Status] 
 	WHERE [nombre] = 'CANCELADO'
 
-    UPDATE [data].[reservas_turnos_medicos] 
+    UPDATE [data].[Medical_Appointment_Reservations] 
 	SET [id_estado_turno] = @idEstado 
 	WHERE [id_turno] = @idTurno
 END;

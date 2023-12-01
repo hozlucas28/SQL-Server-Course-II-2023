@@ -4,98 +4,98 @@ GO
 
 /* ----------------------------- Eliminar Tablas ---------------------------- */
 
-IF OBJECT_ID('[utilities].[direcciones]', 'U') IS NOT NULL
-    DROP TABLE [utilities].[direcciones];
+IF OBJECT_ID('[utilities].[Addresses]', 'U') IS NOT NULL
+    DROP TABLE [utilities].[Addresses];
 
-IF OBJECT_ID('[utilities].[nombres_localidades]', 'U') IS NOT NULL
-    DROP TABLE [utilities].[nombres_localidades];
+IF OBJECT_ID('[utilities].[Localities]', 'U') IS NOT NULL
+    DROP TABLE [utilities].[Localities];
 
-IF OBJECT_ID('[utilities].[nombres_provincias]', 'U') IS NOT NULL
-    DROP TABLE [utilities].[nombres_provincias];
+IF OBJECT_ID('[utilities].[Provinces]', 'U') IS NOT NULL
+    DROP TABLE [utilities].[Provinces];
 
-IF OBJECT_ID('[utilities].[paises]', 'U') IS NOT NULL
-    DROP TABLE [utilities].[paises];
+IF OBJECT_ID('[utilities].[Countries]', 'U') IS NOT NULL
+    DROP TABLE [utilities].[Countries];
 
-IF OBJECT_ID('[utilities].[nacionalidades]', 'U') IS NOT NULL
-    DROP TABLE [utilities].[nacionalidades];
+IF OBJECT_ID('[utilities].[Nationalities]', 'U') IS NOT NULL
+    DROP TABLE [utilities].[Nationalities];
 
-IF OBJECT_ID('[utilities].[tipos_documentos]', 'U') IS NOT NULL
-    DROP TABLE [utilities].[tipos_documentos];
+IF OBJECT_ID('[utilities].[Documents]', 'U') IS NOT NULL
+    DROP TABLE [utilities].[Documents];
 
-IF OBJECT_ID('[utilities].[generos]', 'U') IS NOT NULL
-    DROP TABLE [utilities].[generos];
+IF OBJECT_ID('[utilities].[Genders]', 'U') IS NOT NULL
+    DROP TABLE [utilities].[Genders];
 
-IF OBJECT_ID('[data].[tipos_turnos]', 'U') IS NOT NULL
-    DROP TABLE [data].[tipos_turnos];
+IF OBJECT_ID('[data].[Shifts]', 'U') IS NOT NULL
+    DROP TABLE [data].[Shifts];
 
-IF OBJECT_ID('[data].[estados_turnos]', 'U') IS NOT NULL
-    DROP TABLE [data].[estados_turnos];
+IF OBJECT_ID('[data].[Shift_Status]', 'U') IS NOT NULL
+    DROP TABLE [data].[Shift_Status];
 
-IF OBJECT_ID('[data].[dias_x_sede]', 'U') IS NOT NULL
-    DROP TABLE [data].[dias_x_sede];
+IF OBJECT_ID('[data].[Days_X_Headquarter]', 'U') IS NOT NULL
+    DROP TABLE [data].[Days_X_Headquarter];
 
-IF OBJECT_ID('[data].[sede_de_atencion]', 'U') IS NOT NULL
-    DROP TABLE [data].[sede_de_atencion];
+IF OBJECT_ID('[data].[Care_Headquarters]', 'U') IS NOT NULL
+    DROP TABLE [data].[Care_Headquarters];
 
-IF OBJECT_ID('[data].[especialidad]', 'U') IS NOT NULL
-    DROP TABLE [data].[especialidad];
+IF OBJECT_ID('[data].[Specialties]', 'U') IS NOT NULL
+    DROP TABLE [data].[Specialties];
 
-IF OBJECT_ID('[data].[prestadores]', 'U') IS NOT NULL
-    DROP TABLE [data].[prestadores];
+IF OBJECT_ID('[data].[Providers]', 'U') IS NOT NULL
+    DROP TABLE [data].[Providers];
 
-IF OBJECT_ID('[data].[coberturas]', 'U') IS NOT NULL
-    DROP TABLE [data].[coberturas];
+IF OBJECT_ID('[data].[Coverages]', 'U') IS NOT NULL
+    DROP TABLE [data].[Coverages];
 
-IF OBJECT_ID('[data].[estudios]', 'U') IS NOT NULL
-    DROP TABLE [data].[estudios];
+IF OBJECT_ID('[data].[Studies]', 'U') IS NOT NULL
+    DROP TABLE [data].[Studies];
 
-IF OBJECT_ID('[data].[estudiosValidos]', 'U') IS NOT NULL
-    DROP TABLE [data].[estudiosValidos];
+IF OBJECT_ID('[data].[Valid_Studies]', 'U') IS NOT NULL
+    DROP TABLE [data].[Valid_Studies];
 
-IF OBJECT_ID('[data].[pacientes]', 'U') IS NOT NULL
-    DROP TABLE [data].[pacientes];
+IF OBJECT_ID('[data].[Patients]', 'U') IS NOT NULL
+    DROP TABLE [data].[Patients];
 
-IF OBJECT_ID('[data].[usuarios]', 'U') IS NOT NULL
-    DROP TABLE [data].[usuarios];
+IF OBJECT_ID('[data].[Users]', 'U') IS NOT NULL
+    DROP TABLE [data].[Users];
 
-IF OBJECT_ID('[data].[medicos]', 'U') IS NOT NULL
-    DROP TABLE [data].[medicos];
+IF OBJECT_ID('[data].[Medics]', 'U') IS NOT NULL
+    DROP TABLE [data].[Medics];
 
-IF OBJECT_ID('[data].[reservas_turnos_medicos]', 'U') IS NOT NULL
-    DROP TABLE [data].[reservas_turnos_medicos];
+IF OBJECT_ID('[data].[Medical_Appointment_Reservations]', 'U') IS NOT NULL
+    DROP TABLE [data].[Medical_Appointment_Reservations];
 GO
 
 
 /* ------------------------------ Crear Tablas ------------------------------ */
 
-CREATE TABLE [utilities].[generos]
+CREATE TABLE [utilities].[Genders]
 (
     [id_genero] INT IDENTITY (1, 1),
     [nombre] VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE [utilities].[paises]
+CREATE TABLE [utilities].[Countries]
 (
     [gentilicio] VARCHAR(50) UNIQUE NOT NULL,
     [id_pais] INT IDENTITY (1, 1),
     [nombre] VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE [utilities].[nombres_provincias]
+CREATE TABLE [utilities].[Provinces]
 (
     [id_pais] INT,
     [id_provincia] INT IDENTITY (1, 1),
     [nombre] VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE [utilities].[nombres_localidades]
+CREATE TABLE [utilities].[Localities]
 (
     [id_localidad] INT IDENTITY (1, 1),
     [id_provincia] INT,
     [nombre] VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE [utilities].[direcciones]
+CREATE TABLE [utilities].[Addresses]
 (
     [calle_y_nro] VARCHAR(50) NOT NULL,
     [cod_postal] SMALLINT,
@@ -107,19 +107,19 @@ CREATE TABLE [utilities].[direcciones]
     [piso] SMALLINT
 );
 
-CREATE TABLE [utilities].[tipos_documentos]
+CREATE TABLE [utilities].[Documents]
 (
     [id_tipo_documento] INT IDENTITY (1, 1),
     [nombre] VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE [utilities].[nacionalidades]
+CREATE TABLE [utilities].[Nationalities]
 (
     [id_nacionalidad] INT IDENTITY (1,1),
     [nombre] VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE [data].[pacientes]
+CREATE TABLE [data].[Patients]
 (
     [apellido] VARCHAR (50) NOT NULL,
     [apellido_materno] VARCHAR (50),
@@ -144,7 +144,7 @@ CREATE TABLE [data].[pacientes]
     [valido] BIT DEFAULT 1
 );
 
-CREATE TABLE [data].[estudios]
+CREATE TABLE [data].[Studies]
 (
     [autorizado] BIT DEFAULT 1,
     [documento_resultado] VARCHAR (128),
@@ -155,7 +155,7 @@ CREATE TABLE [data].[estudios]
     [nombre_estudio] VARCHAR(60) NOT NULL
 );
 
-CREATE TABLE [data].[estudiosValidos]
+CREATE TABLE [data].[Valid_Studies]
 (
     [id_estudioValido] VARCHAR(255) NOT NULL,
     [area] NVARCHAR(255) NOT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE [data].[estudiosValidos]
     [requiereAutorizacion] BIT DEFAULT 0
 );
 
-CREATE TABLE [data].[usuarios]
+CREATE TABLE [data].[Users]
 (
     [contraseña] VARCHAR(256),
     [fecha_creacion] DATE DEFAULT CAST(GETDATE () AS DATE),
@@ -176,7 +176,7 @@ CREATE TABLE [data].[usuarios]
     [id_usuario] INT IDENTITY (1, 1),
 );
 
-CREATE TABLE [data].[coberturas]
+CREATE TABLE [data].[Coverages]
 (
     [fecha_registro] DATE DEFAULT CAST(GETDATE () AS DATE),
     [id_cobertura] INT IDENTITY (1, 1),
@@ -186,7 +186,7 @@ CREATE TABLE [data].[coberturas]
     [borrado] BIT DEFAULT 0
 );
 
-CREATE TABLE [data].[prestadores]
+CREATE TABLE [data].[Providers]
 (
     [id_prestador] INT IDENTITY (1, 1),
     [nombre] VARCHAR(50) NOT NULL,
@@ -194,7 +194,7 @@ CREATE TABLE [data].[prestadores]
     [borrado] BIT DEFAULT 0
 );
 
-CREATE TABLE [data].[reservas_turnos_medicos]
+CREATE TABLE [data].[Medical_Appointment_Reservations]
 (
     [fecha] DATE DEFAULT CAST (GETDATE () AS DATE),
     [hora] TIME DEFAULT CAST(GETDATE () AS TIME),
@@ -208,19 +208,19 @@ CREATE TABLE [data].[reservas_turnos_medicos]
     [id_turno] INT IDENTITY (1, 1)
 );
 
-CREATE TABLE [data].[estados_turnos]
+CREATE TABLE [data].[Shift_Status]
 (
     [id_estado] INT IDENTITY (1, 1),
     [nombre] CHAR (15)
 );
 
-CREATE TABLE [data].[tipos_turnos]
+CREATE TABLE [data].[Shifts]
 (
     [id_tipo_turno] INT IDENTITY (1, 1),
     [nombre_tipo] CHAR (15)
 );
 
-CREATE TABLE [data].[dias_x_sede]
+CREATE TABLE [data].[Days_X_Headquarter]
 (
 	[id_dias_x_sede] INT IDENTITY(1,1),
     [alta] BIT DEFAULT 1,
@@ -231,14 +231,14 @@ CREATE TABLE [data].[dias_x_sede]
     [id_sede] INT NOT NULL
 );
 
-CREATE TABLE [data].[sede_de_atencion]
+CREATE TABLE [data].[Care_Headquarters]
 (
     [direccion] INT,
     [id_sede] INT IDENTITY (1, 1),
     [nombre] VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE [data].[medicos]
+CREATE TABLE [data].[Medics]
 (
     [apellido] VARCHAR (50) NOT NULL,
     [id_especialidad] INT,
@@ -248,7 +248,7 @@ CREATE TABLE [data].[medicos]
     [alta] BIT DEFAULT 1,
 );
 
-CREATE TABLE [data].[especialidad]
+CREATE TABLE [data].[Specialties]
 (
     [id_especialidad] INT IDENTITY (1, 1),
     [nombre] VARCHAR(50) NOT NULL

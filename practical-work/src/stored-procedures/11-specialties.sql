@@ -18,10 +18,10 @@ BEGIN
     IF NULLIF(@nombre, '') IS NULL
         RETURN @id
 
-    IF NOT EXISTS (SELECT 1 FROM [data].[especialidad] WHERE UPPER(TRIM([nombre])) = @nombre) 
+    IF NOT EXISTS (SELECT 1 FROM [data].[Specialties] WHERE UPPER(TRIM([nombre])) = @nombre) 
         RETURN @id
 
-    SELECT @id = [id_especialidad] FROM [data].[especialidad] WHERE UPPER(TRIM([nombre])) = @nombre
+    SELECT @id = [id_especialidad] FROM [data].[Specialties] WHERE UPPER(TRIM([nombre])) = @nombre
     RETURN @id
 END;
 GO
@@ -35,8 +35,8 @@ BEGIN
     IF NULLIF(@nombre, '') IS NULL
             RETURN
         SET @nombre = UPPER(@nombre)
-        IF NOT EXISTS (SELECT 1 FROM [data].[especialidad] WHERE [nombre] = @nombre) 
-            INSERT INTO [data].[especialidad] ([nombre]) VALUES (@nombre)
+        IF NOT EXISTS (SELECT 1 FROM [data].[Specialties] WHERE [nombre] = @nombre) 
+            INSERT INTO [data].[Specialties] ([nombre]) VALUES (@nombre)
 
-        SELECT @outIdEspecialidad = [id_especialidad] FROM [data].[especialidad] WHERE [nombre] = @nombre
+        SELECT @outIdEspecialidad = [id_especialidad] FROM [data].[Specialties] WHERE [nombre] = @nombre
 END;

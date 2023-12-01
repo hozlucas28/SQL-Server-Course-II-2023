@@ -13,7 +13,7 @@ CREATE OR ALTER PROCEDURE [data].[insertarDiasXSede]
     @idSede INT
 AS
 BEGIN
-    INSERT INTO [data].[dias_x_sede] ([dia], [hora_inicio], [hora_fin], [id_medico], [id_sede])
+    INSERT INTO [data].[Days_X_Headquarter] ([dia], [hora_inicio], [hora_fin], [id_medico], [id_sede])
         VALUES (@dia, @horaInicio, @horaFin, @idMedico, @idSede);
 END;
 GO
@@ -29,7 +29,7 @@ CREATE OR ALTER PROCEDURE [data].[actualizarDiasXSede]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [data].[dias_x_sede]
+        UPDATE [data].[Days_X_Headquarter]
         SET [dia] = ISNULL(@dia, [dia]),
             [hora_inicio] = ISNULL(@horaInicio, [hora_inicio]),
             [hora_fin] = ISNULL(@horaFin, [hora_fin]),
@@ -52,7 +52,7 @@ CREATE OR ALTER PROCEDURE [data].[eliminarDiasXSede]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [data].[dias_x_sede]
+        UPDATE [data].[Days_X_Headquarter]
         SET [alta] = 0
         WHERE [id_sede] = @idSede
     END TRY

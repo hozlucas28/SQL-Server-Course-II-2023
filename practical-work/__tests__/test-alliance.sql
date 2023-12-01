@@ -16,15 +16,15 @@ DECLARE @idCobertura INT;
 
 -- Registrar cobertura
 EXEC [data].[registrarCobertura] @idPrestador = @idPrestador, @imagenCredencial = null, @nroSocio = @idPaciente;
-SELECT * FROM [data].[coberturas] WHERE [id_prestador] = @idPrestador;
+SELECT * FROM [data].[Coverages] WHERE [id_prestador] = @idPrestador;
 
 -- Asignar cobertura al paciente
-SELECT @idCobertura = [id_cobertura] FROM [data].[coberturas] WHERE [id_prestador] = @idPrestador;
+SELECT @idCobertura = [id_cobertura] FROM [data].[Coverages] WHERE [id_prestador] = @idPrestador;
 EXEC [data].[actualizarPaciente] @idPaciente = @idPaciente, @cobertura = @idCobertura;
-SELECT * FROM [data].[prestadores] WHERE [id_prestador] = @idPrestador;
-SELECT * FROM [data].[reservas_turnos_medicos] WHERE [id_paciente] = @idPaciente;
+SELECT * FROM [data].[Providers] WHERE [id_prestador] = @idPrestador;
+SELECT * FROM [data].[Medical_Appointment_Reservations] WHERE [id_paciente] = @idPaciente;
 
 -- Verificar turnos post-eliminación del prestador
 EXEC [data].[eliminarPrestador] @idPrestador = @idPrestador;
-SELECT * FROM [data].[prestadores] WHERE [id_prestador] = @idPrestador;
-SELECT * FROM [data].[reservas_turnos_medicos] WHERE [id_paciente] = @idPaciente;
+SELECT * FROM [data].[Providers] WHERE [id_prestador] = @idPrestador;
+SELECT * FROM [data].[Medical_Appointment_Reservations] WHERE [id_paciente] = @idPaciente;

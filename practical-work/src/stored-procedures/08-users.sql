@@ -10,7 +10,7 @@ CREATE OR ALTER PROCEDURE [data].[insertarUsuario]
     @idPaciente INT = NULL
 AS
 BEGIN
-    INSERT INTO [data].[usuarios] ([contraseña], [id_paciente]) VALUES (@contraseña, @idPaciente)
+    INSERT INTO [data].[Users] ([contraseña], [id_paciente]) VALUES (@contraseña, @idPaciente)
 END;
 GO
 
@@ -21,7 +21,7 @@ CREATE OR ALTER PROCEDURE [data].[actualizarUsuario]
     @idUsuario INT
 AS
 BEGIN
-    UPDATE [data].[usuarios] SET
+    UPDATE [data].[Users] SET
         [contraseña] = ISNULL(@contraseña, [contraseña]),
         [id_paciente] = ISNULL(@idPaciente, [id_paciente])
     WHERE
@@ -33,4 +33,4 @@ GO
 CREATE OR ALTER PROCEDURE [data].[borrarUsuario]
     @id INT
 AS
-    DELETE FROM [data].[usuarios] WHERE [id_usuario] = @id
+    DELETE FROM [data].[Users] WHERE [id_usuario] = @id

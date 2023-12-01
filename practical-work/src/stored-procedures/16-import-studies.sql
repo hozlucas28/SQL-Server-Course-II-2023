@@ -66,7 +66,7 @@ BEGIN
     )
 
     BEGIN TRY
-        INSERT INTO [data].[estudiosValidos]
+        INSERT INTO [data].[Valid_Studies]
         (
             [id_estudioValido],
             [area],
@@ -87,9 +87,9 @@ BEGIN
             [em].[costo],
             [em].[requiereAutorizacion]
         FROM [#EstudiosMedicos] [em]
-        INNER JOIN [data].[prestadores] p ON [em].[prestador] = [p].[nombre]
+        INNER JOIN [data].[Providers] p ON [em].[prestador] = [p].[nombre]
         WHERE [p].[plan_prestador] = [em].[plan] AND [em].[id] NOT IN (
-            SELECT [id_estudioValido] FROM [data].[estudiosValidos]
+            SELECT [id_estudioValido] FROM [data].[Valid_Studies]
         )
 
         DROP TABLE [#EstudiosMedicos]

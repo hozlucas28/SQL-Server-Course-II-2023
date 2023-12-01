@@ -12,10 +12,10 @@ CREATE OR ALTER PROCEDURE [utilities].[obtenerOInsertarIdLocalidad]
 AS
 BEGIN
     SET @Localidad = UPPER(@Localidad)
-    IF NOT EXISTS (SELECT 1 FROM [utilities].[nombres_localidades] WHERE [id_provincia] = @IdProvincia AND [nombre] = @Localidad)
-        INSERT INTO [utilities].[nombres_localidades] ([nombre],[id_provincia]) VALUES (@Localidad,@IdProvincia)
+    IF NOT EXISTS (SELECT 1 FROM [utilities].[Localities] WHERE [id_provincia] = @IdProvincia AND [nombre] = @Localidad)
+        INSERT INTO [utilities].[Localities] ([nombre],[id_provincia]) VALUES (@Localidad,@IdProvincia)
 
-	SELECT @IdLocalididad = [id_localidad] FROM [utilities].[nombres_localidades] WHERE [id_provincia] = @IdProvincia AND [nombre] = @Localidad
+	SELECT @IdLocalididad = [id_localidad] FROM [utilities].[Localities] WHERE [id_provincia] = @IdProvincia AND [nombre] = @Localidad
 END;
 GO
 
@@ -29,10 +29,10 @@ BEGIN
     IF NULLIF(@localidad, 'null') IS NULL
         RETURN
         
-    IF NOT EXISTS (SELECT 1 FROM [utilities].[nombres_localidades] WHERE [nombre] = @localidad) 
-        INSERT INTO [utilities].[nombres_localidades] ([nombre]) VALUES (@localidad)
+    IF NOT EXISTS (SELECT 1 FROM [utilities].[Localities] WHERE [nombre] = @localidad) 
+        INSERT INTO [utilities].[Localities] ([nombre]) VALUES (@localidad)
     ELSE
-        UPDATE [utilities].[nombres_localidades] SET [nombre] = @localidad WHERE [nombre] = @localidad
+        UPDATE [utilities].[Localities] SET [nombre] = @localidad WHERE [nombre] = @localidad
 
-    SELECT @outIdLocalidad = [id_localidad], @outNombre = [nombre] FROM [utilities].[nombres_localidades] WHERE [nombre] = @localidad
+    SELECT @outIdLocalidad = [id_localidad], @outNombre = [nombre] FROM [utilities].[Localities] WHERE [nombre] = @localidad
 END;

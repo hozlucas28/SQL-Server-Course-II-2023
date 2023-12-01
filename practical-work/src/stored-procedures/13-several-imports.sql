@@ -16,7 +16,7 @@ BEGIN
 	CREATE TABLE [#MedicosImportados] (
 		[apellido] VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		[nombre] VARCHAR(255) COLLATE Latin1_General_CS_AS,
-		[especialidad] VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		[Specialties] VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		[nroMatricula] INT PRIMARY KEY
 	)
 
@@ -33,7 +33,7 @@ BEGIN
 	DECLARE @count INT
 
 	DELETE FROM [#MedicosImportados] 
-	WHERE [#MedicosImportados].[nroMatricula] IN (SELECT [nro_matricula] FROM [data].[medicos])
+	WHERE [#MedicosImportados].[nroMatricula] IN (SELECT [nro_matricula] FROM [data].[Medics])
 
 	SELECT @count = count(*) FROM [#MedicosImportados]
 
@@ -43,7 +43,7 @@ BEGIN
 		SELECT TOP(1) 
 			@nombre = [nombre],
 			@apellido = [apellido],
-			@especialidad = [especialidad],
+			@especialidad = [Specialties],
 			@nroMatricula = [NroMatricula]
 		FROM [#MedicosImportados]
 
@@ -89,13 +89,13 @@ BEGIN
 	DELETE FROM [#PrestadoresImportados]
 	WHERE EXISTS (
     	SELECT 1
-  		FROM [data].[prestadores] AS p
+  		FROM [data].[Providers] AS p
   	  	WHERE 
 			[#PrestadoresImportados].[nombre] = p.[nombre] AND 
 			[#PrestadoresImportados].[planPrestador] = p.[plan_prestador]
 	)
 
-	INSERT INTO [data].[prestadores] ([nombre], [plan_prestador]) 
+	INSERT INTO [data].[Providers] ([nombre], [plan_prestador]) 
 	SELECT [nombre], [planPrestador] FROM [#PrestadoresImportados]
 	
 	DROP TABLE [#PrestadoresImportados]
@@ -243,7 +243,7 @@ BEGIN
 		HAVING COUNT([nroDocumento]) > 1
 	)
     OR [email] IN (
-		SELECT email FROM [data].[pacientes]
+		SELECT email FROM [data].[Patients]
 	)
 	AND [nroDocumento] NOT IN (
 		SELECT MAX([nroDocumento]) FROM [#PacientesImportadosFormateados]
@@ -384,7 +384,7 @@ BEGIN
 			@provincia, 
 			@idDireccion OUTPUT
 
-		INSERT INTO [data].[sede_de_atencion] ([nombre], [direccion]) 
+		INSERT INTO [data].[Care_Headquarters] ([nombre], [direccion]) 
 		VALUES (@nombreSede, @idDireccion)
 	
 		DELETE TOP(1) FROM [#SedesImportadas]

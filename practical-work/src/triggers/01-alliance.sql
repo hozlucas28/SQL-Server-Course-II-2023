@@ -1,7 +1,7 @@
 USE [CURESA];
 GO
 
-CREATE OR ALTER TRIGGER [data].[quitarTurnos] ON [data].[prestadores] INSTEAD OF DELETE
+CREATE OR ALTER TRIGGER [data].[quitarTurnos] ON [data].[Providers] INSTEAD OF DELETE
 AS
 BEGIN
     IF OBJECT_ID('tempdb..[#TurnosACancelar]') IS NOT NULL 
@@ -11,9 +11,9 @@ BEGIN
 
     INSERT INTO [#TurnosACancelar] ([id_turno])
     SELECT [rtm].[id_turno]
-    FROM [data].[reservas_turnos_medicos] [rtm]
-    INNER JOIN [data].[pacientes] p ON [rtm].[id_paciente] = [p].[id_paciente]
-    INNER JOIN [data].[coberturas] c ON [p].[id_cobertura] = [c].[id_cobertura]
+    FROM [data].[Medical_Appointment_Reservations] [rtm]
+    INNER JOIN [data].[Patients] p ON [rtm].[id_paciente] = [p].[id_paciente]
+    INNER JOIN [data].[Coverages] c ON [p].[id_cobertura] = [c].[id_cobertura]
     INNER JOIN [deleted] d ON [c].[id_prestador] = [d].[id_prestador]
 
     DECLARE @idTurno INT
@@ -32,7 +32,7 @@ BEGIN
         SET @count = @count - 1
     END
 
-    UPDATE [data].[prestadores]
+    UPDATE [data].[Providers]
     SET borrado = 1
     WHERE id_prestador IN (SELECT id_prestador FROM deleted)
 

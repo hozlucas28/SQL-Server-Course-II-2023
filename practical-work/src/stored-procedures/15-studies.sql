@@ -15,7 +15,7 @@ CREATE OR ALTER PROCEDURE [data].[registrarEstudio]
 AS
 BEGIN
     BEGIN TRY
-        INSERT INTO [data].[estudios] ([nombre_estudio], [id_paciente], [autorizado], [documento_resultado], [fecha], [imagen_resultado])
+        INSERT INTO [data].[Studies] ([nombre_estudio], [id_paciente], [autorizado], [documento_resultado], [fecha], [imagen_resultado])
             VALUES (@nombreEstudio, @idPaciente, @autorizado, @documentoResultado, @fecha, @imagenResultado)
     END TRY
     BEGIN CATCH
@@ -39,7 +39,7 @@ CREATE OR ALTER PROCEDURE [data].[actualizarEstudio]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [data].[estudios]
+        UPDATE [data].[Studies]
         SET [nombre_estudio] = ISNULL(@nombreEstudio, [nombre_estudio]),
             [id_paciente] = ISNULL(@idPaciente, [id_paciente]),
             [autorizado] = ISNULL(@autorizado, [autorizado]),
@@ -63,7 +63,7 @@ CREATE OR ALTER PROCEDURE [data].[eliminarEstudio]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [data].[estudios]
+        UPDATE [data].[Studies]
         SET [autorizado] = 0
         WHERE [id_estudio] = @idEstudio
     END TRY

@@ -35,7 +35,7 @@ BEGIN
 	SET @sexoChar = [utilities].[obtenerCharSexo] (@sexo) 
 	EXEC [utilities].[obtenerOInsertarIdGenero] @genero, @idGenero OUT
 
-    INSERT INTO [data].[pacientes]
+    INSERT INTO [data].[Patients]
         (
             [apellido],
             [apellido_materno],
@@ -108,7 +108,7 @@ BEGIN
     IF @nacionalidad IS NOT NULL
         SET @idNacionalidad = [utilities].[obtenerIdNacionalidad] (@nacionalidad)
 
-    UPDATE [data].[pacientes] SET
+    UPDATE [data].[Patients] SET
         [id_cobertura] = ISNULL(@cobertura, [id_cobertura]),
         [id_direccion] = ISNULL(@idDireccion, [id_direccion]),
         [id_tipo_documento] = ISNULL(@tipoDocumento, [id_tipo_documento]),
@@ -134,7 +134,7 @@ GO
 CREATE OR ALTER PROCEDURE [data].[borrarPaciente]
     @id INT
 AS
-    UPDATE [data].[pacientes] SET [valido] = 0 WHERE [id_paciente] = @id;
+    UPDATE [data].[Patients] SET [valido] = 0 WHERE [id_paciente] = @id;
 GO
 
 -- Verificar si existe el paciente
@@ -146,7 +146,7 @@ CREATE OR ALTER FUNCTION [data].[existePaciente]
     RETURNS INT
 AS
 BEGIN
-    IF EXISTS (SELECT 1 FROM [data].[pacientes] WHERE [email] = @email)
+    IF EXISTS (SELECT 1 FROM [data].[Patients] WHERE [email] = @email)
         RETURN 1
     RETURN 0
 END

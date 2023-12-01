@@ -12,7 +12,7 @@ CREATE OR ALTER PROCEDURE [data].[registrarCobertura]
 AS
 BEGIN
     BEGIN TRY
-        INSERT INTO [data].[coberturas] ([id_prestador], [imagen_credencial], [nro_socio])
+        INSERT INTO [data].[Coverages] ([id_prestador], [imagen_credencial], [nro_socio])
         VALUES (@idPrestador, @imagenCredencial, @nroSocio)
     END TRY
     BEGIN CATCH
@@ -34,7 +34,7 @@ CREATE OR ALTER PROCEDURE [data].[actualizarCobertura]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [data].[coberturas]
+        UPDATE [data].[Coverages]
         SET [fecha_registro] = ISNULL(@fechaRegistro, [fecha_registro]),
             [id_prestador] = ISNULL(@idPrestador, [id_prestador]),
             [imagen_credencial] = ISNULL(@imagenCredencial, [imagen_credencial]),
@@ -56,7 +56,7 @@ CREATE OR ALTER PROCEDURE [data].[eliminarCobertura]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [data].[coberturas]
+        UPDATE [data].[Coverages]
         SET [borrado] = 1
         WHERE [id_cobertura] = @idCobertura
     END TRY
