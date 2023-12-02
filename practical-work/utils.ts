@@ -37,11 +37,13 @@ export async function createCompressed({
 	compressedFilePath,
 	filesToSave,
 	testsDir,
+	dataDir,
 	docsDir,
 }: {
 	compressedFilePath: string
 	filesToSave: string[]
 	testsDir?: string
+	dataDir?: string
 	docsDir?: string
 }) {
 	const zip = new JSZip()
@@ -66,6 +68,14 @@ export async function createCompressed({
 
 			const { name } = docFile
 			const filePath = nodePath.join(docsDir, name)
+			zip.file(filePath, await readFile(filePath))
+		}
+	}
+
+	if (dataDir) {
+		for (const dataFile of await readdir(dataDir, { encoding: 'utf-8', withFileTypes: true, recursive: false })) {
+			const { name } = dataFile
+			const filePath = nodePath.join(dataDir, name)
 			zip.file(filePath, await readFile(filePath))
 		}
 	}

@@ -3,6 +3,7 @@ import nodePath from 'node:path'
 import { chdir, cwd } from 'node:process'
 import {
 	compressedFile,
+	dataDir,
 	directive,
 	distDir,
 	docsDir,
@@ -29,6 +30,7 @@ async function main() {
 			compressedFilePath,
 			filesToSave: [seedFilePath, readmeFile, repositoryDirectAccess],
 			testsDir,
+			dataDir,
 			docsDir,
 		})
 	}
