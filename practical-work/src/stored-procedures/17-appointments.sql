@@ -123,8 +123,8 @@ END;
 GO
 
 -- Cancelar turno
-CREATE OR ALTER PROCEDURE [data].[cancelarTurnoMedico]
-    @idTurno INT
+CREATE OR ALTER PROCEDURE [data].[cancelMedicalAppointment]
+    @shiftId INT
 AS
 BEGIN
     DECLARE @idEstado INT
@@ -135,5 +135,5 @@ BEGIN
 
     UPDATE [data].[Medical_Appointment_Reservations] 
 	SET [shiftStatusId] = @idEstado 
-	WHERE [id] = @idTurno
+	WHERE [id] = @shiftId
 END;

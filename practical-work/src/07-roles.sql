@@ -117,7 +117,7 @@ GRANT EXECUTE ON OBJECT::[files].[importarEstudiosJSON] TO [Clinical technical s
 -- Paciente
 GRANT EXECUTE ON OBJECT::[data].[registrarTurnoMedico] TO [Patient];
 GRANT EXECUTE ON OBJECT::[data].[actualizarTurnoMedico] TO [Patient];
-GRANT EXECUTE ON OBJECT::[data].[cancelarTurnoMedico] TO [Patient];
+GRANT EXECUTE ON OBJECT::[data].[cancelMedicalAppointment] TO [Patient];
 GRANT EXECUTE ON OBJECT::[utilities].[obtenerOInsertarIdNacionalidad] TO [Patient];
 GRANT EXECUTE ON OBJECT::[utilities].[actualizarNacionalidad] TO [Patient];
 GRANT EXECUTE ON OBJECT::[utilities].[obtenerOInsertarIdLocalidad] TO [Patient];
