@@ -14,61 +14,64 @@ GO
     - Caso 2 = Reserva de un turno 5 minutos despues del primero, por lo que será denegado.
 */
 
-DECLARE @idPaciente INT;
-DECLARE @idMedico INT;
-DECLARE @nombreMedico VARCHAR(255);
-DECLARE @apellidoMedico VARCHAR(255);
-DECLARE @especialidad VARCHAR(255) = NULL;
-DECLARE @nombreSede VARCHAR(255);
-DECLARE @idSede INT;
-DECLARE @idTurno INT;
-DECLARE @fecha DATE = '2022-12-18';
-DECLARE @horaTurno TIME = '12:00:00';
-DECLARE @horaTurno2 TIME = '12:05:00';
-DECLARE @tipoTurno VARCHAR(255) = 'PRESENCIAL';
+DECLARE @medicLastName VARCHAR(255);
+DECLARE @specialtyName VARCHAR(255) = NULL;
+DECLARE @date DATE = '2022-12-18';
+DECLARE @hour01 TIME = '12:00:00';
+DECLARE @hour02 TIME = '12:05:00';
+DECLARE @medicId INT;
+DECLARE @patientId INT;
+DECLARE @headquarterId INT;
+DECLARE @medicalAppointmentReservationId INT;
+DECLARE @medicFirstName VARCHAR(255);
+DECLARE @headquarterName VARCHAR(255);
+DECLARE @shiftModality VARCHAR(255) = 'IN-PERSON';
 
-SELECT TOP(1) @idPaciente = [id] FROM [data].[Patients];
-SELECT TOP(1) @idMedico = [id], @nombreMedico = [name], @apellidoMedico = [lastName] FROM [data].[Medics];
-SELECT TOP(1) @nombreSede = [name], @idSede = [id] FROM [data].[Care_Headquarters];
+SELECT TOP(1) @patientId = [id] FROM [data].[Patients];
+SELECT TOP(1) @medicId = [id], @medicFirstName = [firstName], @medicLastName = [lastName] FROM [data].[Medics];
+SELECT TOP(1) @headquarterName = [name], @headquarterId = [id] FROM [data].[Care_Headquarters];
+
+print @patientId;
 
 -- Registrar Días x Sede
-EXEC [data].[insertarDiasXSede]
-    @dia = @fecha,
-    @horaInicio = '10:00:00',
-    @horaFin = '18:00:00',
-    @idMedico = @idMedico,
-    @idSede = @idSede;
+EXECUTE [data].[insertDayXHeadquarter]
+    @date = @date,
+    @startTime = '10:00:00',
+    @endTime = '18:00:00',
+    @medicId = @medicId,
+    @careHeadquarterId = @headquarterId;
 
 -- Insertar turnos y verificar casos
-EXEC [data].[registrarTurnoMedico]
-    @idPaciente,
-    @fecha,
-    @horaTurno,
-    @nombreMedico,
-    @apellidoMedico,
-    @especialidad,
-    @nombreSede,
-    @tipoTurno,
-    @idTurno OUTPUT;
+EXECUTE [data].[insertMedicalAppointmentReservation]
+    @patientId = @patientId,
+    @date = @date,
+    @hour = @hour01,
+    @medicFirstName = @medicFirstName,
+    @medicLastName = @medicLastName,
+    @specialtyName = @specialtyName,
+    @headquarterName = @headquarterName,
+    @shiftModality = @shiftModality,
+    @outShiftId = @medicalAppointmentReservationId OUTPUT;
 
-IF @idTurno IS NOT NULL
-    PRINT '=> [ / ] El caso 1 se completo con éxito (ID: ' + CAST(@idTurno AS VARCHAR) + ').'
+IF @medicalAppointmentReservationId IS NOT NULL
+    PRINT '=> [ / ] Case 1 completed successfully (ID: ' + CAST(@medicalAppointmentReservationId AS VARCHAR) + ').'
 ELSE
-    PRINT '=> [ X ] El caso 1 no se completo con éxito.';
-SELECT * FROM [data].[Medical_Appointment_Reservations] WHERE [id] = @idTurno;
+    PRINT '=> [ X ] Case 1 did not complete successfully!';
+SELECT * FROM [data].[Medical_Appointment_Reservations] WHERE [id] = @medicalAppointmentReservationId;
 
-EXEC [data].[registrarTurnoMedico]
-    @idPaciente,
-    @fecha,
-    @horaTurno2,
-    @nombreMedico,
-    @apellidoMedico,
-    @especialidad,@nombreSede,
-    @tipoTurno,
-    @idTurno OUTPUT;
+EXECUTE [data].[insertMedicalAppointmentReservation]
+    @patientId = @patientId,
+    @date = @date,
+    @hour = @hour02,
+    @medicFirstName = @medicFirstName,
+    @medicLastName = @medicLastName,
+    @specialtyName = @specialtyName,
+    @headquarterName = @headquarterName,
+    @shiftModality = @shiftModality,
+    @outShiftId = @medicalAppointmentReservationId OUTPUT;
 
-IF @idTurno = -1
-    PRINT '=> [ / ] El caso 2 se completo con éxito (ID: ' + CAST(@idTurno AS VARCHAR) + ').'
+IF @medicalAppointmentReservationId = -1
+    PRINT '=> [ / ] Case 2 completed successfully (ID: ' + CAST(@medicalAppointmentReservationId AS VARCHAR) + ').'
 ELSE
-    PRINT '=> [ X ] El caso 2 no se completo con éxito.';
-SELECT * FROM [data].[Medical_Appointment_Reservations] WHERE [id] = @idTurno;
+    PRINT '=> [ X ] Case 2 did not complete successfully!';
+SELECT * FROM [data].[Medical_Appointment_Reservations] WHERE [id] = @medicalAppointmentReservationId;

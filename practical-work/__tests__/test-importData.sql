@@ -1,6 +1,6 @@
 USE [CURESA];
 GO
-
+SELECT * FROM [data].[Valid_Researches];
 /*
     Se requiere la ejecución previa de la semilla: < seed.sql >
 */
@@ -9,24 +9,24 @@ GO
 /* ----------------------------- Importar Datos ----------------------------- */
 
 -- Pacientes
-EXEC [files].[importarPacientesCSV] @rutaArchivo = "C:\importar\Pacientes.csv";
+EXECUTE [files].[importPatientsCSV] @filePath = "C:\data\patients.csv";
 SELECT TOP 10 * FROM [data].[Patients];
 GO
 
 -- Prestadores
-EXEC [files].[importarPrestadoresCSV] @rutaArchivo = "C:\importar\Prestador.csv";
+EXECUTE [files].[importProvidersCSV] @filePath = "C:\data\providers.csv";
 SELECT TOP 10 * FROM [data].[Providers];
 GO
 
 -- Médicos
-EXEC [files].[importarMedicosCSV] @rutaArchivo = "C:\importar\Medicos.csv";
+EXECUTE [files].[importMedicsCSV] @filePath = "C:\data\medics.csv";
 SELECT TOP 10 * FROM [data].[Medics];
 GO
 
 -- Sedes
-EXEC [files].[importarSedesCSV] @rutaArchivo = "C:\importar\Sedes.csv";
+EXECUTE [files].[importHeadquartersCSV] @filePath = "C:\data\headquarters.csv";
 SELECT TOP 10 * FROM [data].[Care_Headquarters];
 
 -- Estudios válidos
-EXEC [files].[importarEstudiosJSON] @rutaArchivo = "C:\importar\Centro_Autorizaciones.Estudios clinicos.json";
+EXECUTE [files].[importResearchesJSON] @filePath = "C:\data\researches.json";
 SELECT TOP 10 * FROM [data].[Valid_Researches];

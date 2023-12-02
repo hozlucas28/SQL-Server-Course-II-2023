@@ -133,10 +133,10 @@ CREATE TABLE [data].[Patients]
     [id] INT IDENTITY (1, 1),
     [lastName] VARCHAR (50) NOT NULL,
     [maternalLastName] VARCHAR (50),
-    [name] VARCHAR (50) NOT NULL,
+    [firstName] VARCHAR (50) NOT NULL,
     [nationalityId] INT,
     [phone] VARCHAR(20) NOT NULL,
-    [photo] VARCHAR(128),
+    [photoUrl] VARCHAR(128),
     [profesionalPhone] VARCHAR(20),
     [registrationDate] DATE DEFAULT CAST(GETDATE () AS DATE),
     [updateDate] DATE,
@@ -148,7 +148,7 @@ CREATE TABLE [data].[Researches]
 (
     [authorized] BIT DEFAULT 1,
     [date] DATE NOT NULL,
-    [document] VARCHAR (128),
+    [documentUrl] VARCHAR (128),
     [id] INT IDENTITY (1, 1),
     [imageUrl] VARCHAR (128),
     [name] VARCHAR(60) NOT NULL,
@@ -211,7 +211,7 @@ CREATE TABLE [data].[Medical_Appointment_Reservations]
 CREATE TABLE [data].[Shift_Status]
 (
     [id] INT IDENTITY (1, 1),
-    [name] CHAR (15)
+    [status] CHAR (15)
 );
 
 CREATE TABLE [data].[Shifts]
@@ -244,7 +244,7 @@ CREATE TABLE [data].[Medics]
     [id] INT IDENTITY (1, 1),
     [lastName] VARCHAR (50) NOT NULL,
     [medicalLicense] INT NOT NULL,
-    [name] VARCHAR (50) NOT NULL,
+    [firstName] VARCHAR (50) NOT NULL,
     [specialtyId] INT
 );
 

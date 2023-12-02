@@ -10,26 +10,26 @@ GO
 
 /* ------------------------ Exportar Turnos Atendidos ----------------------- */
 
-DECLARE @cadenaXML NVARCHAR(MAX);
-DECLARE @fechaFin DATE = '2022-12-31';
-DECLARE @fechaInicio DATE = '2022-12-01'
-DECLARE @id_paciente INT = 137;
-DECLARE @id_prestador INT = 1;
-DECLARE @idCobertura INT;
-DECLARE @obraSocial VARCHAR(50);
+DECLARE @XMLString NVARCHAR(MAX);
+DECLARE @endDate DATE = '2022-12-31';
+DECLARE @startDate DATE = '2022-12-01';
+DECLARE @patientId INT = 137;
+DECLARE @providerId INT = 1;
+DECLARE @coverageId INT;
+DECLARE @providerName VARCHAR(50);
 
 -- Registrar cobertura
-EXEC [data].[registrarCobertura] @idPrestador = @id_prestador, @imagenCredencial = null, @nroSocio = @id_paciente;
-SELECT * FROM [data].[Coverages] WHERE [providerId] = @id_prestador;
+EXECUTE [data].[insertCoverage] @providerId = @providerId, @imageUrl = null, @membershipNumber = @patientId;
+SELECT * FROM [data].[Coverages] WHERE [providerId] = @providerId;
 
 -- Asignar cobertura a paciente
-SELECT @idCobertura = [id] FROM [data].[Coverages] WHERE [providerId] = @id_prestador;
-EXEC [data].[actualizarPaciente] @idPaciente = @id_paciente, @cobertura = @idCobertura;
-SELECT * FROM [data].[Patients] WHERE [id] = @id_paciente;
+SELECT @coverageId = [id] FROM [data].[Coverages] WHERE [providerId] = @providerId;
+EXECUTE [data].[updatePatient] @patientId = @patientId, @coverageId = @coverageId;
+SELECT * FROM [data].[Patients] WHERE [id] = @patientId;
 
 -- Exportar turnos atendidos
-SELECT @obraSocial = [name] FROM [data].[Providers] WHERE [id] = @id_prestador;
-EXEC [files].[exportarTurnosAtendidosXML] @obraSocial = @obraSocial, @fechaInicio = @fechaInicio, @fechaFin = @fechaFin, @cadenaXML = @cadenaXML OUTPUT;
+SELECT @providerName = [name] FROM [data].[Providers] WHERE [id] = @providerId;
+EXECUTE [files].[showShiftsAttendedAsXML] @providerName = @providerName, @startDate = @startDate, @endDate = @endDate, @outXMLString = @XMLString OUTPUT;
 
 -- Mostrar XML
-PRINT @cadenaXML;
+PRINT @XMLString;

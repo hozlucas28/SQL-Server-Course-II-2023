@@ -8,20 +8,20 @@ GO
 
 /* -------------------------- Actualizar Contraseña ------------------------- */
 
-DECLARE @nuevaContra VARCHAR(255) = 'LaYutaExistePorUstedes62-23';
-DECLARE @viejaContra VARCHAR(255) = '12345';
-DECLARE @idUsuario INT = NULL;
+DECLARE @userId INT = NULL;
+DECLARE @newPassword VARCHAR(255) = 'LaYutaExistePorUstedes62-23';
+DECLARE @oldPassword VARCHAR(255) = '12345';
 
 -- Limpiar registros del test
-SELECT @idUsuario = [id] FROM [data].[Users] WHERE [password] = @nuevaContra;
-IF @idUsuario IS NOT NULL
-    EXEC [data].[borrarUsuario] @id = @idUsuario;
+SELECT @userId = [id] FROM [data].[Users] WHERE [password] = @newPassword;
+IF @userId IS NOT NULL
+    EXECUTE [data].[deleteUser] @userId = @userId;
 
 -- Crear usuario
-EXEC [data].[insertarUsuario] @contraseña = @viejaContra;
-SELECT * FROM [data].[Users] WHERE [password] = @viejaContra;
+EXECUTE [data].[insertUser] @userPassword = @oldPassword;
+SELECT * FROM [data].[Users] WHERE [password] = @oldPassword;
 
 -- Actualizar contraseña del usuario
-SELECT @idUsuario = [id] FROM [data].[Users] WHERE [password] = @viejaContra;
-EXEC [data].[actualizarUsuario] @idUsuario = @idUsuario, @contraseña = @nuevaContra;
-SELECT * FROM [data].[Users] WHERE [id] = @idUsuario;
+SELECT @userId = [id] FROM [data].[Users] WHERE [password] = @oldPassword;
+EXECUTE [data].[updateUser] @userId = @userId, @userPassword = @newPassword;
+SELECT * FROM [data].[Users] WHERE [id] = @userId;

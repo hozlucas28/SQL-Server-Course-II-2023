@@ -25,7 +25,7 @@ BEGIN
     WHILE @count > 0
     BEGIN
         SELECT TOP 1 @shiftId = [id] FROM [#Shifts_To_Cancel]
-        EXEC [data].[cancelMedicalAppointment] @shiftId = @shiftId
+        EXECUTE [data].[deleteMedicalAppointmentReservation] @shiftId = @shiftId
         DELETE FROM [#Shifts_To_Cancel] WHERE [id] = @shiftId
         SET @count = @count - 1
     END
