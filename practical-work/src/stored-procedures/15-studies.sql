@@ -15,7 +15,7 @@ CREATE OR ALTER PROCEDURE [data].[registrarEstudio]
 AS
 BEGIN
     BEGIN TRY
-        INSERT INTO [data].[Studies] ([nombre_estudio], [id_paciente], [autorizado], [documento_resultado], [fecha], [imagen_resultado])
+        INSERT INTO [data].[Researches] ([name], [patientId], [authorized], [document], [date], [imageUrl])
             VALUES (@nombreEstudio, @idPaciente, @autorizado, @documentoResultado, @fecha, @imagenResultado)
     END TRY
     BEGIN CATCH
@@ -39,14 +39,14 @@ CREATE OR ALTER PROCEDURE [data].[actualizarEstudio]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [data].[Studies]
-        SET [nombre_estudio] = ISNULL(@nombreEstudio, [nombre_estudio]),
-            [id_paciente] = ISNULL(@idPaciente, [id_paciente]),
-            [autorizado] = ISNULL(@autorizado, [autorizado]),
-            [documento_resultado] = ISNULL(@documentoResultado, [documento_resultado]),
-            [fecha] = ISNULL(@fecha, [fecha]),
-            [imagen_resultado] = ISNULL(@imagenResultado, [imagen_resultado])
-        WHERE [id_estudio] = @idEstudio
+        UPDATE [data].[Researches]
+        SET [name] = ISNULL(@nombreEstudio, [name]),
+            [patientId] = ISNULL(@idPaciente, [patientId]),
+            [authorized] = ISNULL(@autorizado, [authorized]),
+            [document] = ISNULL(@documentoResultado, [document]),
+            [date] = ISNULL(@fecha, [date]),
+            [imageUrl] = ISNULL(@imagenResultado, [imageUrl])
+        WHERE [id] = @idEstudio
     END TRY
     BEGIN CATCH
         DECLARE @errorMessage NVARCHAR(1000)
@@ -63,9 +63,9 @@ CREATE OR ALTER PROCEDURE [data].[eliminarEstudio]
 AS
 BEGIN
     BEGIN TRY
-        UPDATE [data].[Studies]
-        SET [autorizado] = 0
-        WHERE [id_estudio] = @idEstudio
+        UPDATE [data].[Researches]
+        SET [authorized] = 0
+        WHERE [id] = @idEstudio
     END TRY
     BEGIN CATCH
         DECLARE @errorMessage NVARCHAR(1000)

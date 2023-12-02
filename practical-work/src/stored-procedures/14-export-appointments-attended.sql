@@ -12,7 +12,7 @@ CREATE OR ALTER PROCEDURE [files].[exportarTurnosAtendidosXML]
     @cadenaXML NVARCHAR(MAX) OUTPUT
 AS
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM [data].[Providers] pr WHERE pr.[nombre] = @obraSocial)
+    IF NOT EXISTS (SELECT 1 FROM [data].[Providers] pr WHERE pr.[name] = @obraSocial)
         RETURN
 
     IF @fechaInicio > @fechaFin 
@@ -23,25 +23,25 @@ BEGIN
 
     SET @cadenaXML = (
         SELECT
-            p.[apellido] AS "Paciente/Apellido",
-            p.[nombre] AS "Paciente/Nombre",
-            p.[id_tipo_documento] AS "Paciente/TipoDocumento",
-            p.[nro_documento] AS "Paciente/NumeroDocumento",
-            m.[apellido] AS "Profesional/Apellido",
-            m.[nombre] AS "Profesional/Nombre",
-            m.[nro_matricula] AS "Profesional/Matricula",
-            t.[fecha] AS "Fecha",
-            t.[hora] AS "Hora",
-            e.[nombre] AS "Especialidad"
+            p.[lastName] AS "Paciente/Apellido",
+            p.[name] AS "Paciente/Nombre",
+            p.[documentId] AS "Paciente/TipoDocumento",
+            p.[documentNumber] AS "Paciente/NumeroDocumento",
+            m.[lastName] AS "Profesional/Apellido",
+            m.[name] AS "Profesional/Nombre",
+            m.[medicalLicense] AS "Profesional/Matricula",
+            t.[date] AS "Fecha",
+            t.[hour] AS "Hora",
+            e.[name] AS "Especialidad"
         FROM [data].[Medical_Appointment_Reservations] t
-        INNER JOIN [data].[Medics] m ON t.[id_medico] = m.[id_medico]
-        INNER JOIN [data].[Specialties] e ON t.[id_especialidad] = e.[id_especialidad]
-        INNER JOIN [data].[Patients] p ON t.[id_paciente] = p.[id_paciente]
-        INNER JOIN [data].[Coverages] c ON p.[id_cobertura] = c.[id_cobertura]
-        INNER JOIN [data].[Providers] pr ON c.[id_prestador] = pr.[id_prestador]
+        INNER JOIN [data].[Medics] m ON t.[medicId] = m.[id]
+        INNER JOIN [data].[Specialties] e ON t.[specialtyId] = e.[id]
+        INNER JOIN [data].[Patients] p ON t.[patientId] = p.[id]
+        INNER JOIN [data].[Coverages] c ON p.[coverageId] = c.[id]
+        INNER JOIN [data].[Providers] pr ON c.[providerId] = pr.[id]
         WHERE
-            pr.[nombre] = @obraSocial AND
-            t.[fecha] BETWEEN @fechaInicio AND @fechaFin
+            pr.[name] = @obraSocial AND
+            t.[date] BETWEEN @fechaInicio AND @fechaFin
         FOR XML PATH('Turno'), ROOT('Turnos')
     )
 END;

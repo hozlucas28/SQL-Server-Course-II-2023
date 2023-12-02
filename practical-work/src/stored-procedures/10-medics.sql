@@ -17,7 +17,7 @@ BEGIN
     SET @idEspecialidad = [data].[obtenerIdEspecialidad](@especialidad)
 
     INSERT INTO [data].[Medics]
-        ([nombre], [apellido], [nro_matricula], [id_especialidad])
+        ([name], [lastName], [medicalLicense], [specialtyId])
     VALUES
         (@nombre, @apellido, @matricula, @idEspecialidad)
 END;
@@ -27,4 +27,4 @@ GO
 CREATE OR ALTER PROCEDURE [data].[eliminarMedico]
     @id INT
 AS
-    UPDATE [data].[Medics] SET [alta] = 0 WHERE [id_medico] = @id;
+    UPDATE [data].[Medics] SET [enabled] = 0 WHERE [id] = @id;

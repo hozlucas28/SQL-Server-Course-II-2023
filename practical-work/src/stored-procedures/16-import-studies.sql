@@ -35,61 +35,61 @@ BEGIN
     (
         [id] NVARCHAR(255) COLLATE Latin1_General_CS_AS PRIMARY KEY,
         [area] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
-        [estudio] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
+        [research] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
         [prestador] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
         [plan] NVARCHAR(255) COLLATE Latin1_General_CS_AS,
-        [porcentajeCobertura] INT,
-        [costo] DECIMAL(18, 2),
-        [requiereAutorizacion] BIT
+        [coveragePercentage] INT,
+        [price] DECIMAL(18, 2),
+        [requiresAuthorization] BIT
     )
 
     INSERT INTO [#EstudiosMedicos](
         [id],
         [area],
-        [estudio],
+        [research],
         [prestador],
         [plan],
-        [porcentajeCobertura],
-        [costo],
-        [requiereAutorizacion]
+        [coveragePercentage],
+        [price],
+        [requiresAuthorization]
     ) 
     SELECT * FROM OPENJSON(@json) 
     WITH (
         [id] NVARCHAR(255) '$._id."$oid"',
         [area] NVARCHAR(255) '$.Area',
-        [estudio] NVARCHAR(255) '$.Estudio',
+        [research] NVARCHAR(255) '$.Estudio',
         [prestador] NVARCHAR(255) '$.Prestador',
         [plan] NVARCHAR(255) '$.Plan',
-        [porcentajeCobertura] INT '$."Porcentaje Cobertura"',
-        [costo] DECIMAL(18, 2) '$.Costo',
-        [requiereAutorizacion] BIT '$."Requiere autorizacion"'
+        [coveragePercentage] INT '$."Porcentaje Cobertura"',
+        [price] DECIMAL(18, 2) '$.Costo',
+        [requiresAuthorization] BIT '$."Requiere autorizacion"'
     )
 
     BEGIN TRY
-        INSERT INTO [data].[Valid_Studies]
+        INSERT INTO [data].[Valid_Researches]
         (
-            [id_estudioValido],
+            [id],
             [area],
-            [estudio],
-            [id_prestador],
+            [research],
+            [providerId],
             [plan],
-            [porcentajeCobertura],
-            [costo],
-            [requiereAutorizacion]
+            [coveragePercentage],
+            [price],
+            [requiresAuthorization]
         )
         SELECT  
             [em].[id],
             [em].[area],
-            [em].[estudio],
-            [p].[id_prestador],
+            [em].[research],
+            [p].[id],
             [em].[plan],
-            [em].[porcentajeCobertura],
-            [em].[costo],
-            [em].[requiereAutorizacion]
+            [em].[coveragePercentage],
+            [em].[price],
+            [em].[requiresAuthorization]
         FROM [#EstudiosMedicos] [em]
-        INNER JOIN [data].[Providers] p ON [em].[prestador] = [p].[nombre]
-        WHERE [p].[plan_prestador] = [em].[plan] AND [em].[id] NOT IN (
-            SELECT [id_estudioValido] FROM [data].[Valid_Studies]
+        INNER JOIN [data].[Providers] p ON [em].[prestador] = [p].[name]
+        WHERE [p].[plan] = [em].[plan] AND [em].[id] NOT IN (
+            SELECT [id] FROM [data].[Valid_Researches]
         )
 
         DROP TABLE [#EstudiosMedicos]

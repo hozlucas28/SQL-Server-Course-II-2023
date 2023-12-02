@@ -7,14 +7,14 @@ BEGIN
     IF OBJECT_ID('tempdb..[#TurnosACancelar]') IS NOT NULL 
         DROP TABLE [#TurnosACancelar]
 
-    CREATE TABLE [#TurnosACancelar] ([id_turno] INT PRIMARY KEY)
+    CREATE TABLE [#TurnosACancelar] ([id] INT PRIMARY KEY)
 
-    INSERT INTO [#TurnosACancelar] ([id_turno])
-    SELECT [rtm].[id_turno]
+    INSERT INTO [#TurnosACancelar] ([id])
+    SELECT [rtm].[id]
     FROM [data].[Medical_Appointment_Reservations] [rtm]
-    INNER JOIN [data].[Patients] p ON [rtm].[id_paciente] = [p].[id_paciente]
-    INNER JOIN [data].[Coverages] c ON [p].[id_cobertura] = [c].[id_cobertura]
-    INNER JOIN [deleted] d ON [c].[id_prestador] = [d].[id_prestador]
+    INNER JOIN [data].[Patients] p ON [rtm].[patientId] = [p].[id]
+    INNER JOIN [data].[Coverages] c ON [p].[coverageId] = [c].[id]
+    INNER JOIN [deleted] d ON [c].[providerId] = [d].[id]
 
     DECLARE @idTurno INT
 
@@ -23,18 +23,18 @@ BEGIN
 
     WHILE @count > 0
     BEGIN
-        SELECT TOP 1 @idTurno = [id_turno] FROM [#TurnosACancelar]
+        SELECT TOP 1 @idTurno = [id] FROM [#TurnosACancelar]
 
         EXEC [data].[cancelarTurnoMedico] @idTurno
 
-        DELETE FROM [#TurnosACancelar] WHERE [id_turno] = @idTurno
+        DELETE FROM [#TurnosACancelar] WHERE [id] = @idTurno
 
         SET @count = @count - 1
     END
 
     UPDATE [data].[Providers]
-    SET borrado = 1
-    WHERE id_prestador IN (SELECT id_prestador FROM deleted)
+    SET deleted = 1
+    WHERE id IN (SELECT id FROM deleted)
 
     DROP TABLE [#TurnosACancelar]
 END;

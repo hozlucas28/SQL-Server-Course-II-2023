@@ -27,9 +27,9 @@ DECLARE @horaTurno TIME = '12:00:00';
 DECLARE @horaTurno2 TIME = '12:05:00';
 DECLARE @tipoTurno VARCHAR(255) = 'PRESENCIAL';
 
-SELECT TOP(1) @idPaciente = [id_paciente] FROM [data].[Patients];
-SELECT TOP(1) @idMedico = [id_medico], @nombreMedico = [nombre], @apellidoMedico = [apellido] FROM [data].[Medics];
-SELECT TOP(1) @nombreSede = [nombre], @idSede = [id_sede] FROM [data].[Care_Headquarters];
+SELECT TOP(1) @idPaciente = [id] FROM [data].[Patients];
+SELECT TOP(1) @idMedico = [id], @nombreMedico = [name], @apellidoMedico = [lastName] FROM [data].[Medics];
+SELECT TOP(1) @nombreSede = [name], @idSede = [id] FROM [data].[Care_Headquarters];
 
 -- Registrar Días x Sede
 EXEC [data].[insertarDiasXSede]
@@ -55,7 +55,7 @@ IF @idTurno IS NOT NULL
     PRINT '=> [ / ] El caso 1 se completo con éxito (ID: ' + CAST(@idTurno AS VARCHAR) + ').'
 ELSE
     PRINT '=> [ X ] El caso 1 no se completo con éxito.';
-SELECT * FROM [data].[Medical_Appointment_Reservations] WHERE [id_turno] = @idTurno;
+SELECT * FROM [data].[Medical_Appointment_Reservations] WHERE [id] = @idTurno;
 
 EXEC [data].[registrarTurnoMedico]
     @idPaciente,
@@ -71,4 +71,4 @@ IF @idTurno = -1
     PRINT '=> [ / ] El caso 2 se completo con éxito (ID: ' + CAST(@idTurno AS VARCHAR) + ').'
 ELSE
     PRINT '=> [ X ] El caso 2 no se completo con éxito.';
-SELECT * FROM [data].[Medical_Appointment_Reservations] WHERE [id_turno] = @idTurno;
+SELECT * FROM [data].[Medical_Appointment_Reservations] WHERE [id] = @idTurno;

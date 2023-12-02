@@ -14,8 +14,8 @@ BEGIN
 		DROP TABLE [#MedicosImportados]
 	
 	CREATE TABLE [#MedicosImportados] (
-		[apellido] VARCHAR(255) COLLATE Latin1_General_CS_AS,
-		[nombre] VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		[lastName] VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		[name] VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		[Specialties] VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		[nroMatricula] INT PRIMARY KEY
 	)
@@ -33,7 +33,7 @@ BEGIN
 	DECLARE @count INT
 
 	DELETE FROM [#MedicosImportados] 
-	WHERE [#MedicosImportados].[nroMatricula] IN (SELECT [nro_matricula] FROM [data].[Medics])
+	WHERE [#MedicosImportados].[nroMatricula] IN (SELECT [medicalLicense] FROM [data].[Medics])
 
 	SELECT @count = count(*) FROM [#MedicosImportados]
 
@@ -41,8 +41,8 @@ BEGIN
 	WHILE @count > 0
 	BEGIN
 		SELECT TOP(1) 
-			@nombre = [nombre],
-			@apellido = [apellido],
+			@nombre = [name],
+			@apellido = [lastName],
 			@especialidad = [Specialties],
 			@nroMatricula = [NroMatricula]
 		FROM [#MedicosImportados]
@@ -76,7 +76,7 @@ BEGIN
 		DROP TABLE [#PrestadoresImportados]
 	
 	CREATE TABLE [#PrestadoresImportados] (
-		[nombre] VARCHAR(255) COLLATE Latin1_General_CS_AS, 
+		[name] VARCHAR(255) COLLATE Latin1_General_CS_AS, 
 		[planPrestador] VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		[campoVacio] CHAR COLLATE Latin1_General_CS_AS,
 	)
@@ -91,12 +91,12 @@ BEGIN
     	SELECT 1
   		FROM [data].[Providers] AS p
   	  	WHERE 
-			[#PrestadoresImportados].[nombre] = p.[nombre] AND 
-			[#PrestadoresImportados].[planPrestador] = p.[plan_prestador]
+			[#PrestadoresImportados].[name] = p.[name] AND 
+			[#PrestadoresImportados].[planPrestador] = p.[plan]
 	)
 
-	INSERT INTO [data].[Providers] ([nombre], [plan_prestador]) 
-	SELECT [nombre], [planPrestador] FROM [#PrestadoresImportados]
+	INSERT INTO [data].[Providers] ([name], [plan]) 
+	SELECT [name], [planPrestador] FROM [#PrestadoresImportados]
 	
 	DROP TABLE [#PrestadoresImportados]
 END;
@@ -113,15 +113,15 @@ BEGIN
 		DROP TABLE [#PacientesImportados]
 
     CREATE TABLE [#PacientesImportados] (
-		[nombre] VARCHAR(255) COLLATE Latin1_General_CS_AS,
-		[apellido] VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		[name] VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		[lastName] VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		[fechaNacimiento] VARCHAR(20),
 		[tipoDocumento] VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		[nroDocumento] INT PRIMARY KEY,
 		[sexo] VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		[genero] VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		[telefono] VARCHAR(40),
-		[nacionalidad] VARCHAR(50) COLLATE Latin1_General_CS_AS,
+		[nationalityId] VARCHAR(50) COLLATE Latin1_General_CS_AS,
 		[email] VARCHAR(100) COLLATE Latin1_General_CS_AS,
 		[calleYNro] VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		[localidad] VARCHAR(255) COLLATE Latin1_General_CS_AS,
@@ -132,15 +132,15 @@ BEGIN
 		DROP TABLE [#PacientesImportadosFormateados]
 	
 	CREATE TABLE [#PacientesImportadosFormateados] (
-		[nombre] VARCHAR(255) COLLATE Latin1_General_CS_AS,
-		[apellido] VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		[name] VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		[lastName] VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		[fechaNacimiento] DATE,
 		[tipoDocumento] VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		[nroDocumento] INT PRIMARY KEY,
 		[sexo] VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		[genero] VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		[telefono] VARCHAR(40),
-		[nacionalidad] VARCHAR(50) COLLATE Latin1_General_CS_AS,
+		[nationalityId] VARCHAR(50) COLLATE Latin1_General_CS_AS,
 		[email] VARCHAR(100) COLLATE Latin1_General_CS_AS,
 		[calleYNro] VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		[localidad] VARCHAR(255) COLLATE Latin1_General_CS_AS,
@@ -151,15 +151,15 @@ BEGIN
 		DROP TABLE [#RegistrosInvalidos]
 	
 	CREATE TABLE [#RegistrosInvalidos] (
-		[nombre] VARCHAR(255) COLLATE Latin1_General_CS_AS,
-		[apellido] VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		[name] VARCHAR(255) COLLATE Latin1_General_CS_AS,
+		[lastName] VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		[fechaNacimiento] DATE,
 		[tipoDocumento] VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		[nroDocumento] INT,
 		[sexo] VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		[genero] VARCHAR(20) COLLATE Latin1_General_CS_AS,
 		[telefono] VARCHAR(40),
-		[nacionalidad] VARCHAR(50) COLLATE Latin1_General_CS_AS,
+		[nationalityId] VARCHAR(50) COLLATE Latin1_General_CS_AS,
 		[email] VARCHAR(100) COLLATE Latin1_General_CS_AS,
 		[calleYNro] VARCHAR(255) COLLATE Latin1_General_CS_AS,
 		[localidad] VARCHAR(255) COLLATE Latin1_General_CS_AS,
@@ -176,15 +176,15 @@ BEGIN
 
 	INSERT INTO [#PacientesImportadosFormateados]
 	SELECT
-		[nombre],
-		[apellido],
+		[name],
+		[lastName],
 		CONVERT(DATE, [fechaNacimiento], 103) AS [fechaNacimiento],
 		[tipoDocumento],
 		[nroDocumento],
 		[sexo],
 		[genero],
 		[telefono],
-		[nacionalidad],
+		[nationalityId],
 		[email],
 		[calleYNro],
 		[localidad],
@@ -196,30 +196,30 @@ BEGIN
 	-- Validaciones
 	INSERT INTO [#RegistrosInvalidos]
 	SELECT 
-		[nombre],
-		[apellido],
+		[name],
+		[lastName],
 		[fechaNacimiento],
 		[tipoDocumento],
 		[nroDocumento],
 		[sexo],
 		[genero],
 		[telefono],
-		[nacionalidad],
+		[nationalityId],
 		[email],
 		[calleYNro],
 		[localidad],
 		[provincia], 
 		'Registros duplicados'
 	FROM [#PacientesImportadosFormateados] GROUP BY
-		[nombre],
-		[apellido],
+		[name],
+		[lastName],
 		[fechaNacimiento],
 		[tipoDocumento],
 		[nroDocumento],
 		[sexo],
 		[genero],
 		[telefono],
-		[nacionalidad],
+		[nationalityId],
 		[email],
 		[calleYNro],
 		[localidad],
@@ -280,15 +280,15 @@ BEGIN
 		WHILE @count > 0
 		BEGIN 
 			SELECT TOP(1)
-				@nombre = [nombre],
-				@apellido = [apellido],
+				@nombre = [name],
+				@apellido = [lastName],
 				@fechaNacimiento = [fechaNacimiento],
 				@tipoDocumento = [tipoDocumento],
 				@nroDocumento = [nroDocumento],
 				@sexo = [sexo],
 				@genero = [genero],
 				@telefono = [telefono],
-				@nacionalidad = [nacionalidad],
+				@nacionalidad = [nationalityId],
 				@email = [email],
 				@calleYNro = [calleYNro],
 				@localidad = [localidad],
@@ -384,7 +384,7 @@ BEGIN
 			@provincia, 
 			@idDireccion OUTPUT
 
-		INSERT INTO [data].[Care_Headquarters] ([nombre], [direccion]) 
+		INSERT INTO [data].[Care_Headquarters] ([name], [addressId]) 
 		VALUES (@nombreSede, @idDireccion)
 	
 		DELETE TOP(1) FROM [#SedesImportadas]

@@ -29,4 +29,4 @@ SELECT TOP 10 * FROM [data].[Care_Headquarters];
 
 -- Estudios válidos
 EXEC [files].[importarEstudiosJSON] @rutaArchivo = "C:\importar\Centro_Autorizaciones.Estudios clinicos.json";
-SELECT TOP 10 * FROM [data].[Valid_Studies];
+SELECT TOP 10 * FROM [data].[Valid_Researches];

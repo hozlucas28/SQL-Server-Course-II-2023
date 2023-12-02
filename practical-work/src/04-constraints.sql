@@ -33,85 +33,84 @@ ORDER BY 1
 
 
 -- Géneros
-ALTER TABLE [utilities].[Genders] ADD CONSTRAINT [pk_id_genero] PRIMARY KEY ([id_genero]);
+ALTER TABLE [utilities].[Genders] ADD CONSTRAINT [PRIMARY_KEY_GENDER_ID] PRIMARY KEY ([id]);
 
 -- Países
-ALTER TABLE [utilities].[Countries] ADD CONSTRAINT [pk_id_pais] PRIMARY KEY ([id_pais]);
+ALTER TABLE [utilities].[Countries] ADD CONSTRAINT [PRIMARY_KEY_COUNTRY_ID] PRIMARY KEY ([id]);
 
-ALTER TABLE [utilities].[Nationalities] ADD CONSTRAINT [pk_id_nacionalidad] PRIMARY KEY ([id_nacionalidad]);
+ALTER TABLE [utilities].[Nationalities] ADD CONSTRAINT [PRIMARY_KEY_NATIONALITY_ID] PRIMARY KEY ([id]);
 
 -- Tipos de documentos
-ALTER TABLE [utilities].[Documents] ADD CONSTRAINT [pk_id_tipo_documento] PRIMARY KEY (id_tipo_documento);
+ALTER TABLE [utilities].[Documents] ADD CONSTRAINT [PRIMARY_KEY_DOCUMENT_ID] PRIMARY KEY ([id]);
 
 -- Especialidad
-ALTER TABLE [data].[Specialties] ADD CONSTRAINT [pk_id_especialidad] PRIMARY KEY ([id_especialidad]);
+ALTER TABLE [data].[Specialties] ADD CONSTRAINT [PRIMARY_KEY_SPECIALTY_ID] PRIMARY KEY ([id]);
 
 -- Nombres de provincias
-ALTER TABLE [utilities].[Provinces] ADD CONSTRAINT [pk_id_provincia] PRIMARY KEY ([id_provincia]),
-    CONSTRAINT [fk_id_pais_nombres_provincias] FOREIGN KEY ([id_pais]) REFERENCES [utilities].[Countries] ([id_pais]);
+ALTER TABLE [utilities].[Provinces] ADD CONSTRAINT [PRIMARY_KEY_PROVINCE_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_PROVINCE_TO_COUNTRY_ID] FOREIGN KEY ([countryId]) REFERENCES [utilities].[Countries] ([id]);
 
 -- Nombres de localidades
-ALTER TABLE [utilities].[Localities] ADD CONSTRAINT [pk_id_localidad] PRIMARY KEY ([id_localidad]),
-    CONSTRAINT [fk_id_provincia_localidades] FOREIGN KEY ([id_provincia]) REFERENCES [utilities].[Provinces] ([id_provincia]) ;
-
+ALTER TABLE [utilities].[Localities] ADD CONSTRAINT [PRIMARY_KEY_LOCALITY_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_LOCALITY_TO_PROVINCE_ID] FOREIGN KEY ([provinceId]) REFERENCES [utilities].[Provinces] ([id]);
 
 -- Direcciones
-ALTER TABLE [utilities].[Addresses] ADD CONSTRAINT [pk_id_direccion] PRIMARY KEY ([id_direccion]),
-    CONSTRAINT [fk_id_pais_direcciones] FOREIGN KEY ([id_pais]) REFERENCES [utilities].[Countries] ([id_pais]),
-    CONSTRAINT [fk_id_provincia] FOREIGN KEY ([id_provincia]) REFERENCES [utilities].[Provinces] ([id_provincia]),
-    CONSTRAINT [fk_id_localidad] FOREIGN KEY ([id_localidad]) REFERENCES [utilities].[Localities] ([id_localidad]);
+ALTER TABLE [utilities].[Addresses] ADD CONSTRAINT [PRIMARY_KEY_ADDRESS_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_ADDRESS_TO_COUNTRY_ID] FOREIGN KEY ([countryId]) REFERENCES [utilities].[Countries] ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_ADDRESS_TO_PROVINCE_ID] FOREIGN KEY ([provinceId]) REFERENCES [utilities].[Provinces] ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_ADDRESS_TO_LOCALITY_ID] FOREIGN KEY ([localityId]) REFERENCES [utilities].[Localities] ([id]);
 
 -- Prestadores
-ALTER TABLE [data].[Providers] ADD CONSTRAINT pk_id_prestador PRIMARY KEY (id_prestador);
+ALTER TABLE [data].[Providers] ADD CONSTRAINT [PRIMARY_KEY_PROVIDER_ID] PRIMARY KEY ([id]);
 
 -- Coberturas
-ALTER TABLE [data].[Coverages] ADD CONSTRAINT [pk_id_cobertura] PRIMARY KEY ([id_cobertura]),
-    CONSTRAINT [fk_id_prestador_coberturas] FOREIGN KEY ([id_prestador]) REFERENCES [data].[Providers] ([id_prestador]);
+ALTER TABLE [data].[Coverages] ADD CONSTRAINT [PRIMARY_KEY_COVERAGE_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_COVERAGE_TO_PROVIDER_ID] FOREIGN KEY ([providerId]) REFERENCES [data].[Providers] ([id]);
 
 -- Pacientes
-ALTER TABLE [data].[Patients] ADD CONSTRAINT [pk_id_paciente] PRIMARY KEY ([id_paciente]),
-    CONSTRAINT [fk_id_cobertura_pacientes] FOREIGN KEY ([id_cobertura]) REFERENCES [data].[Coverages] ([id_cobertura]),
-    CONSTRAINT [fk_id_direccion_pacientes] FOREIGN KEY ([id_direccion]) REFERENCES [utilities].[Addresses] ([id_direccion]),
-    CONSTRAINT [fk_id_tipo_documento] FOREIGN KEY ([id_tipo_documento]) REFERENCES [utilities].[Documents] ([id_tipo_documento]),
-    CONSTRAINT [fk_id_genero] FOREIGN KEY ([id_genero]) REFERENCES [utilities].[Genders] ([id_genero]),
-    CONSTRAINT [fk_id_nacionalidad] FOREIGN KEY ([nacionalidad]) REFERENCES [utilities].[Nationalities] ([id_nacionalidad]);
+ALTER TABLE [data].[Patients] ADD CONSTRAINT [PRIMARY_KEY_PATIENT_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_PATIENT_TO_COVERAGE_ID] FOREIGN KEY ([coverageId]) REFERENCES [data].[Coverages] ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_PATIENT_TO_ADDRESS_ID] FOREIGN KEY ([addressId]) REFERENCES [utilities].[Addresses] ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_PATIENT_TO_DOCUMENT_ID] FOREIGN KEY ([documentId]) REFERENCES [utilities].[Documents] ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_PATIENT_TO_GENDER_ID] FOREIGN KEY ([genderId]) REFERENCES [utilities].[Genders] ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_PATIENT_TO_NATIONALITY_ID] FOREIGN KEY ([nationalityId]) REFERENCES [utilities].[Nationalities] ([id]);
 
 -- Estudios
-ALTER TABLE [data].[Studies] ADD CONSTRAINT [pk_id_estudio] PRIMARY KEY ([id_estudio]),
-    CONSTRAINT [fk_id_paciente_estudio] FOREIGN KEY ([id_paciente]) REFERENCES [data].[Patients] ([id_paciente]);
+ALTER TABLE [data].[Researches] ADD CONSTRAINT [PRIMARY_KEY_RESEARCH_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_RESEARCH_TO_PATIENT_ID] FOREIGN KEY ([patientId]) REFERENCES [data].[Patients] ([id]);
 
--- Estudios Validos
-ALTER TABLE [data].[Valid_Studies] ADD CONSTRAINT [pk_id_estudioValido] PRIMARY KEY ([id_estudioValido]),
-    CONSTRAINT [fk_id_prestador_estudioValido] FOREIGN KEY ([id_prestador]) REFERENCES [data].[Providers] ([id_prestador]);
+-- Estudios válidos
+ALTER TABLE [data].[Valid_Researches] ADD CONSTRAINT [PRIMARY_KEY_VALID_RESEARCH_ID] PRIMARY KEY ([id]), -- TODO: Cambiar nombre de la tabla.
+    CONSTRAINT [FOREIGN_KEY_OF_VALID_RESEARCH_TO_PROVIDER_ID] FOREIGN KEY ([providerId]) REFERENCES [data].[Providers] ([id]);
 
 -- Usuarios
-ALTER TABLE [data].[Users] ADD CONSTRAINT [pk_id_usuario] PRIMARY KEY ([id_usuario]),
-    CONSTRAINT [fk_id_paciente_usuario] FOREIGN KEY ([id_paciente]) REFERENCES [data].[Patients] ([id_paciente]) ON DELETE CASCADE;
+ALTER TABLE [data].[Users] ADD CONSTRAINT [PRIMARY_KEY_USER_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_USER_TO_PATIENT_ID] FOREIGN KEY ([patientId]) REFERENCES [data].[Patients] ([id]) ON DELETE CASCADE;
 
 -- Sedes de atención
-ALTER TABLE [data].[Care_Headquarters] ADD CONSTRAINT [pk_id_medico_sede_de_atención] PRIMARY KEY ([id_sede]),
-    CONSTRAINT [fk_id_direccion] FOREIGN KEY ([direccion]) REFERENCES [utilities].[Addresses] ([id_direccion]);
+ALTER TABLE [data].[Care_Headquarters] ADD CONSTRAINT [PRIMARY_KEY_CARE_HEADQUARTER_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_CARE_HEADQUARTER_TO_ADDRESS_ID] FOREIGN KEY ([addressId]) REFERENCES [utilities].[Addresses] ([id]);
 
 -- Médicos
-ALTER TABLE [data].[Medics] ADD CONSTRAINT [pk_id_medico] PRIMARY KEY ([id_medico]),
-    CONSTRAINT [fk_id_especialidad] FOREIGN KEY ([id_especialidad]) REFERENCES [data].[Specialties] ([id_especialidad]);
+ALTER TABLE [data].[Medics] ADD CONSTRAINT [PRIMARY_KEY_MEDIC_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_MEDIC_TO_SPECIALTY_ID] FOREIGN KEY ([specialtyId]) REFERENCES [data].[Specialties] ([id]);
 
 -- Días x Sede
-ALTER TABLE [data].[Days_X_Headquarter] ADD CONSTRAINT [fk_id_medico] FOREIGN KEY ([id_medico]) REFERENCES [data].[Medics] ([id_medico]),
-    CONSTRAINT [fk_id_sede] FOREIGN KEY ([id_sede]) REFERENCES [data].[Care_Headquarters] ([id_sede]),
-    CONSTRAINT [pk_id_dias_x_sede] PRIMARY KEY ([id_dias_x_sede]);
+ALTER TABLE [data].[Days_X_Headquarter] ADD CONSTRAINT [PRIMARY_KEY_DAY_X_HEADQUARTER_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_DAY_X_HEADQUARTER_TO_CARE_HEADQUARTER_ID] FOREIGN KEY ([careHeadquarterId]) REFERENCES [data].[Care_Headquarters] ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_DAY_X_HEADQUARTER_TO_MEDIC_ID] FOREIGN KEY ([medicId]) REFERENCES [data].[Medics] ([id]);
 
 -- Estados de los turnos
-ALTER TABLE [data].[Shift_Status] ADD CONSTRAINT [pk_id_estado_turno] PRIMARY KEY ([id_estado]),
-    CONSTRAINT [check_nombre_estado_turno] CHECK (UPPER ([nombre]) IN ('ATENDIDO', 'AUSENTE', 'CANCELADO','PENDIENTE'));
+ALTER TABLE [data].[Shift_Status] ADD CONSTRAINT [PRIMARY_KEY_SHIFT_STATUS_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [CHECK_SHIFT_STATUS_NAME] CHECK (UPPER ([name]) IN ('ATENDIDO', 'AUSENTE', 'CANCELADO','PENDIENTE'));
 
 -- Tipos de turnos
-ALTER TABLE [data].[Shifts] ADD CONSTRAINT [pk_tipo_turno] PRIMARY KEY ([id_tipo_turno]),
-    CONSTRAINT [check_nombre_tipo_turno] CHECK (UPPER ([nombre_tipo]) IN ('PRESENCIAL', 'VIRTUAL'));
+ALTER TABLE [data].[Shifts] ADD CONSTRAINT [PRIMARY_KEY_SHIFT_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [CHECK_SHIFT_MODALITY] CHECK (UPPER ([modality]) IN ('PRESENCIAL', 'VIRTUAL'));
 
 -- Reservas de turnos médicos
-ALTER TABLE [data].[Medical_Appointment_Reservations] ADD CONSTRAINT [pk_id_turno] PRIMARY KEY ([id_turno]),
-    CONSTRAINT [fk_id_tipo_turno] FOREIGN KEY ([id_tipo_turno]) REFERENCES [data].[Shifts] ([id_tipo_turno]),
-    CONSTRAINT [fk_id_estado] FOREIGN KEY ([id_tipo_turno]) REFERENCES [data].[Shift_Status] ([id_estado]),
-    CONSTRAINT [fk_id_paciente_turno] FOREIGN KEY ([id_paciente]) REFERENCES [data].[Patients] ([id_paciente]),
-    CONSTRAINT [fk_id_dias_x_sede] FOREIGN KEY ([id_dias_x_sede]) REFERENCES [data].[Days_X_Headquarter] ([id_dias_x_sede]);
+ALTER TABLE [data].[Medical_Appointment_Reservations] ADD CONSTRAINT [PRIMARY_KEY_MEDICAL_APPOINTMENT_RESERVATION_ID] PRIMARY KEY ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_MEDICAL_APPOINTMENT_RESERVATION_TO_SHIFT_ID] FOREIGN KEY ([shiftId]) REFERENCES [data].[Shifts] ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_MEDICAL_APPOINTMENT_RESERVATION_TO_SHIFT_STATUS_ID] FOREIGN KEY ([shiftId]) REFERENCES [data].[Shift_Status] ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_MEDICAL_APPOINTMENT_RESERVATION_TO_PATIENT_ID] FOREIGN KEY ([patientId]) REFERENCES [data].[Patients] ([id]),
+    CONSTRAINT [FOREIGN_KEY_OF_MEDICAL_APPOINTMENT_RESERVATION_TO_DAY_X_HEADQUARTER_ID] FOREIGN KEY ([daysXHeadquarterId]) REFERENCES [data].[Days_X_Headquarter] ([id]);

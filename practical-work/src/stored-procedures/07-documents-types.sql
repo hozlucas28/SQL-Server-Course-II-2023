@@ -16,10 +16,10 @@ BEGIN
         SET @idTipo = -1
     ELSE 
     BEGIN
-        IF NOT EXISTS (SELECT 1 FROM [utilities].[Documents] WHERE [nombre] = @nombre) 
-            INSERT INTO [utilities].[Documents] ([nombre]) VALUES (@nombre)
+        IF NOT EXISTS (SELECT 1 FROM [utilities].[Documents] WHERE [name] = @nombre) 
+            INSERT INTO [utilities].[Documents] ([name]) VALUES (@nombre)
        
-        SELECT @idTipo = [id_tipo_documento] FROM [utilities].[Documents] WHERE [nombre] = @nombre
+        SELECT @idTipo = [id] FROM [utilities].[Documents] WHERE [name] = @nombre
     END
 END;
 GO
@@ -34,10 +34,10 @@ BEGIN
     IF NULLIF(@nombre, '') IS NULL
         RETURN
         
-    IF NOT EXISTS (SELECT 1 FROM [utilities].[Documents] WHERE [nombre] = @nombre) 
-        INSERT INTO [utilities].[Documents] ([nombre]) VALUES (@nombre)
+    IF NOT EXISTS (SELECT 1 FROM [utilities].[Documents] WHERE [name] = @nombre) 
+        INSERT INTO [utilities].[Documents] ([name]) VALUES (@nombre)
     ELSE
-        UPDATE [utilities].[Documents] SET [nombre] = @nombre WHERE [nombre] = @nombre
+        UPDATE [utilities].[Documents] SET [name] = @nombre WHERE [name] = @nombre
 
-    SELECT @outIdTipoDocumento = [id_tipo_documento], @outNombre = [nombre] FROM [utilities].[Documents] WHERE [nombre] = @nombre
+    SELECT @outIdTipoDocumento = [id], @outNombre = [name] FROM [utilities].[Documents] WHERE [name] = @nombre
 END;

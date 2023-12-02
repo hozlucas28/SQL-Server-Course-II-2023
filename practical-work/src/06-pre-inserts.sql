@@ -11,6 +11,6 @@ GO
 
 /* ---------------------------- Crear Inserciones ---------------------------- */
 
-INSERT INTO [data].[Shifts] ([nombre_tipo]) VALUES ('PRESENCIAL'), ('VIRTUAL');
+INSERT INTO [data].[Shifts] ([modality]) VALUES ('PRESENCIAL'), ('VIRTUAL');
 
-INSERT INTO [data].[Shift_Status] ([nombre]) VALUES ('ATENDIDO'), ('AUSENTE'), ('CANCELADO'),('PENDIENTE');
+INSERT INTO [data].[Shift_Status] ([name]) VALUES ('ATENDIDO'), ('AUSENTE'), ('CANCELADO'),('PENDIENTE');

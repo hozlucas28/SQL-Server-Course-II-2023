@@ -18,16 +18,16 @@ BEGIN
 	EXEC [utilities].[obtenerOInsertarIdProvincia] @Provincia, @IdProvincia OUTPUT
 	EXEC [utilities].[obtenerOInsertarIdLocalidad] @Localidad,@IdProvincia, @IdLocalidad OUTPUT
 
-	IF NOT EXISTS (SELECT 1 FROM [utilities].[Addresses] 
-					WHERE [calle_y_nro] = @calleYNro
-                    AND [id_localidad] = @IdLocalidad 
-                    AND [id_provincia] = @IdProvincia)
+	IF NOT EXISTS (SELECT 1 FROM [utilities].[Addresses]
+					WHERE [street] = @calleYNro
+                    AND [localityId] = @IdLocalidad
+                    AND [provinceId] = @IdProvincia)
 
-        INSERT INTO [utilities].[Addresses] ([calle_y_nro],[id_localidad],[id_provincia]) 
+        INSERT INTO [utilities].[Addresses] ([street],[localityId],[provinceId]) 
 		VALUES (@calleYNro,@IdLocalidad,@IdProvincia)
 
-	SELECT @idDireccion = [id_direccion] FROM [utilities].[Addresses] 
-	WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @IdLocalidad AND [id_provincia] = @IdProvincia
+	SELECT @idDireccion = [id] FROM [utilities].[Addresses] 
+	WHERE [street] = @calleYNro AND [localityId] = @IdLocalidad AND [provinceId] = @IdProvincia
 END;
 GO
 
@@ -56,16 +56,16 @@ BEGIN
     IF NULLIF(@calleYNro, '') IS NULL OR @idLocalidad IS NULL OR @idProvincia IS NULL
         RETURN
 
-    IF NOT EXISTS (SELECT 1 FROM [utilities].[Addresses] WHERE [calle_y_nro] = @calleYNro AND [id_localidad] = @idLocalidad AND [id_provincia] = @idProvincia)
+    IF NOT EXISTS (SELECT 1 FROM [utilities].[Addresses] WHERE [street] = @calleYNro AND [localityId] = @idLocalidad AND [provinceId] = @idProvincia)
         INSERT INTO [utilities].[Addresses] (
-            [calle_y_nro],
-            [cod_postal],
-            [departamento],
-            [id_direccion],
-            [id_localidad],
-            [id_pais],
-            [id_provincia],
-            [piso]
+            [street],
+            [postalCode],
+            [department],
+            [id],
+            [localityId],
+            [countryId],
+            [provinceId],
+            [floor]
         ) VALUES (
             @calleYNro,
             @codPostal,
@@ -78,30 +78,30 @@ BEGIN
         )
     ELSE
         UPDATE [utilities].[Addresses] SET
-            [calle_y_nro] = @calleYNro,
-            [cod_postal] = @codPostal,
-            [departamento] = @departamento,
-            [id_localidad] = @idLocalidad,
-            [id_pais] = @idPais,
-            [id_provincia] = @idProvincia,
-            [piso] = @piso
+            [street] = @calleYNro,
+            [postalCode] = @codPostal,
+            [department] = @departamento,
+            [localityId] = @idLocalidad,
+            [countryId] = @idPais,
+            [provinceId] = @idProvincia,
+            [floor] = @piso
         WHERE
-            [calle_y_nro] = @calleYNro AND
-            [id_localidad] = @idLocalidad AND
-            [id_provincia] = @idProvincia
+            [street] = @calleYNro AND
+            [localityId] = @idLocalidad AND
+            [provinceId] = @idProvincia
 
     SELECT
-        @calleYNro = [calle_y_nro],
-        @codPostal = [cod_postal],
-        @departamento = [departamento],
-        @idDireccion = [id_direccion],
-        @idLocalidad = [id_localidad],
-        @idPais = [id_pais],
-        @idProvincia = [id_provincia],
-        @piso = [piso]
+        @calleYNro = [street],
+        @codPostal = [postalCode],
+        @departamento = [department],
+        @idDireccion = [id],
+        @idLocalidad = [localityId],
+        @idPais = [countryId],
+        @idProvincia = [provinceId],
+        @piso = [floor]
     FROM [utilities].[Addresses]
     WHERE
-        [calle_y_nro] = @calleYNro AND
-        [id_localidad] = @idLocalidad AND
-        [id_provincia] = @idProvincia
+        [street] = @calleYNro AND
+        [localityId] = @idLocalidad AND
+        [provinceId] = @idProvincia
 END;

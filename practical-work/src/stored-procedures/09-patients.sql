@@ -37,24 +37,24 @@ BEGIN
 
     INSERT INTO [data].[Patients]
         (
-            [apellido],
-            [apellido_materno],
+            [lastName],
+            [maternalLastName],
             [email],
-            [fecha_actualizacion],
-            [fecha_nacimiento],
-            [foto_perfil],
-            [id_cobertura],
-            [id_direccion],
-            [id_genero],
-            [id_tipo_documento],
-            [nacionalidad],
-            [nombre],
-            [nro_documento],
-            [sexo_biologico],
-            [tel_alternativo],
-            [tel_fijo],
-            [tel_laboral],
-            [valido]
+            [updateDate],
+            [birthdate],
+            [photo],
+            [coverageId],
+            [addressId],
+            [genderId],
+            [documentId],
+            [nationalityId],
+            [name],
+            [documentNumber],
+            [biologicalSex],
+            [alternativePhone],
+            [phone],
+            [profesionalPhone],
+            [valid]
         ) VALUES (
             @apellido,
             @apellidoMaterno,
@@ -109,24 +109,24 @@ BEGIN
         SET @idNacionalidad = [utilities].[obtenerIdNacionalidad] (@nacionalidad)
 
     UPDATE [data].[Patients] SET
-        [id_cobertura] = ISNULL(@cobertura, [id_cobertura]),
-        [id_direccion] = ISNULL(@idDireccion, [id_direccion]),
-        [id_tipo_documento] = ISNULL(@tipoDocumento, [id_tipo_documento]),
-        [nro_documento] = ISNULL(@nroDocumento, [nro_documento]),
-        [nombre] = ISNULL(@nombre, [nombre]),
-        [apellido] = ISNULL(@apellido, [apellido]),
-        [apellido_materno] = ISNULL(@apellidoMaterno, [apellido_materno]),
-        [fecha_nacimiento] = ISNULL(@fechaNacimiento, [fecha_nacimiento]),
-        [sexo_biologico] = UPPER(ISNULL(@sexoBiologico, [sexo_biologico])), 
-        [id_genero] = ISNULL(@idGenero, [id_genero]),
-        [nacionalidad] = ISNULL(@idNacionalidad, [nacionalidad]),
-		[foto_perfil] = ISNULL(@fotoPerfil, [foto_perfil]),
+        [coverageId] = ISNULL(@cobertura, [coverageId]),
+        [addressId] = ISNULL(@idDireccion, [addressId]),
+        [documentId] = ISNULL(@tipoDocumento, [documentId]),
+        [documentNumber] = ISNULL(@nroDocumento, [documentNumber]),
+        [name] = ISNULL(@nombre, [name]),
+        [lastName] = ISNULL(@apellido, [lastName]),
+        [maternalLastName] = ISNULL(@apellidoMaterno, [maternalLastName]),
+        [birthdate] = ISNULL(@fechaNacimiento, [birthdate]),
+        [biologicalSex] = UPPER(ISNULL(@sexoBiologico, [biologicalSex])), 
+        [genderId] = ISNULL(@idGenero, [genderId]),
+        [nationalityId] = ISNULL(@idNacionalidad, [nationalityId]),
+		[photo] = ISNULL(@fotoPerfil, [photo]),
         [email] = ISNULL(@email, [email]),
-        [tel_fijo] = ISNULL(@telefonoFijo, [tel_fijo]),
-        [tel_alternativo] = ISNULL(@telefonoAlternativo, [tel_alternativo]),
-        [tel_laboral] = ISNULL(@telefonoLaboral, [tel_laboral])
+        [phone] = ISNULL(@telefonoFijo, [phone]),
+        [alternativePhone] = ISNULL(@telefonoAlternativo, [alternativePhone]),
+        [profesionalPhone] = ISNULL(@telefonoLaboral, [profesionalPhone])
     WHERE
-        [id_paciente] = @idPaciente
+        [id] = @idPaciente
 END;
 GO
 
@@ -134,7 +134,7 @@ GO
 CREATE OR ALTER PROCEDURE [data].[borrarPaciente]
     @id INT
 AS
-    UPDATE [data].[Patients] SET [valido] = 0 WHERE [id_paciente] = @id;
+    UPDATE [data].[Patients] SET [valid] = 0 WHERE [id] = @id;
 GO
 
 -- Verificar si existe el paciente

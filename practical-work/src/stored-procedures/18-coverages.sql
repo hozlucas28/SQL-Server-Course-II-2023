@@ -12,7 +12,7 @@ CREATE OR ALTER PROCEDURE [data].[registrarCobertura]
 AS
 BEGIN
     BEGIN TRY
-        INSERT INTO [data].[Coverages] ([id_prestador], [imagen_credencial], [nro_socio])
+        INSERT INTO [data].[Coverages] ([providerId], [imageUrl], [membershipNumber])
         VALUES (@idPrestador, @imagenCredencial, @nroSocio)
     END TRY
     BEGIN CATCH
@@ -35,11 +35,11 @@ AS
 BEGIN
     BEGIN TRY
         UPDATE [data].[Coverages]
-        SET [fecha_registro] = ISNULL(@fechaRegistro, [fecha_registro]),
-            [id_prestador] = ISNULL(@idPrestador, [id_prestador]),
-            [imagen_credencial] = ISNULL(@imagenCredencial, [imagen_credencial]),
-            [nro_socio] = ISNULL(@nroSocio, [nro_socio])
-        WHERE [id_cobertura] = @idCobertura
+        SET [registrationDate] = ISNULL(@fechaRegistro, [registrationDate]),
+            [providerId] = ISNULL(@idPrestador, [providerId]),
+            [imageUrl] = ISNULL(@imagenCredencial, [imageUrl]),
+            [membershipNumber] = ISNULL(@nroSocio, [membershipNumber])
+        WHERE [id] = @idCobertura
     END TRY
     BEGIN CATCH
         DECLARE @errorMessage NVARCHAR(1000)
@@ -57,8 +57,8 @@ AS
 BEGIN
     BEGIN TRY
         UPDATE [data].[Coverages]
-        SET [borrado] = 1
-        WHERE [id_cobertura] = @idCobertura
+        SET [deleted] = 1
+        WHERE [id] = @idCobertura
     END TRY
     BEGIN CATCH
         DECLARE @errorMessage NVARCHAR(1000)

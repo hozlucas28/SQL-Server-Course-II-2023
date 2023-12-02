@@ -29,23 +29,22 @@ IF EXISTS (SELECT * FROM sys.indexes WHERE name = 'index_id_nacionalidad')
 /* ------------------------------ Crear Índices ----------------------------- */
 
 -- Géneros
-CREATE INDEX [index_id_genero] ON [utilities].[Genders] ([id_genero]);
+CREATE INDEX [INDEX_ID] ON [utilities].[Genders] ([id]);
 
 -- Países
-CREATE INDEX [index_id_pais] ON [utilities].[Countries] ([id_pais]);
+CREATE INDEX [INDEX_ID] ON [utilities].[Countries] ([id]);
 
 -- Provincias
-CREATE INDEX [index_id_pais] ON [utilities].[Provinces] ([id_pais]);
+CREATE INDEX [INDEX_OF_PROVINCE_TO_COUNTRY_ID] ON [utilities].[Provinces] ([countryId]);
 
 -- Localidades
-CREATE INDEX [index_id_localidad] ON [utilities].[Localities] ([id_localidad]);
+CREATE INDEX [INDEX_ID] ON [utilities].[Localities] ([id]);
 
 -- Direcciones
-CREATE INDEX [index_id_direccion] ON [utilities].[Addresses] ([id_direccion]);
+CREATE INDEX [INDEX_ID] ON [utilities].[Addresses] ([id]);
 
 -- Documentos
-CREATE INDEX [index_id_tipo_documento] ON [utilities].[Documents] ([id_tipo_documento]);
+CREATE INDEX [INDEX_ID] ON [utilities].[Documents] ([id]);
 
 -- Nacionalidades
-CREATE INDEX [index_id_nacionalidad] ON [utilities].[Nationalities] ([id_nacionalidad]);
-
+CREATE INDEX [INDEX_ID] ON [utilities].[Nationalities] ([id]);

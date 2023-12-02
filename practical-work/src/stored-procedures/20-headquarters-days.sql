@@ -13,7 +13,7 @@ CREATE OR ALTER PROCEDURE [data].[insertarDiasXSede]
     @idSede INT
 AS
 BEGIN
-    INSERT INTO [data].[Days_X_Headquarter] ([dia], [hora_inicio], [hora_fin], [id_medico], [id_sede])
+    INSERT INTO [data].[Days_X_Headquarter] ([day], [startTime], [endTime], [medicId], [careHeadquarterId])
         VALUES (@dia, @horaInicio, @horaFin, @idMedico, @idSede);
 END;
 GO
@@ -30,12 +30,12 @@ AS
 BEGIN
     BEGIN TRY
         UPDATE [data].[Days_X_Headquarter]
-        SET [dia] = ISNULL(@dia, [dia]),
-            [hora_inicio] = ISNULL(@horaInicio, [hora_inicio]),
-            [hora_fin] = ISNULL(@horaFin, [hora_fin]),
-            [id_medico] = ISNULL(@idMedico, [id_medico]),
-            [id_sede] = ISNULL(@idSede, [id_sede])
-        WHERE [id_dias_x_sede] = @idDiasXSede
+        SET [day] = ISNULL(@dia, [day]),
+            [startTime] = ISNULL(@horaInicio, [startTime]),
+            [endTime] = ISNULL(@horaFin, [endTime]),
+            [medicId] = ISNULL(@idMedico, [medicId]),
+            [careHeadquarterId] = ISNULL(@idSede, [careHeadquarterId])
+        WHERE [id] = @idDiasXSede
     END TRY
     BEGIN CATCH
         DECLARE @errorMessage NVARCHAR(1000)
@@ -53,8 +53,8 @@ AS
 BEGIN
     BEGIN TRY
         UPDATE [data].[Days_X_Headquarter]
-        SET [alta] = 0
-        WHERE [id_sede] = @idSede
+        SET [enabled] = 0
+        WHERE [careHeadquarterId] = @idSede
     END TRY
     BEGIN CATCH
         DECLARE @errorMessage NVARCHAR(1000)

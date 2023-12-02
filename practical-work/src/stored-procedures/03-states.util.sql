@@ -11,10 +11,10 @@ CREATE OR ALTER PROCEDURE [utilities].[obtenerOInsertarIdProvincia]
 AS
 BEGIN
     SET @provincia  = UPPER (@provincia)
-    IF NOT EXISTS (SELECT 1 FROM [utilities].[Provinces] WHERE [nombre] = @provincia)
-        INSERT INTO [utilities].[Provinces] ([nombre]) VALUES (@provincia)
+    IF NOT EXISTS (SELECT 1 FROM [utilities].[Provinces] WHERE [name] = @provincia)
+        INSERT INTO [utilities].[Provinces] ([name]) VALUES (@provincia)
 
-	SELECT @idProvincia = [id_provincia] FROM [utilities].[Provinces] WHERE [nombre] = @provincia
+	SELECT @idProvincia = [id] FROM [utilities].[Provinces] WHERE [name] = @provincia
 END;
 GO
 
@@ -29,8 +29,8 @@ BEGIN
     IF NULLIF(@provincia, '') IS NULL
         RETURN
 
-    IF NOT EXISTS (SELECT 1 FROM [utilities].[Provinces] WHERE [nombre] = UPPER(@provincia)) 
-        INSERT INTO [utilities].[Provinces] ([nombre]) VALUES (UPPER(@provincia))
+    IF NOT EXISTS (SELECT 1 FROM [utilities].[Provinces] WHERE [name] = UPPER(@provincia)) 
+        INSERT INTO [utilities].[Provinces] ([name]) VALUES (UPPER(@provincia))
 
-    SELECT @outIdPais = [id_pais], @outIdProvincia = [id_provincia], @outNombre = [nombre] FROM [utilities].[Provinces] WHERE [nombre] = UPPER(@provincia)
+    SELECT @outIdPais = [countryId], @outIdProvincia = [id], @outNombre = [name] FROM [utilities].[Provinces] WHERE [name] = UPPER(@provincia)
 END;
