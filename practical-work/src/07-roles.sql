@@ -44,8 +44,8 @@ GO
 /* ---------------------------- ASIGNAR PERMISOS ---------------------------- */
 
 -- Personal Administrativo
-GRANT EXECUTE ON OBJECT::[utilities].[obtenerOInsertarIdNacionalidad] TO [Administrative staff];
-GRANT EXECUTE ON OBJECT::[utilities].[actualizarNacionalidad] TO [Administrative staff];
+GRANT EXECUTE ON OBJECT::[utilities].[getOrInsertNationalityId] TO [Administrative staff];
+GRANT EXECUTE ON OBJECT::[utilities].[updateNationality] TO [Administrative staff];
 GRANT EXECUTE ON OBJECT::[utilities].[obtenerOInsertarIdLocalidad] TO [Administrative staff];
 GRANT EXECUTE ON OBJECT::[utilities].[insertarLocalidad] TO [Administrative staff];
 GRANT EXECUTE ON OBJECT::[utilities].[obtenerOInsertarIdProvincia] TO [Administrative staff];
@@ -70,8 +70,8 @@ GRANT EXECUTE ON OBJECT::[data].[actualizarPrestador] TO [Administrative staff];
 GRANT EXECUTE ON OBJECT::[data].[eliminarPrestador] TO [Administrative staff];
 
 -- Administrador General
-GRANT EXECUTE ON OBJECT::[utilities].[obtenerOInsertarIdNacionalidad] TO [General administrator];
-GRANT EXECUTE ON OBJECT::[utilities].[actualizarNacionalidad] TO [General administrator];
+GRANT EXECUTE ON OBJECT::[utilities].[getOrInsertNationalityId] TO [General administrator];
+GRANT EXECUTE ON OBJECT::[utilities].[updateNationality] TO [General administrator];
 GRANT EXECUTE ON OBJECT::[utilities].[obtenerOInsertarIdLocalidad] TO [General administrator];
 GRANT EXECUTE ON OBJECT::[utilities].[insertarLocalidad] TO [General administrator];
 GRANT EXECUTE ON OBJECT::[utilities].[obtenerOInsertarIdProvincia] TO [General administrator];
@@ -118,8 +118,8 @@ GRANT EXECUTE ON OBJECT::[files].[importarEstudiosJSON] TO [Clinical technical s
 GRANT EXECUTE ON OBJECT::[data].[registrarTurnoMedico] TO [Patient];
 GRANT EXECUTE ON OBJECT::[data].[actualizarTurnoMedico] TO [Patient];
 GRANT EXECUTE ON OBJECT::[data].[cancelMedicalAppointment] TO [Patient];
-GRANT EXECUTE ON OBJECT::[utilities].[obtenerOInsertarIdNacionalidad] TO [Patient];
-GRANT EXECUTE ON OBJECT::[utilities].[actualizarNacionalidad] TO [Patient];
+GRANT EXECUTE ON OBJECT::[utilities].[getOrInsertNationalityId] TO [Patient];
+GRANT EXECUTE ON OBJECT::[utilities].[updateNationality] TO [Patient];
 GRANT EXECUTE ON OBJECT::[utilities].[obtenerOInsertarIdLocalidad] TO [Patient];
 GRANT EXECUTE ON OBJECT::[utilities].[insertarLocalidad] TO [Patient];
 GRANT EXECUTE ON OBJECT::[utilities].[obtenerOInsertarIdProvincia] TO [Patient];

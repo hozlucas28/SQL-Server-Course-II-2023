@@ -31,7 +31,7 @@ BEGIN
 
     EXEC [utilities].[obtenerOInsertarIdDireccion] @calleYNro, @localidad, @provincia, @idDireccion OUT
 	EXEC [utilities].[obtenerOIsertarIdTipoDocumento] @tipoDocumento, @idTipoDocumento OUT
-	EXEC [utilities].[obtenerOInsertarIdNacionalidad] @nacionalidad, @idNacionalidad OUT
+	EXEC [utilities].[getOrInsertNationalityId] @nacionalidad, @idNacionalidad OUT
 	SET @sexoChar = [utilities].[obtenerCharSexo] (@sexo) 
 	EXEC [utilities].[obtenerOInsertarIdGenero] @genero, @idGenero OUT
 

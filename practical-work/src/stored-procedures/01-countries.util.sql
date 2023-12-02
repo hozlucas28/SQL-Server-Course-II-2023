@@ -5,44 +5,44 @@ GO
 /* ------------------- Procedimientos Almacenados - Países ------------------ */
 
 -- Obtener el ID de una nacionalidad
-CREATE OR ALTER PROCEDURE [utilities].[obtenerOInsertarIdNacionalidad]
-    @nacionalidad VARCHAR(50) = NULL,
+CREATE OR ALTER PROCEDURE [utilities].[getOrInsertNationalityId]
+    @nationality VARCHAR(50) = NULL,
     @id INT OUTPUT
 AS
 BEGIN
-    SET @nacionalidad = UPPER(TRIM(@nacionalidad));
+    SET @nationality = UPPER(TRIM(@nationality))
 
-    IF NULLIF(@nacionalidad, '') IS NULL
-        SET @id = -1;
+    IF NULLIF(@nationality, '') IS NULL
+        SET @id = -1
     ELSE
     BEGIN
-        IF NOT EXISTS (SELECT 1 FROM [utilities].[Nationalities] WHERE UPPER(TRIM([name])) = @nacionalidad) 
-            INSERT INTO [utilities].[Nationalities] ([name]) VALUES (@nacionalidad);
+        IF NOT EXISTS (SELECT 1 FROM [utilities].[Nationalities] WHERE UPPER(TRIM([name])) = @nationality) 
+            INSERT INTO [utilities].[Nationalities] ([name]) VALUES (@nationality)
 
-        SELECT @id = [id] FROM [utilities].[Nationalities] WHERE UPPER(TRIM([name])) = @nacionalidad;
+        SELECT @id = [id] FROM [utilities].[Nationalities] WHERE UPPER(TRIM([name])) = @nationality
     END
 END;
 GO
 
 -- Actualizar/Insertar una nacionalidad
-CREATE OR ALTER PROCEDURE [utilities].[actualizarNacionalidad]
-    @pais VARCHAR(50) = NULL,
-    @nacionalidad VARCHAR(50) = NULL,
-    @outGentilicio VARCHAR(50) OUTPUT,
-    @outIdpais INT OUTPUT,
-    @outNombre VARCHAR(50) OUTPUT
+CREATE OR ALTER PROCEDURE [utilities].[updateNationality]
+    @country VARCHAR(50) = NULL,
+    @nationality VARCHAR(50) = NULL,
+    @outDemonym VARCHAR(50) OUTPUT,
+    @outCountryId INT OUTPUT,
+    @outName VARCHAR(50) OUTPUT
 AS
 BEGIN
-    IF NULLIF(@nacionalidad, '') IS NULL
+    IF NULLIF(@nationality, '') IS NULL
         RETURN
 
-    IF NOT EXISTS (SELECT 1 FROM [utilities].[Countries] WHERE [demonym] = @nacionalidad) 
-        IF NULLIF(@pais, '') IS NULL
+    IF NOT EXISTS (SELECT 1 FROM [utilities].[Countries] WHERE [demonym] = @nationality) 
+        IF NULLIF(@country, '') IS NULL
             RETURN
         ELSE
-            INSERT INTO [utilities].[Countries] ([name], [demonym]) VALUES (@pais, @nacionalidad)
+            INSERT INTO [utilities].[Countries] ([name], [demonym]) VALUES (@country, @nationality)
     ELSE
-        UPDATE [utilities].[Countries] SET [demonym] = @nacionalidad WHERE [demonym] = @nacionalidad
+        UPDATE [utilities].[Countries] SET [demonym] = @nationality WHERE [demonym] = @nationality
 
-    SELECT @outGentilicio = [demonym], @outIdpais = [id], @outNombre = [name] FROM [utilities].[Countries] WHERE [demonym] = @nacionalidad
+    SELECT @outDemonym = [demonym], @outCountryId = [id], @outName = [name] FROM [utilities].[Countries] WHERE [demonym] = @nationality
 END;
