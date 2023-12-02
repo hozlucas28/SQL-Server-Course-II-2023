@@ -24,6 +24,7 @@ IF EXISTS (SELECT * FROM sys.indexes WHERE name = 'index_id_tipo_documento')
 
 IF EXISTS (SELECT * FROM sys.indexes WHERE name = 'index_id_nacionalidad')
     DROP INDEX [index_id_nacionalidad] ON [utilities].[Nationalities];
+GO
 
 
 /* ------------------------------ Crear Índices ----------------------------- */
