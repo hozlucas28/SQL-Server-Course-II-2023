@@ -1,36 +1,8 @@
 USE [CURESA];
 GO
 
-/* --------------------------- Ver check constraints --------------------------- */
-
-/*
-SELECT
-name, definition 
-FROM
-    sys.check_constraints
-*/
-
-
-/* --------------------------- Ver foreign keys --------------------------- */
-
-/*
-use curesa
-
-SELECT 
-   OBJECT_NAME(f.parent_object_id) AS 'Table name',
-   COL_NAME(fc.parent_object_id,fc.parent_column_id) AS 'Field name',
-   delete_referential_action_desc AS 'On Delete'
-FROM sys.foreign_keys AS f,
-     sys.foreign_key_columns AS fc,
-     sys.tables t 
-WHERE f.OBJECT_ID = fc.constraint_object_id
-AND t.OBJECT_ID = fc.referenced_object_id
-ORDER BY 1
-*/
-
 
 /* --------------------------- Crear Restricciones --------------------------- */
-
 
 -- Géneros
 ALTER TABLE [utilities].[Genders] ADD CONSTRAINT [PRIMARY_KEY_GENDER_ID] PRIMARY KEY ([id]);
@@ -38,19 +10,20 @@ ALTER TABLE [utilities].[Genders] ADD CONSTRAINT [PRIMARY_KEY_GENDER_ID] PRIMARY
 -- Países
 ALTER TABLE [utilities].[Countries] ADD CONSTRAINT [PRIMARY_KEY_COUNTRY_ID] PRIMARY KEY ([id]);
 
+-- Nacionalidades
 ALTER TABLE [utilities].[Nationalities] ADD CONSTRAINT [PRIMARY_KEY_NATIONALITY_ID] PRIMARY KEY ([id]);
 
 -- Tipos de documentos
 ALTER TABLE [utilities].[Documents] ADD CONSTRAINT [PRIMARY_KEY_DOCUMENT_ID] PRIMARY KEY ([id]);
 
--- Especialidad
+-- Especialidades
 ALTER TABLE [data].[Specialties] ADD CONSTRAINT [PRIMARY_KEY_SPECIALTY_ID] PRIMARY KEY ([id]);
 
--- Nombres de provincias
+-- Provincias
 ALTER TABLE [utilities].[Provinces] ADD CONSTRAINT [PRIMARY_KEY_PROVINCE_ID] PRIMARY KEY ([id]),
     CONSTRAINT [FOREIGN_KEY_OF_PROVINCE_TO_COUNTRY_ID] FOREIGN KEY ([countryId]) REFERENCES [utilities].[Countries] ([id]);
 
--- Nombres de localidades
+-- Localidades
 ALTER TABLE [utilities].[Localities] ADD CONSTRAINT [PRIMARY_KEY_LOCALITY_ID] PRIMARY KEY ([id]),
     CONSTRAINT [FOREIGN_KEY_OF_LOCALITY_TO_PROVINCE_ID] FOREIGN KEY ([provinceId]) REFERENCES [utilities].[Provinces] ([id]);
 
